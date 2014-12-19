@@ -3,6 +3,7 @@
 .LSOverride
 azure.err
 iisnode.yml
+npm-debug.log
 
 # Icon must ends with two \r.
 Icon
