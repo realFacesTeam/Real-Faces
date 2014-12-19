@@ -103,12 +103,11 @@ var clock = new THREE.Clock();
 // custom global variables
 var video, videoImage, videoImageContext, videoTexture;
 
-var MovingCube;
+var scene;
+
+var movingCube;
 
 var clientID;
-
-init();
-animate();
 
 // FUNCTIONS
 function init()
@@ -189,33 +188,23 @@ function init()
   camera.position.set(0,150,300);
   camera.lookAt(movieScreen.position);
 
-  // create an array with six textures for a cool cube
-  // var materialArray = [];
-  // materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xpos.png' ) }));
-  // materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xneg.png' ) }));
-  // materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/ypos.png' ) }));
-  // materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/yneg.png' ) }));
-  // materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zpos.png' ) }));
-  // materialArray.push(new THREE.MeshBasicMaterial( { map: videoTexture }));
-  // var MovingCubeMat = new THREE.MeshFaceMaterial(materialArray);
-  // var MovingCubeGeom = new THREE.CubeGeometry( 50, 50, 50, 1, 1, 1, materialArray );
-  // MovingCube = new THREE.Mesh( MovingCubeGeom, MovingCubeMat );
-  // MovingCube.position.set(0, 25.1, 0);
-  // scene.add( MovingCube );
-
-  createVideoCube(0, 25.1, 0, videoTexture, scene);
+  createVideoCube(0, 25.1, 0, videoTexture, scene, clientID);
 
 }
 
 function animate()
 {
-    requestAnimationFrame( animate );
+  requestAnimationFrame( animate );
   render();
   update();
 }
 
 function update()
 {
+  // if()
+  // ownCube = scene.getObjectByName("videoCubeundefined");
+  // console.log("updated cube", ownCube)
+  ownCube = scene.getObjectByName("videoCube" + clientID);
   if ( keyboard.pressed("p") ) // pause
     video.pause();
   if ( keyboard.pressed("r") ) // resume
@@ -230,65 +219,68 @@ function update()
   // local transformations
 
   // move forwards/backwards/left/right
-  if ( keyboard.pressed("W") )
-    MovingCube.translateZ( -moveDistance );
+  if ( keyboard.pressed("W") ){
+    console.log('button pressed OWNCUBE', ownCube);
+    ownCube.translateZ( -moveDistance );
+  }
   if ( keyboard.pressed("S") )
-    MovingCube.translateZ(  moveDistance );
+    ownCube.translateZ(  moveDistance );
   if ( keyboard.pressed("Q") )
-    MovingCube.translateX( -moveDistance );
+    ownCube.translateX( -moveDistance );
   if ( keyboard.pressed("E") )
-    MovingCube.translateX(  moveDistance );
+    ownCube.translateX(  moveDistance );
 
   // rotate left/right/up/down
   var rotation_matrix = new THREE.Matrix4().identity();
   if ( keyboard.pressed("A") )
-    MovingCube.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+    ownCube.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
   if ( keyboard.pressed("D") )
-    MovingCube.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+    ownCube.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
   if ( keyboard.pressed("R") )
-    MovingCube.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
+    ownCube.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
   if ( keyboard.pressed("F") )
-    MovingCube.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
+    ownCube.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
 
   if ( keyboard.pressed("Z") )
   {
-    MovingCube.position.set(0,25.1,0);
-    MovingCube.rotation.set(0,0,0);
+    ownCube.position.set(0,25.1,0);
+    ownCube.rotation.set(0,0,0);
   }
 
   // global coordinates
   if ( keyboard.pressed("left") ){
-    MovingCube.position.x -= moveDistance;
+    ownCube.position.x -= moveDistance;
     io.emit('clientUpdatePosition', {
-      axis:'X', offset:-moveDistance, 
-      globalPosition:[MovingCube.position.x, MovingCube.position.z],
+      axis:'X', offset:-moveDistance,
+      globalPosition:[ownCube.position.x, ownCube.position.z],
       clientID:clientID
     });
   }
 
   if ( keyboard.pressed("right") ){
-    MovingCube.position.x += moveDistance;
+    ownCube.position.x += moveDistance;
     io.emit('clientUpdatePosition', {
-      axis:'X', offset:moveDistance, 
-      globalPosition:[MovingCube.position.x, MovingCube.position.z],
+      axis:'X', offset:moveDistance,
+      globalPosition:[ownCube.position.x, ownCube.position.z],
       clientID:clientID
-    });  
+    });
   }
   if ( keyboard.pressed("up") ){
-    MovingCube.position.z -= moveDistance;
+    var ownCube = scene.getObjectByName("videoCube" + clientID);
+    ownCube.position.z -= moveDistance;
     io.emit('clientUpdatePosition', {
-      axis:'Z', offset:-moveDistance, 
-      globalPosition:[MovingCube.position.x, MovingCube.position.z],
+      axis:'Z', offset:-moveDistance,
+      globalPosition:[ownCube.position.x, ownCube.position.z],
       clientID:clientID
-    });  
+    });
   }
-  if ( keyboard.pressed("down") )
-    MovingCube.position.z += moveDistance;{
+  if ( keyboard.pressed("down") ){
+    ownCube.position.z += moveDistance;
     io.emit('clientUpdatePosition', {
-      axis:'Z', offset:+moveDistance, 
-      globalPosition:[MovingCube.position.x, MovingCube.position.z],
+      axis:'Z', offset:+moveDistance,
+      globalPosition:[ownCube.position.x, ownCube.position.z],
       clientID:clientID
-    });  
+    });
   }
 
   controls.update();
