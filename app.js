@@ -16,16 +16,16 @@ db.count = db.count || 0;
 db.storage = db.storage || [];
 
 // Setup the ready route, and emit talk event.
-app.io.route('ready', function(req) {
+app.io.route('login', function(req) {
     //push client ID and client io Obj to storage
-    db.storage.push({clientID:++db.count, req:req});
+    var newClientID = ++db.count;
     db.storage.forEach(function(clientObj){
       var req = clientObj.req;
-      var clientID = clientObj.clientID;
-      req.io.emit('talk', {
-        message: 'Client #'+clientID+'has logged into the server!'
+      req.io.emit('newClient', {
+        message: 'Client #'+newClientID+'has logged into the server!'
       });
     })
+    db.storage.push({clientID:newClientID, req:req});
 })
 
 // Send the client html.
