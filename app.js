@@ -1,3 +1,4 @@
+function clog(v){console.log(v);}
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -18,6 +19,7 @@ db.storage = db.storage || [];
 // Setup the ready route, and emit talk event.
 app.io.route('login', function(req) {
     //push client ID and client io Obj to storage
+    clog(req.data);
     var newClientID = ++db.count;
     db.storage.forEach(function(clientObj){
       var req = clientObj.req;
@@ -27,6 +29,15 @@ app.io.route('login', function(req) {
       });
     })
     db.storage.push({clientID:newClientID, req:req});
+})
+
+app.io.route('move', function(req){
+  //req should emit event to everybody that this user just moved
+  /*
+  clientId;
+  
+  */
+
 })
 
 // Send the client html.
