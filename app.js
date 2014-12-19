@@ -14,21 +14,32 @@ app.http().io()
 //Data storage
 var db = {};
 db.count = db.count || 0;
-db.storage = db.storage || [];
+db.clientList = db.clientList || [];
+db.clientPositions = {};
 
 // Setup the ready route, and emit talk event.
 app.io.route('login', function(req) {
-    //push client ID and client io Obj to storage
+    //generate new client ID
+
     var newClientID = ++db.count;
-    db.storage.forEach(function(clientObj){
+    //tell all pre-existing clients to render new client
+    db.clientList.forEach(function(clientObj){
       var req = clientObj.req;
       req.io.emit('newClient', {
         message: 'Client #'+newClientID+'has logged into the server!',
         clientID: newClientID
       });
     })
-    db.storage.push({clientID:newClientID, req:req});
-})
+
+    //store new client 
+    db.clientList.push({clientID:newClientID, req:req});
+    
+    //tell new client its clientID, then positions of all other clients
+    req.io.emit('successfulLogin', {
+      clientID: newClientID,
+      clientPositions: db.clientPositions
+    });
+});
 
 app.io.route('clientUpdatePosition', function(req){
   //req should emit event to everybody that this user just moved

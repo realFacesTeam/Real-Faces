@@ -105,6 +105,8 @@ var video, videoImage, videoImageContext, videoTexture;
 
 var MovingCube;
 
+var clientID;
+
 init();
 animate();
 
@@ -255,14 +257,39 @@ function update()
   }
 
   // global coordinates
-  if ( keyboard.pressed("left") )
+  if ( keyboard.pressed("left") ){
     MovingCube.position.x -= moveDistance;
-  if ( keyboard.pressed("right") )
+    io.emit('clientUpdatePosition', {
+      axis:'X', offset:-moveDistance, 
+      globalPosition:[MovingCube.position.x, MovingCube.position.z],
+      clientID:clientID
+    });
+  }
+
+  if ( keyboard.pressed("right") ){
     MovingCube.position.x += moveDistance;
-  if ( keyboard.pressed("up") )
+    io.emit('clientUpdatePosition', {
+      axis:'X', offset:moveDistance, 
+      globalPosition:[MovingCube.position.x, MovingCube.position.z],
+      clientID:clientID
+    });  
+  }
+  if ( keyboard.pressed("up") ){
     MovingCube.position.z -= moveDistance;
+    io.emit('clientUpdatePosition', {
+      axis:'Z', offset:-moveDistance, 
+      globalPosition:[MovingCube.position.x, MovingCube.position.z],
+      clientID:clientID
+    });  
+  }
   if ( keyboard.pressed("down") )
-    MovingCube.position.z += moveDistance;
+    MovingCube.position.z += moveDistance;{
+    io.emit('clientUpdatePosition', {
+      axis:'Z', offset:+moveDistance, 
+      globalPosition:[MovingCube.position.x, MovingCube.position.z],
+      clientID:clientID
+    });  
+  }
 
   controls.update();
   stats.update();
