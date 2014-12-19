@@ -1,7 +1,7 @@
 io = io.connect();
 
 // Emit ready event.
-io.emit('login');
+io.emit('login', {name:'BMoney'});
 
 io.on('successfulLogin', function(data){
     clientID = data.clientID;
@@ -13,7 +13,5 @@ io.on('talk', function(data) {
 })
 
 io.on('newClient', function(data){
-
   createVideoCube(5, 25.1, 0, videoTexture, scene);
-
 });
