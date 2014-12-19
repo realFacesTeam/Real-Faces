@@ -1,7 +1,7 @@
 io = io.connect();
 
 // Emit ready event.
-io.emit('login', {name:'BMoney'});
+io.emit('login');
 
 io.on('successfulLogin', function(data){
     clientID = data.clientID;
