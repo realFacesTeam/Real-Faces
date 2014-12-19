@@ -3,6 +3,10 @@ io = io.connect();
 // Emit ready event.
 io.emit('login');
 
+io.on('successfulLogin', function(data){
+    clientID = data.clientID;
+})
+
 // Listen for the talk event.
 io.on('talk', function(data) {
     alert(data.message);
