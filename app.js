@@ -26,17 +26,15 @@ app.io.route('login', function(req) {
 
     var newClientID = ++db.count;
     //tell all pre-existing clients to render new client
-    db.clientList.forEach(function(clientObj){
-      var req = clientObj.req;
-      req.io.emit('newClient', {
+    req.io.broadcast('newClient', {
         message: 'Client #'+newClientID+'has logged into the server!',
         clientID: newClientID
-      });
-    })
+    });
 
-    //store new client 
+    //store new client
+      //deprecated?
     db.clientList.push({clientID:newClientID, req:req});
-    
+
     //tell new client its clientID, then positions of all other clients
     req.io.emit('successfulLogin', {
       clientID: newClientID,
@@ -47,12 +45,12 @@ app.io.route('login', function(req) {
 app.io.route('clientUpdatePosition', function(req){
   //update our globalPosition list
   db.clientPositions[req.data.clientId] = req.data.globalPosition;
-  
+
   //let other clients know a specific client has moved by some offset amount
-  req.io.emit('clientUpdatePosition', {
-    axis:    req.data.axis,
-    offset:  req.data.axis,
-    clientId:req.data.axis
+  req.io.broadcast('clientUpdatePosition', {
+    axis:       req.data.axis,
+    offset:     req.data.offset,
+    clientId:   req.data.clientID
   })
 
 })
