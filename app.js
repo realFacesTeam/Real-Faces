@@ -19,7 +19,6 @@ db.storage = db.storage || [];
 // Setup the ready route, and emit talk event.
 app.io.route('login', function(req) {
     //push client ID and client io Obj to storage
-    clog(req.data);
     var newClientID = ++db.count;
     db.storage.forEach(function(clientObj){
       var req = clientObj.req;
@@ -31,12 +30,16 @@ app.io.route('login', function(req) {
     db.storage.push({clientID:newClientID, req:req});
 })
 
-app.io.route('move', function(req){
+app.io.route('clientUpdatePosition', function(req){
   //req should emit event to everybody that this user just moved
-  /*
-  clientId;
+
+  //the reason we aren't just sending the entire req.data object is 
   
-  */
+  req.io.emit('clientUpdatePosition', {
+    axis:    req.data.axis,
+    offset:  req.data.axis,
+    clientId:req.data.axis
+  })
 
 })
 

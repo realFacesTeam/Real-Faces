@@ -1,7 +1,7 @@
 io = io.connect();
 
 // Emit ready event.
-io.emit('login');
+io.emit('login', {name:'BMoney'});
 
 // Listen for the talk event.
 io.on('talk', function(data) {
