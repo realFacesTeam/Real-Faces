@@ -1,3 +1,4 @@
+function clog(v){console.log(v);}
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -14,6 +15,9 @@ app.http().io()
 var db = {};
 db.count = db.count || 0;
 db.clientList = db.clientList || [];
+
+
+//object of keys, keys are the clientId, and it's value is the global position
 db.clientPositions = {};
 
 // Setup the ready route, and emit talk event.
@@ -39,6 +43,19 @@ app.io.route('login', function(req) {
       clientPositions: db.clientPositions
     });
 });
+
+app.io.route('clientUpdatePosition', function(req){
+  //update our globalPosition list
+  db.clientPositions[req.data.clientId] = req.data.globalPosition;
+  
+  //let other clients know a specific client has moved by some offset amount
+  req.io.emit('clientUpdatePosition', {
+    axis:    req.data.axis,
+    offset:  req.data.axis,
+    clientId:req.data.axis
+  })
+
+})
 
 // Send the client html.
 app.get('/', function(req, res) {

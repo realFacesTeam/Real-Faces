@@ -13,7 +13,5 @@ io.on('talk', function(data) {
 })
 
 io.on('newClient', function(data){
-
   createVideoCube(5, 25.1, 0, videoTexture, scene);
-
 });
