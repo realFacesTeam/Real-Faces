@@ -54,9 +54,6 @@ function noStream(e)
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/sockets/talkalert.js"></script>
 
-
-</script>
-
 <script src="js/Three.js"></script>
 <script src="js/Detector.js"></script>
 <script src="js/Stats.js"></script>
@@ -64,6 +61,8 @@ function noStream(e)
 <script src="js/THREEx.KeyboardState.js"></script>
 <script src="js/THREEx.FullScreen.js"></script>
 <script src="js/THREEx.WindowResize.js"></script>
+
+<script src="js/3DComponents/videoCube.js"></script>
 
 <!-- jQuery code to display an information button and box when clicked. -->
 <script src="js/jquery-1.9.1.js"></script>
@@ -189,20 +188,20 @@ function init()
   camera.lookAt(movieScreen.position);
 
   // create an array with six textures for a cool cube
-  var materialArray = [];
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xpos.png' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xneg.png' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/ypos.png' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/yneg.png' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zpos.png' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: videoTexture }));
-  var MovingCubeMat = new THREE.MeshFaceMaterial(materialArray);
-  var MovingCubeGeom = new THREE.CubeGeometry( 50, 50, 50, 1, 1, 1, materialArray );
-  MovingCube = new THREE.Mesh( MovingCubeGeom, MovingCubeMat );
-  MovingCube.position.set(0, 25.1, 0);
-  scene.add( MovingCube );
+  // var materialArray = [];
+  // materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xpos.png' ) }));
+  // materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xneg.png' ) }));
+  // materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/ypos.png' ) }));
+  // materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/yneg.png' ) }));
+  // materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zpos.png' ) }));
+  // materialArray.push(new THREE.MeshBasicMaterial( { map: videoTexture }));
+  // var MovingCubeMat = new THREE.MeshFaceMaterial(materialArray);
+  // var MovingCubeGeom = new THREE.CubeGeometry( 50, 50, 50, 1, 1, 1, materialArray );
+  // MovingCube = new THREE.Mesh( MovingCubeGeom, MovingCubeMat );
+  // MovingCube.position.set(0, 25.1, 0);
+  // scene.add( MovingCube );
 
-
+  createVideoCube(0, 25.1, 0, videoTexture, scene);
 
 }
 
