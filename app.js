@@ -22,7 +22,8 @@ app.io.route('login', function(req) {
     db.storage.forEach(function(clientObj){
       var req = clientObj.req;
       req.io.emit('newClient', {
-        message: 'Client #'+newClientID+'has logged into the server!'
+        message: 'Client #'+newClientID+'has logged into the server!',
+        clientID: newClientID
       });
     })
     db.storage.push({clientID:newClientID, req:req});
