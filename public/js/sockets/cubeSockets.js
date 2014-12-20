@@ -9,45 +9,29 @@ io.on('successfulLogin', function(data){
     init();
     animate();
 
-})
-
-// Listen for the talk event.
-io.on('talk', function(data) {
-    alert(data.message);
-})
+});
 
 io.on('newClient', function(data){
-  createVideoCube(5, 25.1, 0, videoTexture, scene);
+  createVideoCube(5, 25.1, 0, videoTexture, scene, data.clientID);
 });
 
 io.on('clientUpdatePosition', function(data){
 
-  var mover = scene.getObjectByName("videoCube" + data.clientID);
+  console.log('client update position sent to console');
+  console.log(data);
 
-  mover.position[data.axis] += data.offset;
+  var mover = scene.getObjectByName("videoCube" + data.clientID);
+  console.log(mover)
+  mover.position[data.axis.toLowerCase()] += data.offset;
 
 })
 
-var sendPositionToServer = function(axis, offset){
+var sendPositionToServer = function(axis, offset, ownCube){
   io.emit('clientUpdatePosition', {
-    axis: axis, offset: offset,
+    axis: axis,
+    offset: offset,
     globalPosition:[ownCube.position.x, ownCube.position.z],
     clientID:clientID
   });
 };
 
-io.emit('clientUpdatePosition', {
-  axis:'X', offset:moveDistance,
-  globalPosition:[ownCube.position.x, ownCube.position.z],
-  clientID:clientID
-});
-io.emit('clientUpdatePosition', {
-  axis:'Z', offset:-moveDistance,
-  globalPosition:[ownCube.position.x, ownCube.position.z],
-  clientID:clientID
-});
-io.emit('clientUpdatePosition', {
-  axis:'Z', offset:+moveDistance,
-  globalPosition:[ownCube.position.x, ownCube.position.z],
-  clientID:clientID
-});
