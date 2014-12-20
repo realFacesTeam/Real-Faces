@@ -16,7 +16,7 @@ var clientID;
 // FUNCTIONS
 function init()
 {
-  // SCENE
+  // SCENEinit
   scene = new THREE.Scene();
   // CAMERA
   var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
@@ -24,8 +24,7 @@ function init()
   camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
   scene.add(camera);
   camera.position.set(0,150,400);
-  camera.lookAt(scene.position);
-  // RENDERER
+init  // RENDERER
   if ( Detector.webgl )
     renderer = new THREE.WebGLRenderer( {antialias:true} );
   else
