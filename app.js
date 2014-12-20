@@ -21,8 +21,6 @@ db.globalPositions = {};
 
 
 //object of keys, keys are the clientId, and it's value is the global position
-db.clientPositions = {};
-console.log(db);
 // Setup the ready route, and emit talk event.
 app.io.route('login', function(req) {
     //generate new client ID
@@ -48,7 +46,7 @@ app.io.route('login', function(req) {
 app.io.route('clientUpdatePosition', function(req){
   console.log("req data", req.data);
   //update our globalPosition list
-  db.clientPositions[req.data.clientID] = req.data.globalPosition;
+  db.globalPositions[req.data.clientID] = req.data.globalPosition;
 
   //let other clients know a specific client has moved by some offset amount
   req.io.broadcast('clientUpdatePosition', {

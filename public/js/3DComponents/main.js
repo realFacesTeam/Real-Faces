@@ -137,9 +137,6 @@ function update()
   // if()
   // ownCube = scene.getObjectByName("videoCubeundefined");
   // console.log("updated cube", ownCube)
-  console.log('inside update');
-  console.log('clientIdbelow');
-  console.log(clientID);
   ownCube = scene.getObjectByName("videoCube" + clientID);
   if ( keyboard.pressed("p") ) // pause
     video.pause();
