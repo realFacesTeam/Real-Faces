@@ -1,5 +1,5 @@
 // MAIN
-
+console.log('line 2 mainjs');
 // standard global variables
 var container, scene, camera, renderer, controls, stats;
 var keyboard = new THREEx.KeyboardState();
@@ -7,17 +7,46 @@ var clock = new THREE.Clock();
 // custom global variables
 var video, videoImage, videoImageContext, videoTexture;
 
-var scene;
+var scene = new THREE.Scene();
 
 var movingCube;
 
 var clientID;
 
+var createUserCubeEz = function(x, y, id){
+  video = document.getElementById( 'monitor' );
+
+  videoImage = document.getElementById( 'videoImage' );
+  videoImageContext = videoImage.getContext( '2d' );
+  // background color if no video present
+  videoImageContext.fillStyle = '#000000';
+  videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+
+  videoTexture = new THREE.Texture( videoImage );
+  videoTexture.minFilter = THREE.LinearFilter;
+  videoTexture.magFilter = THREE.LinearFilter;
+
+  var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.DoubleSide } );
+  // the geometry on which the movie will be displayed;
+  //    movie image will be scaled to fit these dimensions.
+  var movieGeometry = new THREE.PlaneGeometry( 100, 100, 1, 1 );
+  var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+  movieScreen.position.set(0,50,0);
+  //scene.add(movieScreen);
+
+  camera.position.set(0,150,300);
+  camera.lookAt(movieScreen.position);
+
+  createVideoCube(0, 25.1, 0, videoTexture, scene, clientID);
+};
+console.log('line 42 mainjs');
+
+
 // FUNCTIONS
 function init()
 {
   // SCENE
-  scene = new THREE.Scene();
+  
   // CAMERA
   var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
   var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
@@ -92,7 +121,7 @@ function init()
   camera.position.set(0,150,300);
   camera.lookAt(movieScreen.position);
 
-  createVideoCube(0, 25.1, 0, videoTexture, scene, clientID);
+  // createVideoCube(0, 25.1, 0, videoTexture, scene, clientID);
 
 }
 

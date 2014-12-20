@@ -37,13 +37,13 @@ var THREEx  = THREEx    || {};
 THREEx.KeyboardState  = function()
 {
   // to store the current state
-  this.keyCodes = {};
+  this.keyCodes   = {};
   this.modifiers  = {};
   
   // create callback to bind/unbind keyboard events
-  var self  = this;
+  var self        = this;
   this._onKeyDown = function(event){ self._onKeyChange(event, true); };
-  this._onKeyUp = function(event){ self._onKeyChange(event, false);};
+  this._onKeyUp   = function(event){ self._onKeyChange(event, false);};
 
   // bind keyEvents
   document.addEventListener("keydown", this._onKeyDown, false);
@@ -63,13 +63,13 @@ THREEx.KeyboardState.prototype.destroy  = function()
 THREEx.KeyboardState.MODIFIERS  = ['shift', 'ctrl', 'alt', 'meta'];
 THREEx.KeyboardState.ALIAS  = {
   'left'    : 37,
-  'up'    : 38,
+  'up'      : 38,
   'right'   : 39,
   'down'    : 40,
   'space'   : 32,
   'pageup'  : 33,
-  'pagedown'  : 34,
-  'tab'   : 9
+  'pagedown': 34,
+  'tab'     : 9
 };
 
 /**
@@ -85,9 +85,9 @@ THREEx.KeyboardState.prototype._onKeyChange = function(event, pressed)
   this.keyCodes[keyCode]  = pressed;
 
   // update this.modifiers
-  this.modifiers['shift']= event.shiftKey;
+  this.modifiers['shift'] = event.shiftKey;
   this.modifiers['ctrl']  = event.ctrlKey;
-  this.modifiers['alt'] = event.altKey;
+  this.modifiers['alt']   = event.altKey;
   this.modifiers['meta']  = event.metaKey;
 }
 
