@@ -30,7 +30,10 @@ io.on('successfulLogin', function(data){
     }
 
   //send keepAlives to server
-  setInterval(io.emit, 5000, keepAlive, {clientID:clientID, time:5000});
+  setInterval(function(){
+    io.emit('keepAlive', {clientID:clientID, time:3000});
+  }, 3000);
+  
 });
 
 io.on('newClient', function(data){

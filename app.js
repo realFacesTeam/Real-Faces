@@ -37,7 +37,7 @@ app.io.route('login', function(req) {
 
     //store new client
       //deprecated?
-    db.clientList[newClientID] = {req:req, keepAliveTimer:10000});
+    db.clientList[newClientID] = {req:req, keepAliveTimer:10000};
     //store default position
     db.clientPositions[newClientID] = [0, 0];
 
@@ -53,22 +53,23 @@ app.io.route('login', function(req) {
 app.io.route('keepAlive', function(req) {
   var clientID = req.data.clientID;
   var time = req.data.time;
-  db.clientList.clientID.keepAliveTimer += time;
+  db.clientList[clientID].keepAliveTimer += time;
 })
 
-//disconnect old clients
-setInterval(clientCleanUp, 10000);
 //every 10 seconds
 var clientCleanUp = function(){
   Object.keys(db.clientList).forEach(function(clientID){
-    db.clientList[clientID].keepAliveTimer = Math.max(clientObj.keepAliveTimer - 10000, 0);
-    if(clientObj.keepAliveTimer === 0){
+    db.clientList[clientID].keepAliveTimer = Math.max(db.clientList[clientID].keepAliveTimer - 10000, 0);
+    if(db.clientList[clientID].keepAliveTimer === 0){
       clientDisconnect(clientID);
     }
   });
 }
+//disconnect old clients
+setInterval(clientCleanUp, 10000);
+
 var clientDisconnect = function(clientID){
-  var req = db.clientList.clientID.req;
+  var req = db.clientList[clientID].req;
   req.io.broadcast('clientDisconnect', {
     clientID: clientID
   })
