@@ -29,6 +29,8 @@ io.on('successfulLogin', function(data){
       }
     }
 
+  //send keepAlives to server
+  setInterval(io.emit, 5000, keepAlive, {clientID:clientID});
 });
 
 io.on('newClient', function(data){
