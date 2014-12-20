@@ -9,8 +9,10 @@ var createVideoCube = function(pos1, pos2, pos3, videoTexture, scene, clientID){
   var MovingCubeMat = new THREE.MeshFaceMaterial(materialArray);
   var MovingCubeGeom = new THREE.CubeGeometry( 50, 50, 50, 1, 1, 1, materialArray );
   MovingCube = new THREE.Mesh( MovingCubeGeom, MovingCubeMat );
-  MovingCube.position.set(0, 25.1, 0);
+  MovingCube.position.set(pos1, pos2, pos3);
   MovingCube.name = 'videoCube' + clientID;
+  console.log(MovingCube);
+  console.log(scene)
   scene.add( MovingCube );
   return MovingCube;
 }

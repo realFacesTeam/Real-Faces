@@ -12,33 +12,36 @@ app.http().io()
 // var users = require('./routes/users');
 
 //Data storage
-var db = {};
+var db   = {};
 db.count = db.count || 0;
-db.clientList = db.clientList || [];
+
+//ex '1':{x:20, z:100},
+//ex '2':{x:55, z:78}
+db.globalPositions = {};
 
 
 //object of keys, keys are the clientId, and it's value is the global position
 db.clientPositions = {};
-
+console.log(db);
 // Setup the ready route, and emit talk event.
 app.io.route('login', function(req) {
     //generate new client ID
 
     var newClientID = ++db.count;
-    //tell all pre-existing clients to render new client
+    db.globalPositions[newClientID] = [0,0];
+    // tell all pre-existing clients to render new client
     req.io.broadcast('newClient', {
-        message: 'Client #'+newClientID+'has logged into the server!',
-        clientID: newClientID
+        clientID:        newClientID,
+        globalPositions: db.globalPositions
     });
 
-    //store new client
-      //deprecated?
-    db.clientList.push({clientID:newClientID, req:req});
+    
 
     //tell new client its clientID, then positions of all other clients
     req.io.emit('successfulLogin', {
-      clientID: newClientID,
-      clientPositions: db.clientPositions
+      clientID:        newClientID,
+      globalPositions: db.globalPositions,
+      userCount:       db.count
     });
 });
 
