@@ -7,7 +7,8 @@ var clock = new THREE.Clock();
 // custom global variables
 var video, videoImage, videoImageContext, videoTexture;
 
-var scene;
+// // SCENE
+// var scene = new THREE.Scene();
 
 var movingCube;
 
@@ -90,7 +91,7 @@ init  // RENDERER
 
   camera.position.set(0,150,300);
   camera.lookAt(movieScreen.position);
-
+  //DOES have access to scene
   createVideoCube(0, 25.1, 0, videoTexture, scene, clientID);
 
 }
@@ -107,7 +108,13 @@ function update()
   // if()
   // ownCube = scene.getObjectByName("videoCubeundefined");
   // console.log("updated cube", ownCube)
+  console.log(clientID);
+
   ownCube = scene.getObjectByName("videoCube" + clientID);
+  if(!ownCube){
+    ownCube = scene.getObjectByName("videoCube" + "undefined");
+    ownCube.name = "videoCube" + clientID; 
+  }
   if ( keyboard.pressed("p") ) // pause
     video.pause();
   if ( keyboard.pressed("r") ) // resume
@@ -123,7 +130,6 @@ function update()
 
   // move forwards/backwards/left/right
   if ( keyboard.pressed("W") ){
-    console.log('button pressed OWNCUBE', ownCube);
     ownCube.translateZ( -moveDistance );
   }
   if ( keyboard.pressed("S") )
@@ -161,7 +167,6 @@ function update()
     sendPositionToServer('x', moveDistance, ownCube);
   }
   if ( keyboard.pressed("up") ){
-    var ownCube = scene.getObjectByName("videoCube" + clientID);
     ownCube.position.z -= moveDistance;
     sendPositionToServer('z', -moveDistance, ownCube);
   }
