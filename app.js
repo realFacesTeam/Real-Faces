@@ -13,7 +13,6 @@ app.http().io()
 
 //Data storage
 var db = {};
-db.count = 0;
 db.clientList = {};
 
 
@@ -22,9 +21,13 @@ db.clientPositions = {};
 
 // Setup the ready route, and emit talk event.
 app.io.route('login', function(req) {
-    //generate new client ID
 
-    var newClientID = ++db.count;
+    //generate new client ID from unused space
+    for(var i = 0; i < 10000; i++){
+      if(!db.clientList[i] && !db.clientPositions[i]){
+        var newClientID = i;
+      }
+    }
     console.log('newClientID', newClientID)
     //tell all pre-existing clients to render new client
     req.io.broadcast('newClient', {
@@ -69,6 +72,8 @@ var clientDisconnect = function(clientID){
   req.io.broadcast('clientDisconnect', {
     clientID: clientID
   })
+  delete db.clientPositions.clientID;
+  delete db.clientList.clientID;
 }
 
 app.io.route('clientUpdatePosition', function(req){
