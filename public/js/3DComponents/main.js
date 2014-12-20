@@ -154,21 +154,21 @@ function update()
   // global coordinates
   if ( keyboard.pressed("left") ){
     ownCube.position.x -= moveDistance;
-    sendPositionToServer('X', -moveDistance);
+    sendPositionToServer('X', -moveDistance, ownCube);
   }
 
   if ( keyboard.pressed("right") ){
     ownCube.position.x += moveDistance;
-    sendPositionToServer('X', moveDistance);
+    sendPositionToServer('X', moveDistance, ownCube);
   }
   if ( keyboard.pressed("up") ){
     var ownCube = scene.getObjectByName("videoCube" + clientID);
     ownCube.position.z -= moveDistance;
-    sendPositionToServer('Y', -moveDistance);
+    sendPositionToServer('Y', -moveDistance, ownCube);
   }
   if ( keyboard.pressed("down") ){
     ownCube.position.z += moveDistance;
-    sendPositionToServer('Y', moveDistance);
+    sendPositionToServer('Y', moveDistance, ownCube);
   }
 
   controls.update();
