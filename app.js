@@ -25,6 +25,7 @@ app.io.route('login', function(req) {
     //generate new client ID
 
     var newClientID = ++db.count;
+    console.log('newClientID', newClientID)
     //tell all pre-existing clients to render new client
     req.io.broadcast('newClient', {
         message: 'Client #'+newClientID+'has logged into the server!',
@@ -34,6 +35,10 @@ app.io.route('login', function(req) {
     //store new client
       //deprecated?
     db.clientList.push({clientID:newClientID, req:req});
+    //store default position
+    db.clientPositions[newClientID] = [0, 0];
+
+    console.log('posiotns',db.clientPositions);
 
     //tell new client its clientID, then positions of all other clients
     req.io.emit('successfulLogin', {
@@ -43,7 +48,7 @@ app.io.route('login', function(req) {
 });
 
 app.io.route('clientUpdatePosition', function(req){
-  console.log("req data", req.data);
+  //console.log("req data", req.data);
   //update our globalPosition list
   db.clientPositions[req.data.clientID] = req.data.globalPosition;
 
