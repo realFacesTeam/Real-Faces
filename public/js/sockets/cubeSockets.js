@@ -30,7 +30,7 @@ io.on('successfulLogin', function(data){
     }
 
   //send keepAlives to server
-  setInterval(io.emit, 5000, keepAlive, {clientID:clientID});
+  setInterval(io.emit, 5000, keepAlive, {clientID:clientID, time:5000});
 });
 
 io.on('newClient', function(data){
@@ -45,6 +45,12 @@ io.on('clientUpdatePosition', function(data){
   var mover = scene.getObjectByName("videoCube" + data.clientID);
   mover.position[data.axis.toLowerCase()] += data.offset;
 
+})
+
+io.on('clientDisconnect', function(data){
+  var clientID = data.clientID;
+  var disconnected = scene.getObjectByName('videoCube' + clientID);
+  scene.remove(disconnected);
 })
 
 var sendPositionToServer = function(axis, offset, ownCube){

@@ -13,8 +13,8 @@ app.http().io()
 
 //Data storage
 var db = {};
-db.count = db.count || 0;
-db.clientList = db.clientList || [];
+db.count = 0;
+db.clientList = {};
 
 
 //object of keys, keys are the clientId, and it's value is the global position
@@ -34,7 +34,7 @@ app.io.route('login', function(req) {
 
     //store new client
       //deprecated?
-    db.clientList.push({clientID:newClientID, req:req});
+    db.clientList[newClientID] = {req:req, keepAliveTimer:10000});
     //store default position
     db.clientPositions[newClientID] = [0, 0];
 
@@ -46,6 +46,30 @@ app.io.route('login', function(req) {
       clientPositions: db.clientPositions
     });
 });
+
+app.io.route('keepAlive', function(req) {
+  var clientID = req.data.clientID;
+  var time = req.data.time;
+  db.clientList.clientID.keepAliveTimer += time;
+})
+
+//disconnect old clients
+setInterval(clientCleanUp, 10000);
+//every 10 seconds
+var clientCleanUp = function(){
+  Object.keys(db.clientList).forEach(function(clientID){
+    db.clientList[clientID].keepAliveTimer = Math.max(clientObj.keepAliveTimer - 10000, 0);
+    if(clientObj.keepAliveTimer === 0){
+      clientDisconnect(clientID);
+    }
+  });
+}
+var clientDisconnect = function(clientID){
+  var req = db.clientList.clientID.req;
+  req.io.broadcast('clientDisconnect', {
+    clientID: clientID
+  })
+}
 
 app.io.route('clientUpdatePosition', function(req){
   //console.log("req data", req.data);
