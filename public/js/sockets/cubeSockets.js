@@ -4,32 +4,37 @@ io = io.connect();
 io.emit('login');
 
 io.on('successfulLogin', function(data){
-    clientID = data.clientID;
-
-    videoTexture = init();
-
-    createVideoCube(0, 25.1, 0, videoTexture, scene, clientID);
-    animate();
-
     console.log("successfulLogin", data);
 
     var clientPositions = data.clientPositions;
-
-    for(var otherClientID in clientPositions){
-      if(clientPositions.hasOwnProperty(otherClientID)){
-        console.log('ids other this', otherClientID, clientID)
-        if(parseInt(otherClientID) !== parseInt(clientID)){
+    console.log(clientPositions);
+    for(var clientID in clientPositions){
+      if(clientPositions.hasOwnProperty(clientID) && clientPositions[clientID]){
+        console.log('current clientID', clientPositions[clientID])
           var coords = clientPositions[clientID];
           var x = coords[0];
           var z = coords[1];
-          console.log("creating other cube", clientID);
+          console.log("creating a cube", clientID);
           var debugCube = true;
-          createVideoCube(x, 25.1, z, videoTexture, scene, otherClientID, debugCube);
-        }
+          createVideoCube(x, 25.1, z, videoTexture, scene, clientID, debugCube);        
       }
     }
 
+    init(data.clientID);
+    animate();
+
+  //send keepAlives to server
+  setInterval(function(){
+    io.emit('keepAlive', {clientID:clientID, time:3000});
+  }, 1000);
+
 });
+
+io.on('clientDisconnect', function(data){
+  var clientID = data.clientID;
+  var disconnected = scene.getObjectByName('videoCube' + clientID);
+  scene.remove(disconnected);
+})
 
 io.on('newClient', function(data){
   createVideoCube(5, 25.1, 0, videoTexture, scene, data.clientID);

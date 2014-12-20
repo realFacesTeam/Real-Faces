@@ -14,11 +14,13 @@ var movingCube;
 
 var clientID;
 
+// SCENEinit
+scene = new THREE.Scene();
+
 // FUNCTIONS
-function init()
-{
-  // SCENEinit
-  scene = new THREE.Scene();
+var init = function(cID)
+{ 
+  clientID = cID;
   // CAMERA
   var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
   var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
@@ -91,12 +93,18 @@ function init()
 
   camera.position.set(0,150,300);
   camera.lookAt(movieScreen.position);
-  //DOES have access to scene
-  return videoTexture;
+  
+  init.getClientID = function(){
+    return init.clientID;
+  }
+
+  init.setClientID = function(cID){
+    init.clientID = cID;
+  }
 
 }
 
-function animate()
+  function animate()
 {
   requestAnimationFrame( animate );
   render();
@@ -109,12 +117,12 @@ function update()
   // ownCube = scene.getObjectByName("videoCubeundefined");
   // console.log("updated cube", ownCube)
   //console.log(clientID);
-
   ownCube = scene.getObjectByName("videoCube" + clientID);
-  if(!ownCube){
-    ownCube = scene.getObjectByName("videoCube" + "undefined");
-    ownCube.name = "videoCube" + clientID;
-  }
+
+  // if(!ownCube){
+  //   ownCube = scene.getObjectByName("videoCube" + "undefined");
+  //   ownCube.name = "videoCube" + clientID;
+  // }
   if ( keyboard.pressed("p") ) // pause
     video.pause();
   if ( keyboard.pressed("r") ) // resume
