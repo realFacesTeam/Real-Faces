@@ -4,11 +4,27 @@ io = io.connect();
 io.emit('login');
 
 io.on('successfulLogin', function(data){
+    init();
+    console.log("successfulLogin");
+
     clientID = data.clientID;
 
-    init();
-    animate();
+    var clientPositions = data.clientPositions;
 
+    for(var otherClientID in clientPositions){
+      if(clientPositions.hasOwnProperty(otherClientID)){
+        if(parseInt(otherClientID) !== parseInt(clientID)){
+          var coords = clientPositions[clientID];
+          var x = coords[0];
+          var z = coords[1];
+          console.log("creating other cube")
+          var debugCube = true;
+          createVideoCube(x, 25.1, z, videoTexture, scene, clientID, debugCube);
+        }
+      }
+    }
+
+    animate();
 });
 
 io.on('newClient', function(data){
@@ -21,7 +37,6 @@ io.on('clientUpdatePosition', function(data){
   console.log(data);
 
   var mover = scene.getObjectByName("videoCube" + data.clientID);
-  console.log(mover)
   mover.position[data.axis.toLowerCase()] += data.offset;
 
 })

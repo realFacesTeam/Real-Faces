@@ -34,6 +34,8 @@ app.io.route('login', function(req) {
     //store new client
       //deprecated?
     db.clientList.push({clientID:newClientID, req:req});
+    //store default position
+    db.clientPositions[newClientID] = [0, 0];
 
     //tell new client its clientID, then positions of all other clients
     req.io.emit('successfulLogin', {
