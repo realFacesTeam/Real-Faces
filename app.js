@@ -43,14 +43,15 @@ app.io.route('login', function(req) {
 });
 
 app.io.route('clientUpdatePosition', function(req){
+  console.log("req data", req.data);
   //update our globalPosition list
-  db.clientPositions[req.data.clientId] = req.data.globalPosition;
+  db.clientPositions[req.data.clientID] = req.data.globalPosition;
 
   //let other clients know a specific client has moved by some offset amount
   req.io.broadcast('clientUpdatePosition', {
     axis:       req.data.axis,
     offset:     req.data.offset,
-    clientId:   req.data.clientID
+    clientID:   req.data.clientID
   })
 
 })
