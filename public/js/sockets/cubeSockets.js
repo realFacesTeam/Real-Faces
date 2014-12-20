@@ -12,17 +12,13 @@ io.on('successfulLogin', function(data){
     //youre the first into the room- only create for yourself
     if(data.userCount === 1){
       createVideoCube(5, 25.1, 0, videoTexture, scene, clientID);
-      console.log('just 1')
-        
+      
     }
     else{
       //you're not the first into the room. create everybody along with yourself
       for(var i = 1; (i < data.userCount + 1); i++){
         userX = otherPositions[i][0];
         userZ = otherPositions[i][1];
-        console.log(otherPositions)
-        console.log(userX)
-        console.log(userZ);
         createVideoCube(userX, 25.1, userZ, videoTexture, scene, i);
       }
     }
@@ -39,8 +35,6 @@ io.on('newClient', function(data){
   //get client data id,
   //create cube for him
   //add him to list of current cubes pos?
-  console.log('new client');
-  console.log(data);
   createVideoCube(0, 25.1, 0, videoTexture, scene, data.clientID);
 });
 
