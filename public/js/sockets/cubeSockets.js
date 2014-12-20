@@ -4,27 +4,31 @@ io = io.connect();
 io.emit('login');
 
 io.on('successfulLogin', function(data){
-    init();
-    console.log("successfulLogin");
-
     clientID = data.clientID;
+
+    videoTexture = init();
+
+    createVideoCube(0, 25.1, 0, videoTexture, scene, clientID);
+    animate();
+
+    console.log("successfulLogin", data);
 
     var clientPositions = data.clientPositions;
 
     for(var otherClientID in clientPositions){
       if(clientPositions.hasOwnProperty(otherClientID)){
+        console.log('ids other this', otherClientID, clientID)
         if(parseInt(otherClientID) !== parseInt(clientID)){
           var coords = clientPositions[clientID];
           var x = coords[0];
           var z = coords[1];
-          console.log("creating other cube")
+          console.log("creating other cube", clientID);
           var debugCube = true;
-          createVideoCube(x, 25.1, z, videoTexture, scene, clientID, debugCube);
+          createVideoCube(x, 25.1, z, videoTexture, scene, otherClientID, debugCube);
         }
       }
     }
 
-    animate();
 });
 
 io.on('newClient', function(data){
@@ -33,8 +37,8 @@ io.on('newClient', function(data){
 
 io.on('clientUpdatePosition', function(data){
 
-  console.log('client update position sent to console');
-  console.log(data);
+  // console.log('client update position sent to console');
+  // console.log(data);
 
   var mover = scene.getObjectByName("videoCube" + data.clientID);
   mover.position[data.axis.toLowerCase()] += data.offset;
@@ -42,6 +46,9 @@ io.on('clientUpdatePosition', function(data){
 })
 
 var sendPositionToServer = function(axis, offset, ownCube){
+  // console.log('socket cube position x',ownCube.position.x);
+  // console.log('offset', offset);
+  //
   io.emit('clientUpdatePosition', {
     axis: axis,
     offset: offset,

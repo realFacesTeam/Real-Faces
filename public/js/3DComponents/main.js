@@ -25,7 +25,7 @@ function init()
   camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
   scene.add(camera);
   camera.position.set(0,150,400);
-init  // RENDERER
+  // RENDERER
   if ( Detector.webgl )
     renderer = new THREE.WebGLRenderer( {antialias:true} );
   else
@@ -92,7 +92,7 @@ init  // RENDERER
   camera.position.set(0,150,300);
   camera.lookAt(movieScreen.position);
   //DOES have access to scene
-  createVideoCube(0, 25.1, 0, videoTexture, scene, clientID);
+  return videoTexture;
 
 }
 
@@ -108,12 +108,12 @@ function update()
   // if()
   // ownCube = scene.getObjectByName("videoCubeundefined");
   // console.log("updated cube", ownCube)
-  console.log(clientID);
+  //console.log(clientID);
 
   ownCube = scene.getObjectByName("videoCube" + clientID);
   if(!ownCube){
     ownCube = scene.getObjectByName("videoCube" + "undefined");
-    ownCube.name = "videoCube" + clientID; 
+    ownCube.name = "videoCube" + clientID;
   }
   if ( keyboard.pressed("p") ) // pause
     video.pause();

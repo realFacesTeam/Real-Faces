@@ -7,7 +7,7 @@ var createVideoCube = function(pos1, pos2, pos3, videoTexture, scene, clientID, 
   materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/yneg.png' ) }));
   materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zpos.png' ) }));
   if(debugCube){
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zneg.png' ) }));    
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zneg.png' ) }));
   }else{
     materialArray.push(new THREE.MeshBasicMaterial( { map: videoTexture }));
   }
@@ -17,4 +17,5 @@ var createVideoCube = function(pos1, pos2, pos3, videoTexture, scene, clientID, 
   MovingCube.position.set(pos1, pos2, pos3);
   MovingCube.name = 'videoCube' + clientID;
   scene.add( MovingCube );
+  console.log('created a videoCube with name:', MovingCube.name);
 }
