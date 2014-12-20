@@ -19,7 +19,7 @@ io.on('successfulLogin', function(data){
       if(clientPositions.hasOwnProperty(otherClientID)){
         console.log('ids other this', otherClientID, clientID)
         if(parseInt(otherClientID) !== parseInt(clientID)){
-          var coords = clientPositions[clientID];
+          var coords = clientPositions[otherClientID];
           var x = coords[0];
           var z = coords[1];
           console.log("creating other cube", clientID);

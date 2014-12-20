@@ -14,7 +14,7 @@ app.http().io()
 //Data storage
 var db = {};
 db.clientList = {};
-
+var count = 0;
 
 //object of keys, keys are the clientId, and it's value is the global position
 db.clientPositions = {};
@@ -22,12 +22,14 @@ db.clientPositions = {};
 // Setup the ready route, and emit talk event.
 app.io.route('login', function(req) {
 
-    //generate new client ID from unused space
-    for(var i = 0; i < 10000; i++){
-      if(!db.clientList[i] && !db.clientPositions[i]){
-        var newClientID = i;
-      }
-    }
+    // //generate new client ID from unused space
+    // for(var i = 0; i < 10000; i++){
+    //   if(!db.clientList[i] && !db.clientPositions[i]){
+    //     var newClientID = i;
+    //   }
+    // }
+    var newClientID = ++count;
+
     console.log('newClientID', newClientID)
     //tell all pre-existing clients to render new client
     req.io.broadcast('newClient', {
