@@ -15,12 +15,12 @@ app.http().io()
 var db   = {};
 db.count = db.count || 0;
 
-//ex '1':{x:20, z:100},
-//ex '2':{x:55, z:78}
+//ex '1':[x:20, z:100],
+//ex '2':[x:55, z:78]
 db.globalPositions = {};
 
 
-//object of keys, keys are the clientId, and it's value is the global position
+// object of keys, keys are the clientId, and it's value is the global position
 // Setup the ready route, and emit talk event.
 app.io.route('login', function(req) {
     //generate new client ID
@@ -32,9 +32,9 @@ app.io.route('login', function(req) {
         clientID:        newClientID,
         globalPositions: db.globalPositions
     });
-
     
-
+    
+    
     //tell new client its clientID, then positions of all other clients
     req.io.emit('successfulLogin', {
       clientID:        newClientID,
