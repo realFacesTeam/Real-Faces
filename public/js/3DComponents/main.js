@@ -7,24 +7,26 @@ var clock = new THREE.Clock();
 // custom global variables
 var video, videoImage, videoImageContext, videoTexture;
 
-var scene;
+// // SCENE
+// var scene = new THREE.Scene();
 
 var movingCube;
 
 var clientID;
 
+// SCENEinit
+scene = new THREE.Scene();
+
 // FUNCTIONS
-function init()
-{
-  // SCENE
-  scene = new THREE.Scene();
+var init = function(cID)
+{ 
+  clientID = cID;
   // CAMERA
   var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
   var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
   camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
   scene.add(camera);
   camera.position.set(0,150,400);
-  camera.lookAt(scene.position);
   // RENDERER
   if ( Detector.webgl )
     renderer = new THREE.WebGLRenderer( {antialias:true} );
@@ -91,12 +93,18 @@ function init()
 
   camera.position.set(0,150,300);
   camera.lookAt(movieScreen.position);
+  
+  init.getClientID = function(){
+    return init.clientID;
+  }
 
-  createVideoCube(0, 25.1, 0, videoTexture, scene, clientID);
+  init.setClientID = function(cID){
+    init.clientID = cID;
+  }
 
 }
 
-function animate()
+  function animate()
 {
   requestAnimationFrame( animate );
   render();
@@ -108,7 +116,13 @@ function update()
   // if()
   // ownCube = scene.getObjectByName("videoCubeundefined");
   // console.log("updated cube", ownCube)
+  //console.log(clientID);
   ownCube = scene.getObjectByName("videoCube" + clientID);
+
+  // if(!ownCube){
+  //   ownCube = scene.getObjectByName("videoCube" + "undefined");
+  //   ownCube.name = "videoCube" + clientID;
+  // }
   if ( keyboard.pressed("p") ) // pause
     video.pause();
   if ( keyboard.pressed("r") ) // resume
@@ -124,7 +138,6 @@ function update()
 
   // move forwards/backwards/left/right
   if ( keyboard.pressed("W") ){
-    console.log('button pressed OWNCUBE', ownCube);
     ownCube.translateZ( -moveDistance );
   }
   if ( keyboard.pressed("S") )
@@ -162,7 +175,6 @@ function update()
     sendPositionToServer('x', moveDistance, ownCube);
   }
   if ( keyboard.pressed("up") ){
-    var ownCube = scene.getObjectByName("videoCube" + clientID);
     ownCube.position.z -= moveDistance;
     sendPositionToServer('z', -moveDistance, ownCube);
   }
