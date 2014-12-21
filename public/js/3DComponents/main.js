@@ -152,9 +152,9 @@ function update()
   if ( keyboard.pressed("A") ){
     ownCube.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
     sendPositionToServer({
-      type: 'absoluteTranslate',
-      axis: 'x',
-      offset: -moveDistance, 
+      type: 'rotate',
+      axes: (0,1,0),
+      angle: rotateAngle, 
       globalPosition: [ownCube.position.x, ownCube.position.z],
       clientID: clientID
     });
@@ -165,11 +165,6 @@ function update()
     ownCube.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
   if ( keyboard.pressed("F") )
     ownCube.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
-  if ( keyboard.pressed("Z") )
-  {
-    ownCube.position.set(0,25.1,0);
-    ownCube.rotation.set(0,0,0);
-  }
 
   // global coordinates
   if ( keyboard.pressed("left") ){
@@ -178,7 +173,14 @@ function update()
       type: 'absoluteTranslate',
       axis: 'x',
       offset: -moveDistance, 
-      globalPosition: [ownCube.position.x, ownCube.position.z],
+      globalPosition: {
+        xPosition: ownCube.position.x,
+        yPosition: ownCube.position.y,
+        zPosition: ownCube.position.z,
+        xRotation: ownCube.rotation.x,
+        yRotation: ownCube.rotation.y,
+        zRotation: ownCube.rotation.z  
+        },
       clientID: clientID
     });
   }
@@ -189,7 +191,14 @@ function update()
       type: 'absoluteTranslate',
       axis: 'x',
       offset: moveDistance, 
-      globalPosition: [ownCube.position.x, ownCube.position.z],
+      globalPosition: {
+        xPosition: ownCube.position.x,
+        yPosition: ownCube.position.y,
+        zPosition: ownCube.position.z,
+        xRotation: ownCube.rotation.x,
+        yRotation: ownCube.rotation.y,
+        zRotation: ownCube.rotation.z  
+        },
       clientID: clientID
     });
   }
@@ -199,7 +208,14 @@ function update()
       type: 'absoluteTranslate',
       axis: 'z',
       offset: -moveDistance, 
-      globalPosition: [ownCube.position.x, ownCube.position.z],
+      globalPosition: {
+        xPosition: ownCube.position.x,
+        yPosition: ownCube.position.y,
+        zPosition: ownCube.position.z,
+        xRotation: ownCube.rotation.x,
+        yRotation: ownCube.rotation.y,
+        zRotation: ownCube.rotation.z  
+        },
       clientID: clientID
     });
   }
@@ -209,7 +225,14 @@ function update()
       type: 'absoluteTranslate',
       axis: 'z',
       offset: moveDistance, 
-      globalPosition: [ownCube.position.x, ownCube.position.z],
+      globalPosition: {
+        xPosition: ownCube.position.x,
+        yPosition: ownCube.position.y,
+        zPosition: ownCube.position.z,
+        xRotation: ownCube.rotation.x,
+        yRotation: ownCube.rotation.y,
+        zRotation: ownCube.rotation.z  
+        },
       clientID: clientID
     });
   }

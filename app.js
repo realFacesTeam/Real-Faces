@@ -26,19 +26,28 @@ app.io.route('login', function(req) {
 
     var newClientID = ++db.count;
     console.log('newClientID', newClientID)
-    //tell all pre-existing clients to render new client
-    req.io.broadcast('newClient', {
-        message: 'Client #'+newClientID+'has logged into the server!',
-        clientID: newClientID
-    });
-
+    
     //store new client
       //deprecated?
     db.clientList[newClientID] = {req:req, keepAliveTimer:10000};
     //store default position
-    db.clientPositions[newClientID] = [0, 0];
+    db.clientPositions[newClientID] = {
+      xPosition: 0,
+      yPosition: 25.1,
+      zPosition: 0,
+      xRotation: 0,
+      yRotation: 0,
+      zRotation: 0
+    };
 
-    console.log('posiotns',db.clientPositions);
+    //tell all pre-existing clients to render new client
+    req.io.broadcast('newClient', {
+        message: 'Client #'+newClientID+'has logged into the server!',
+        clientID: newClientID,
+        globalPosition: db.clientPositions[newClientID]
+    });
+
+    console.log('positions',db.clientPositions);
 
     //tell new client its clientID, then positions of all other clients
     req.io.emit('successfulLogin', {
