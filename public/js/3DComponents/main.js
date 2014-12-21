@@ -149,8 +149,16 @@ function update()
 
   // rotate left/right/up/down
   var rotation_matrix = new THREE.Matrix4().identity();
-  if ( keyboard.pressed("A") )
+  if ( keyboard.pressed("A") ){
     ownCube.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+    sendPositionToServer({
+      type: 'absoluteTranslate',
+      axis: 'x',
+      offset: -moveDistance, 
+      globalPosition: [ownCube.position.x, ownCube.position.z],
+      clientID: clientID
+    });
+  }
   if ( keyboard.pressed("D") )
     ownCube.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
   if ( keyboard.pressed("R") )

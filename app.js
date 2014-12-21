@@ -87,7 +87,7 @@ app.io.route('clientUpdatePosition', function(req){
   req.io.broadcast('clientUpdatePosition', {
     type:     req.data.type,
     clientID: req.data.clientID,
-    axis:     req.data.clientID,
+    axis:     req.data.axis,
     offset:   req.data.offset
   });
 })
