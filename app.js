@@ -93,12 +93,7 @@ app.io.route('clientUpdatePosition', function(req){
   db.clientPositions[req.data.clientID] = req.data.globalPosition;
 
   //let other clients know a specific client has moved by some offset amount
-  req.io.broadcast('clientUpdatePosition', {
-    type:     req.data.type,
-    clientID: req.data.clientID,
-    axis:     req.data.axis,
-    offset:   req.data.offset
-  });
+  req.io.broadcast('clientUpdatePosition', req.data);
 })
 
 // Send the client html.

@@ -40,10 +40,10 @@ io.on('newClient', function(data){
 
 io.on('clientUpdatePosition', function(data){
   var mover = scene.getObjectByName("videoCube" + data.clientID);
-
   if(data.type === "absoluteTranslate"){
     mover.position[data.axis] += data.offset;
-
+  }else if(data.type === "rotate"){
+    mover.rotateOnAxis( new THREE.Vector3(data.axes[0],data.axes[1],data.axes[2]), data.angle);
   }else if(data.type === "relativeTranslate"){
     if(data.axis === 'z'){
       mover.translateZ( data.offset );
