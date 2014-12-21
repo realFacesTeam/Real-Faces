@@ -37,6 +37,7 @@ io.on('clientDisconnect', function(data){
 })
 
 io.on('newClient', function(data){
+  var debugCube = true;
   createVideoCube(5, 25.1, 0, videoTexture, scene, data.clientID, debugCube);
 });
 
