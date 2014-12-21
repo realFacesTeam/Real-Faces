@@ -42,24 +42,13 @@ io.on('newClient', function(data){
 });
 
 io.on('clientUpdatePosition', function(data){
-
-  // console.log('client update position sent to console');
-  // console.log(data);
-
-  var mover = scene.getObjectByName("videoCube" + data.clientID);
-  mover.position[data.axis.toLowerCase()] += data.offset;
-
+  if(data.type === "absoluteTranslate"){
+    var mover = scene.getObjectByName("videoCube" + data.clientID);
+    mover.position[data.axis] += data.offset;
+  }
 })
 
-var sendPositionToServer = function(axis, offset, ownCube){
-  // console.log('socket cube position x',ownCube.position.x);
-  // console.log('offset', offset);
-  //
-  io.emit('clientUpdatePosition', {
-    axis: axis,
-    offset: offset,
-    globalPosition:[ownCube.position.x, ownCube.position.z],
-    clientID:clientID
-  });
+var sendPositionToServer = function(options){
+  io.emit('clientUpdatePosition', options);
 };
 
