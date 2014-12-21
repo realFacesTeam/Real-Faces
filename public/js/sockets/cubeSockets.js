@@ -13,7 +13,7 @@ io.on('successfulLogin', function(data){
         console.log('current clientID', clientPositions[clientID])
           console.log("creating a cube", clientID);
           var debugCube = true;
-          createVideoCube(data.clientPositions[clientID], videoTexture, scene, clientID, debugCube);        
+          createVideoCube(data.clientPositions[clientID], videoTexture, scene, clientID, debugCube);
       }
     }
 
@@ -39,9 +39,18 @@ io.on('newClient', function(data){
 });
 
 io.on('clientUpdatePosition', function(data){
+  var mover = scene.getObjectByName("videoCube" + data.clientID);
+
   if(data.type === "absoluteTranslate"){
-    var mover = scene.getObjectByName("videoCube" + data.clientID);
     mover.position[data.axis] += data.offset;
+
+  }else if(data.type === "relativeTranslate"){
+    if(data.axis === 'z'){
+      mover.translateZ( data.offset );
+
+    } else if (data.axis === 'x'){
+      mover.translateX( data.offset);
+    }
   }
 })
 
