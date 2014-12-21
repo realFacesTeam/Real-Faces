@@ -153,18 +153,70 @@ function update()
     ownCube.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
     sendPositionToServer({
       type: 'rotate',
-      axes: (0,1,0),
+      axes: [0,1,0],
       angle: rotateAngle, 
-      globalPosition: [ownCube.position.x, ownCube.position.z],
+      globalPosition: {
+        xPosition: ownCube.position.x,
+        yPosition: ownCube.position.y,
+        zPosition: ownCube.position.z,
+        xRotation: ownCube.rotation.x,
+        yRotation: ownCube.rotation.y,
+        zRotation: ownCube.rotation.z
+      },
       clientID: clientID
     });
   }
-  if ( keyboard.pressed("D") )
+  if ( keyboard.pressed("D") ){
     ownCube.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-  if ( keyboard.pressed("R") )
+    sendPositionToServer({
+      type: 'rotate',
+      axes: [0,1,0],
+      angle: -rotateAngle, 
+      globalPosition: {
+        xPosition: ownCube.position.x,
+        yPosition: ownCube.position.y,
+        zPosition: ownCube.position.z,
+        xRotation: ownCube.rotation.x,
+        yRotation: ownCube.rotation.y,
+        zRotation: ownCube.rotation.z
+      },
+      clientID: clientID
+    });
+  }
+  if ( keyboard.pressed("R") ){
     ownCube.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
-  if ( keyboard.pressed("F") )
+    sendPositionToServer({
+      type: 'rotate',
+      axes: [1,0,0],
+      angle: rotateAngle, 
+      globalPosition: {
+        xPosition: ownCube.position.x,
+        yPosition: ownCube.position.y,
+        zPosition: ownCube.position.z,
+        xRotation: ownCube.rotation.x,
+        yRotation: ownCube.rotation.y,
+        zRotation: ownCube.rotation.z
+      },
+      clientID: clientID
+    });
+  }
+  if ( keyboard.pressed("F") ){
     ownCube.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
+    sendPositionToServer({
+      type: 'rotate',
+      axes: [1,0,0],
+      angle: -rotateAngle, 
+      globalPosition: {
+        xPosition: ownCube.position.x,
+        yPosition: ownCube.position.y,
+        zPosition: ownCube.position.z,
+        xRotation: ownCube.rotation.x,
+        yRotation: ownCube.rotation.y,
+        zRotation: ownCube.rotation.z
+      },
+      clientID: clientID
+    });
+  }
 
   // global coordinates
   if ( keyboard.pressed("left") ){
