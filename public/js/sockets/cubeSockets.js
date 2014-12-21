@@ -15,7 +15,7 @@ io.on('successfulLogin', function(data){
           var x = coords[0];
           var z = coords[1];
           console.log("creating a cube", clientID);
-          var debugCube = !(data.clientID === clientID);
+          var debugCube = true;
           createVideoCube(x, 25.1, z, videoTexture, scene, clientID, debugCube);        
       }
     }
@@ -37,6 +37,7 @@ io.on('clientDisconnect', function(data){
 })
 
 io.on('newClient', function(data){
+  var debugCube = true;
   createVideoCube(5, 25.1, 0, videoTexture, scene, data.clientID, debugCube);
 });
 
