@@ -149,15 +149,22 @@ function update()
 
   // rotate left/right/up/down
   var rotation_matrix = new THREE.Matrix4().identity();
-  if ( keyboard.pressed("A") )
+  if ( keyboard.pressed("A") ){
     ownCube.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+    sendPositionToServer({
+      type: 'absoluteTranslate',
+      axis: 'x',
+      offset: -moveDistance, 
+      globalPosition: [ownCube.position.x, ownCube.position.z],
+      clientID: clientID
+    });
+  }
   if ( keyboard.pressed("D") )
     ownCube.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
   if ( keyboard.pressed("R") )
     ownCube.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
   if ( keyboard.pressed("F") )
     ownCube.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
-
   if ( keyboard.pressed("Z") )
   {
     ownCube.position.set(0,25.1,0);
@@ -167,20 +174,44 @@ function update()
   // global coordinates
   if ( keyboard.pressed("left") ){
     ownCube.position.x -= moveDistance;
-    sendPositionToServer('x', -moveDistance, ownCube);
+    sendPositionToServer({
+      type: 'absoluteTranslate',
+      axis: 'x',
+      offset: -moveDistance, 
+      globalPosition: [ownCube.position.x, ownCube.position.z],
+      clientID: clientID
+    });
   }
 
   if ( keyboard.pressed("right") ){
     ownCube.position.x += moveDistance;
-    sendPositionToServer('x', moveDistance, ownCube);
+    sendPositionToServer({
+      type: 'absoluteTranslate',
+      axis: 'x',
+      offset: moveDistance, 
+      globalPosition: [ownCube.position.x, ownCube.position.z],
+      clientID: clientID
+    });
   }
   if ( keyboard.pressed("up") ){
     ownCube.position.z -= moveDistance;
-    sendPositionToServer('z', -moveDistance, ownCube);
+    sendPositionToServer({
+      type: 'absoluteTranslate',
+      axis: 'z',
+      offset: -moveDistance, 
+      globalPosition: [ownCube.position.x, ownCube.position.z],
+      clientID: clientID
+    });
   }
   if ( keyboard.pressed("down") ){
     ownCube.position.z += moveDistance;
-    sendPositionToServer('z', moveDistance, ownCube);
+    sendPositionToServer({
+      type: 'absoluteTranslate',
+      axis: 'z',
+      offset: moveDistance, 
+      globalPosition: [ownCube.position.x, ownCube.position.z],
+      clientID: clientID
+    });
   }
 
   controls.update();
