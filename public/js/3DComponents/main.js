@@ -14,6 +14,8 @@ var movingCube;
 
 var clientID;
 
+var collidableMeshList = [];
+
 // SCENEinit
 scene = new THREE.Scene();
 
@@ -60,6 +62,35 @@ var init = function(cID)
   floor.position.y = -0.5;
   floor.rotation.x = Math.PI / 2;
   scene.add(floor);
+  // WALL
+  var wallGeometry;
+  var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
+  var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe:true } );
+    //west wall
+    wallGeometry = new THREE.CubeGeometry( 10, 100, 1000, 1, 1, 1 );
+    var wallWest = new THREE.Mesh(wallGeometry, wireMaterial);
+    wallWest.position.set(-500, 50, 0);
+    scene.add(wallWest);
+    collidableMeshList.push(wallWest);
+    //east wall
+    wallGeometry = new THREE.CubeGeometry(10, 100, 1000, 1, 1, 1 );
+    var wallEast = new THREE.Mesh(wallGeometry, wireMaterial);
+    wallEast.position.set(500, 50, 0);
+    scene.add(wallEast);
+    collidableMeshList.push(wallEast);    
+    //north wall
+    wallGeometry = new THREE.CubeGeometry(1000, 100, 10, 1, 1, 1 );
+    var wallNorth = new THREE.Mesh(wallGeometry, wireMaterial);
+    wallNorth.position.set(0, 50, -500);
+    scene.add(wallNorth);
+    collidableMeshList.push(wallNorth);    
+    //south wall
+    var wallSouth = new THREE.Mesh(wallGeometry, wireMaterial);
+    wallGeometry = new THREE.CubeGeometry(1000, 100, 10, 1, 1, 1 );
+    wallSouth.position.set(0, 50, 500);
+    scene.add(wallSouth);
+    collidableMeshList.push(wallSouth);
+
   // SKYBOX/FOG
   var skyBoxGeometry = new THREE.CubeGeometry( 10000, 10000, 10000 );
   var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide } );
@@ -111,18 +142,45 @@ var init = function(cID)
   update();
 }
 
+function detectCollision(ownCube, moveDirection, globalDirection) 
+{
+  //collision distance
+  var distance = 30;
+  //detect local coordinate system vector
+  var matrix = new THREE.Matrix4();
+  matrix.extractRotation( ownCube.matrix );
+  //generate local vector from direction cube is sliding
+  //get a vector3 of where cube is facing globally
+  if(moveDirection === 0){
+    var direction = new THREE.Vector3( 0, 0, -1 );
+  }else if(moveDirection === 2){
+    var direction = new THREE.Vector3( -1, 0, 0 );
+  }else if(moveDirection === 4){
+    var direction = new THREE.Vector3( 0, 0, 1 );
+  }else if(moveDirection === 6){
+    var direction = new THREE.Vector3( 1, 0, 0 );
+  }
+  //if we need local to global conversion, convert
+  if(!globalDirection){
+    direction = direction.applyProjection(matrix);
+  }
+  //create raycaster and link it in cube's direction
+  var caster = new THREE.Raycaster(), collisions;
+  caster.set(ownCube.position, direction);
+  //get objects cube can run into
+  collisions = caster.intersectObjects(collidableMeshList);
+  //if possible collision is within distance, return true
+  if (collisions.length > 0 && collisions[0].distance <= distance) {
+    return true;
+  }else{
+    return false;
+  }
+}
+
 function update()
 {
-  // if()
-  // ownCube = scene.getObjectByName("videoCubeundefined");
-  // console.log("updated cube", ownCube)
-  //console.log(clientID);
   ownCube = scene.getObjectByName("videoCube" + clientID);
 
-  // if(!ownCube){
-  //   ownCube = scene.getObjectByName("videoCube" + "undefined");
-  //   ownCube.name = "videoCube" + clientID;
-  // }
   if ( keyboard.pressed("p") ) // pause
     video.pause();
   if ( keyboard.pressed("r") ) // resume
@@ -137,7 +195,7 @@ function update()
   // local transformations
 
   // move forwards/backwards/left/right
-  if ( keyboard.pressed("W") ){
+  if ( keyboard.pressed("W") && !detectCollision(ownCube, 0)){
     ownCube.translateZ( -moveDistance );
     sendPositionToServer({
       type: 'relativeTranslate',
@@ -154,7 +212,7 @@ function update()
       clientID: clientID
     });
   }
-  if ( keyboard.pressed("S") ){
+  if ( keyboard.pressed("S") && !detectCollision(ownCube, 4)){
     ownCube.translateZ(  moveDistance );
     sendPositionToServer({
       type: 'relativeTranslate',
@@ -171,7 +229,7 @@ function update()
       clientID: clientID
     });
   }
-  if ( keyboard.pressed("Q") ){
+  if ( keyboard.pressed("Q") && !detectCollision(ownCube, 2)){
     ownCube.translateX( -moveDistance );
     sendPositionToServer({
       type: 'relativeTranslate',
@@ -188,7 +246,7 @@ function update()
       clientID: clientID
     });
   }
-  if ( keyboard.pressed("E") ){
+  if ( keyboard.pressed("E") && !detectCollision(ownCube, 6)){
     ownCube.translateX(  moveDistance );
     sendPositionToServer({
       type: 'relativeTranslate',
@@ -279,7 +337,7 @@ function update()
   }
 
   // global coordinates
-  if ( keyboard.pressed("left") ){
+  if ( keyboard.pressed("left") && !detectCollision(ownCube, 2, true)){
     ownCube.position.x -= moveDistance;
     sendPositionToServer({
       type: 'absoluteTranslate',
@@ -297,7 +355,7 @@ function update()
     });
   }
 
-  if ( keyboard.pressed("right") ){
+  if ( keyboard.pressed("right") && !detectCollision(ownCube, 6, true)){
     ownCube.position.x += moveDistance;
     sendPositionToServer({
       type: 'absoluteTranslate',
@@ -314,7 +372,7 @@ function update()
       clientID: clientID
     });
   }
-  if ( keyboard.pressed("up") ){
+  if ( keyboard.pressed("up") && !detectCollision(ownCube, 0, true)){
     ownCube.position.z -= moveDistance;
     sendPositionToServer({
       type: 'absoluteTranslate',
@@ -331,7 +389,7 @@ function update()
       clientID: clientID
     });
   }
-  if ( keyboard.pressed("down") ){
+  if ( keyboard.pressed("down") && !detectCollision(ownCube, 4, true)){
     ownCube.position.z += moveDistance;
     sendPositionToServer({
       type: 'absoluteTranslate',
