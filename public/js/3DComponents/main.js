@@ -171,8 +171,6 @@ function detectCollision(ownCube, moveDirection, globalDirection)
   collisions = caster.intersectObjects(collidableMeshList);
   //if possible collision is within distance, return true
   if (collisions.length > 0 && collisions[0].distance <= distance) {
-    console.log("collision detected!")
-    console.log(collisions);
     return true;
   }else{
     return false;

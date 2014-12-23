@@ -17,6 +17,7 @@ var createVideoCube = function(globalPosition, videoTexture, scene, clientID, de
   MovingCube.position.set(globalPosition.xPosition, globalPosition.yPosition, globalPosition.zPosition);
   MovingCube.rotation.set(globalPosition.xRotation, globalPosition.yRotation, globalPosition.zRotation)
   MovingCube.name = 'videoCube' + clientID;
+  collidableMeshList.push( MovingCube );
   scene.add( MovingCube );
   console.log('created a videoCube with name:', MovingCube.name);
 }
