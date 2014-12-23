@@ -142,7 +142,7 @@ var init = function(cID)
   update();
 }
 
-function detectCollision(ownCube, moveDirection) 
+function detectCollision(ownCube, moveDirection, globalDirection) 
 {
   //collision distance
   var distance = 30;
@@ -150,6 +150,7 @@ function detectCollision(ownCube, moveDirection)
   var matrix = new THREE.Matrix4();
   matrix.extractRotation( ownCube.matrix );
   //generate local vector from direction cube is sliding
+  //get a vector3 of where cube is facing globally
   if(moveDirection === 0){
     var direction = new THREE.Vector3( 0, 0, -1 );
   }else if(moveDirection === 2){
@@ -159,8 +160,10 @@ function detectCollision(ownCube, moveDirection)
   }else if(moveDirection === 6){
     var direction = new THREE.Vector3( 1, 0, 0 );
   }
-  //get a vector3 of where cube is facing globally
-  direction = direction.applyProjection(matrix);
+  //if we need local to global conversion, convert
+  if(!globalDirection){
+    direction = direction.applyProjection(matrix);
+  }
   //create raycaster and link it in cube's direction
   var caster = new THREE.Raycaster(), collisions;
   caster.set(ownCube.position, direction);
@@ -336,7 +339,7 @@ function update()
   }
 
   // global coordinates
-  if ( keyboard.pressed("left") ){
+  if ( keyboard.pressed("left") && !detectCollision(ownCube, 2, true)){
     ownCube.position.x -= moveDistance;
     sendPositionToServer({
       type: 'absoluteTranslate',
@@ -354,7 +357,7 @@ function update()
     });
   }
 
-  if ( keyboard.pressed("right") ){
+  if ( keyboard.pressed("right") && !detectCollision(ownCube, 6, true)){
     ownCube.position.x += moveDistance;
     sendPositionToServer({
       type: 'absoluteTranslate',
@@ -371,7 +374,7 @@ function update()
       clientID: clientID
     });
   }
-  if ( keyboard.pressed("up") ){
+  if ( keyboard.pressed("up") && !detectCollision(ownCube, 0, true)){
     ownCube.position.z -= moveDistance;
     sendPositionToServer({
       type: 'absoluteTranslate',
@@ -388,7 +391,7 @@ function update()
       clientID: clientID
     });
   }
-  if ( keyboard.pressed("down") ){
+  if ( keyboard.pressed("down") && !detectCollision(ownCube, 4, true)){
     ownCube.position.z += moveDistance;
     sendPositionToServer({
       type: 'absoluteTranslate',
