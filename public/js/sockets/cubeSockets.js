@@ -7,6 +7,7 @@ io.on('successfulLogin', function(data){
     console.log("successfulLogin", data);
 
     var clientPositions = data.clientPositions;
+    port = data.signalPort;
     console.log(clientPositions);
     for(var clientID in clientPositions){
       if(clientPositions.hasOwnProperty(clientID) && clientPositions[clientID]){

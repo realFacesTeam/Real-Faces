@@ -19,6 +19,8 @@ var collidableMeshList = [];
 // SCENEinit
 scene = new THREE.Scene();
 
+var port;
+
 // FUNCTIONS
 var init = function(cID)
 {
