@@ -125,14 +125,8 @@ var init = function(cID)
   camera.position.set(0,150,300);
   camera.lookAt(movieScreen.position);
 
-  init.getClientID = function(){
-    return init.clientID;
-  }
-
-  init.setClientID = function(cID){
-    init.clientID = cID;
-  }
-
+  //execute webRTC callback
+  initWebRTC();
 }
 
   function animate()

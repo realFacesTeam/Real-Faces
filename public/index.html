@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <link rel=stylesheet href="css/base.css"/>
+  <script src="//simplewebrtc.com/latest.js"></script>
 </head>
 <body>
 
@@ -16,7 +17,7 @@
 <script src="js/webRTCComponents/videoStream.js"></script>
 
 
-<script src="js/Three.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.js"></script>
 <script src="js/Detector.js"></script>
 <script src="js/stats.js"></script>
 <script src="js/OrbitControls.js"></script>
@@ -52,6 +53,8 @@ This three.js demo is part of a collection at
 <!-- ------------------------------------------------------------ -->
 
 <div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
+        <video height="300" id="localVideo"></video>
+        <div id="remotesVideos"></div>
 
 </body>
 </html>
