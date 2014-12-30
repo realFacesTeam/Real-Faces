@@ -1,4 +1,4 @@
-io = io.connect();
+io = io.connect('127.0.0.1:3000');
 
 // Emit ready event.
 io.emit('login');

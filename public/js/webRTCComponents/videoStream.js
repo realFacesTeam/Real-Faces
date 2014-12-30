@@ -36,7 +36,7 @@
 
 var webrtc = new SimpleWebRTC({
   // the signalmaster URL to implement handshakes
-  url: 'http://realtalkclientsignal.herokuapp.com:8888/',
+  url: 'http://127.0.0.1:3000/',
   // the id/element dom element that will hold "our" video
   localVideoEl: 'localVideo',
   // the id/element dom element that will hold remote videos
