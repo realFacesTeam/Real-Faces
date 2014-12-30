@@ -112,9 +112,7 @@ app.get('*', function(req, res) {
 module.exports = app;
 
 
-
-
-//======SIGNALING SERVER FOR WEBRTC====================
+// ======SIGNALING SERVER FOR WEBRTC====================
 
 /*global console*/
 var yetify = require('yetify'),
@@ -248,5 +246,5 @@ io.sockets.on('connection', function (client) {
 
 if (config.uid) process.setuid(config.uid);
 console.log(yetify.logo() + ' -- signal master is running at: http://localhost:' + port);
-//======SIGNALING SERVER FOR WEBRTC====================
+// ======SIGNALING SERVER FOR WEBRTC====================
 

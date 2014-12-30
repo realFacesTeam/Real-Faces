@@ -33,21 +33,35 @@
 
 
 // }
+var webrtc;
+var createRTC = function(port){
+  webrtc = new SimpleWebRTC({
+    // the signalmaster URL to implement handshakes
+    url: 'http://127.0.0.1:'+port+'/',  
+    // url: 'http://realtalkclient.herokuapp.com:'+port+'/',
+    // the id/element dom element that will hold "our" video
+    localVideoEl: 'localVideo',
+    // the id/element dom element that will hold remote videos
+    remoteVideosEl: 'remotesVideos',
+    // immediately ask for camera access
+    autoRequestMedia: true
+  });
 
-var webrtc = new SimpleWebRTC({
-  // the signalmaster URL to implement handshakes
-  url: 'http://realtalkclient.herokuapp.com:'+port+'/',
-  // the id/element dom element that will hold "our" video
-  localVideoEl: 'localVideo',
-  // the id/element dom element that will hold remote videos
-  remoteVideosEl: 'remotesVideos',
-  // immediately ask for camera access
-  autoRequestMedia: true
-});
+  webrtc.on('channelMessage', function (peer, label, data) {
+  if (data.type === 'setClientID') {
+    alert('cID received')
+    window.dave = {
+      otherCID: data.payload,
+      vidID: peer.id+'_video_incoming'
+    };
+    renderOtherCube(peer.id+'_video_incoming', data.payload);
+  }
+  });
 
-
-
-
+  webrtc.on('videoAdded', function(video,peer){
+    videoAdd(video,peer);
+  });
+}
 
 var renderOtherCube = function(divID, clientID){
   var video = document.getElementById(divID);
@@ -86,22 +100,6 @@ var renderOtherCube = function(divID, clientID){
   cube.material.needsUpdate = true;
 }
 
-
-
-
-
-
-webrtc.on('channelMessage', function (peer, label, data) {
-  if (data.type === 'setClientID') {
-    alert('cID received')
-    window.dave = {
-      otherCID: data.payload,
-      vidID: peer.id+'_video_incoming'
-    };
-    renderOtherCube(peer.id+'_video_incoming', data.payload);
-  }
-});
-
 function videoAdd(video,peer){
   // do the usual stuff, add the new video
   // where you want etc...
@@ -113,10 +111,6 @@ function videoAdd(video,peer){
     webrtc.sendDirectlyToAll('realTalkClient','setClientID', clientID);
   }, 3000);
 }
-
-webrtc.on('videoAdded', function(video,peer){
-  videoAdd(video,peer);
-});
 
 
 var renderSelfCube = function(err, roomDescription){
