@@ -28,7 +28,7 @@ app.get('/', function(req, res) {
     //Refactor into middleware.js
 app.get('*', function(req, res) {
     console.log(path.join(__dirname + req.url))
-    res.sendfile(__dirname + '/public/'+ req.url)
+    res.sendFile(__dirname + '/public/'+ req.url)
 })
 
 
@@ -59,7 +59,7 @@ setInterval(clientCleanUp, 1000);
 
 var clientDisconnect = function(clientID){
   var req = db.clientList[clientID].req;
-  req.io.broadcast('clientDisconnect', {
+  io.sockets.emit('clientDisconnect', {
     clientID: clientID
   })
   delete db.clientPositions[clientID];
@@ -74,13 +74,48 @@ var server    = app.listen(3000);
 var io        = require('socket.io').listen(server);
 
 
-
-
-
-
 //====SOCKET.IO SERVER server==============================
 
 io.sockets.on('connection', function (client) {
+
+  function describeRoom(name) {
+    var clients = io.sockets.clients(name);
+    var result = {
+        clients: {}
+    };
+    clients.forEach(function (client) {
+        result.clients[client.id] = client.resources;
+    });
+    return result;
+  }
+
+  function safeCb(cb) {
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      if (typeof cb === 'function') {
+          return cb;
+      } else {
+          return function () {};
+      }
+  }
+
+  function removeFeed(type) {
+      if (client.room) {
+          io.sockets.in(client.room).emit('remove', {
+              id: client.id,
+              type: type
+          });
+          if (!type) {
+              client.leave(client.room);
+              client.room = undefined;
+          }
+      }
+  }
+
+  function join(name, cb) {
+      client.join(name);
+      client.room = name;
+  }
+
     client.resources = {
         screen: false,
         video: true,
@@ -98,39 +133,20 @@ io.sockets.on('connection', function (client) {
         otherClient.emit('message', details);
     });
 
-    client.on('shareScreen', function () {
-        client.resources.screen = true;
-    });
+    // client.on('shareScreen', function () {
+    //     client.resources.screen = true;
+    // });
 
-    client.on('unshareScreen', function (type) {
-        client.resources.screen = false;
-        removeFeed('screen');
-    });
+    // client.on('unshareScreen', function (type) {
+    //     client.resources.screen = false;
+    //     removeFeed('screen');
+    // });
 
-    client.on('join', join);
-
-    function removeFeed(type) {
-        if (client.room) {
-            io.sockets.in(client.room).emit('remove', {
-                id: client.id,
-                type: type
-            });
-            if (!type) {
-                client.leave(client.room);
-                client.room = undefined;
-            }
-        }
-    }
-
-    function join(name, cb) {
-        // sanity check
-        if (typeof name !== 'string') return;
-        // leave any existing rooms
-        removeFeed();
-        safeCb(cb)(null, describeRoom(name));
-        client.join(name);
-        client.room = name;
-    }
+    client.on('join', function (name, cb) {
+      client.join(name);
+      client.room = name;
+      client.emit('joined');
+  });
 
     // we don't want to pass "leave" directly because the
     // event type string of "socket end" gets passed too.

@@ -33,21 +33,7 @@
 
 
 // }
-
-var webrtc = new SimpleWebRTC({
-  // the signalmaster URL to implement handshakes
-  url: 'http://127.0.0.1:3000/',
-  // the id/element dom element that will hold "our" video
-  localVideoEl: 'localVideo',
-  // the id/element dom element that will hold remote videos
-  remoteVideosEl: 'remotesVideos',
-  // immediately ask for camera access
-  autoRequestMedia: true
-});
-
-
-
-
+var webrtc;
 
 var renderOtherCube = function(divID, clientID){
   var video = document.getElementById(divID);
@@ -87,21 +73,6 @@ var renderOtherCube = function(divID, clientID){
 }
 
 
-
-
-
-
-webrtc.on('channelMessage', function (peer, label, data) {
-  if (data.type === 'setClientID') {
-    alert('cID received')
-    window.dave = {
-      otherCID: data.payload,
-      vidID: peer.id+'_video_incoming'
-    };
-    renderOtherCube(peer.id+'_video_incoming', data.payload);
-  }
-});
-
 function videoAdd(video,peer){
   // do the usual stuff, add the new video
   // where you want etc...
@@ -114,13 +85,10 @@ function videoAdd(video,peer){
   }, 3000);
 }
 
-webrtc.on('videoAdded', function(video,peer){
-  videoAdd(video,peer);
-});
 
 
 var renderSelfCube = function(err, roomDescription){
-
+  alert('super called');
   var position =  {
       xPosition: 0,
       yPosition: 25.1,
@@ -165,13 +133,47 @@ var renderSelfCube = function(err, roomDescription){
   cube.material.needsUpdate = true;
 }
 
+
 //ongetclientID
 var initWebRTC = function(){
+  webrtc = new SimpleWebRTC({
+    // the signalmaster URL to implement handshakes
+    url: 'http://127.0.0.1:3000/',
+    // the id/element dom element that will hold "our" video
+    localVideoEl: 'localVideo',
+    // the id/element dom element that will hold remote videos
+    remoteVideosEl: 'remotesVideos',
+    // immediately ask for camera access
+    autoRequestMedia: true
+  });
+
+  webrtc.on('channelMessage', function (peer, label, data) {
+    if (data.type === 'setClientID') {
+      alert('cID received')
+      window.dave = {
+        otherCID: data.payload,
+        vidID: peer.id+'_video_incoming'
+      };
+      renderOtherCube(peer.id+'_video_incoming', data.payload);
+    }
+  });
+
+  webrtc.on('videoAdded', function(video,peer){
+    videoAdd(video,peer);
+  });
+
+  webrtc.on('joined', function(){
+    renderSelfCube();
+  });
+  
   webrtc.on('readyToCall', function () {
     // you can name it anything
     webrtc.joinRoom('realTalkClient', renderSelfCube);
   });
+
+
 };
+
 
 
 // // set volume on video tag for all peers takse a value between 0 and 1
