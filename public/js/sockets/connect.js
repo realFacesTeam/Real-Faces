@@ -1,1 +1,1 @@
-var cubeSocket = io.connect('127.0.0.1:3000');
+var cubeSocket = io.connect('http://realtalkclient.herokuapp.com');
