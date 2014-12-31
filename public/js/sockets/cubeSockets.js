@@ -1,9 +1,7 @@
-io = io.connect();
-
 // Emit ready event.
-io.emit('login');
+cubeSocket.emit('login');
 
-io.on('successfulLogin', function(data){
+cubeSocket.on('successfulLogin', function(data){
     console.log("successfulLogin", data);
 
     var clientPositions = data.clientPositions;
@@ -22,23 +20,23 @@ io.on('successfulLogin', function(data){
 
   //send keepAlives to server
   setInterval(function(){
-    io.emit('keepAlive', {clientID:clientID, time:3000});
+    cubeSocket.emit('keepAlive', {clientID:clientID, time:3000});
   }, 1000);
 
 });
 
-io.on('clientDisconnect', function(data){
+cubeSocket.on('clientDisconnect', function(data){
   var clientID = data.clientID;
   var disconnected = scene.getObjectByName('videoCube' + clientID);
   scene.remove(disconnected);
 })
 
-io.on('newClient', function(data){
+cubeSocket.on('newClient', function(data){
   var debugCube = true;
   createVideoCube(data.globalPosition, videoTexture, scene, data.clientID, debugCube);
 });
 
-io.on('clientUpdatePosition', function(data){
+cubeSocket.on('clientUpdatePosition', function(data){
   var mover = scene.getObjectByName("videoCube" + data.clientID);
   if(data.type === "absoluteTranslate"){
     mover.position[data.axis] += data.offset;
@@ -55,6 +53,6 @@ io.on('clientUpdatePosition', function(data){
 })
 
 var sendPositionToServer = function(options){
-  io.emit('clientUpdatePosition', options);
+  cubeSocket.emit('clientUpdatePosition', options);
 };
 

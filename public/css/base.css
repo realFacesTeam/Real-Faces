@@ -6,3 +6,7 @@ body
   margin: 0px;
   overflow: hidden;
 }
+
+.localVideo {
+  visibility: hidden;
+}
