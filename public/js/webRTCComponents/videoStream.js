@@ -138,7 +138,7 @@ var renderSelfCube = function(err, roomDescription){
 var initWebRTC = function(){
   webrtc = new SimpleWebRTC({
     // the signalmaster URL to implement handshakes
-    url: 'http://127.0.0.1:3000/',
+    url: 'http://localhost:3000/',
     // the id/element dom element that will hold "our" video
     localVideoEl: 'localVideo',
     // the id/element dom element that will hold remote videos
@@ -170,6 +170,10 @@ var initWebRTC = function(){
     // you can name it anything
     webrtc.joinRoom('realTalkClient', renderSelfCube);
   });
+
+  webrtc.connection.on('testConnection', function(obj){
+    alert(obj.testResult);
+  })
 
 
 };

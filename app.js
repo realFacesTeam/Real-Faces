@@ -35,6 +35,17 @@ app.get('*', function(req, res) {
 // var routes = require('./routes/index');
 // var users = require('./routes/users');
 
+
+
+
+
+
+
+
+
+
+
+
 //Data storage
 var db = {};
 db.count = db.count || 0;
@@ -70,6 +81,23 @@ var clientDisconnect = function(clientID){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var server    = app.listen(3000);
 var io        = require('socket.io').listen(server);
 
@@ -77,6 +105,10 @@ var io        = require('socket.io').listen(server);
 //====SOCKET.IO SERVER server==============================
 
 io.sockets.on('connection', function (client) {
+
+  client.on('testConnection', function(req) {
+    client.emit('testConnection', {testResult: 'goodTest'});
+  });
 
   function describeRoom(name) {
     var clients = io.sockets.clients(name);
@@ -111,10 +143,16 @@ io.sockets.on('connection', function (client) {
       }
   }
 
-  function join(name, cb) {
+   function join(name, cb) {
+    console.log("JOINING ROOM: "+name+"<---------------------------");
+      // sanity check
+      if (typeof name !== 'string') return;
+      // leave any existing rooms
+      removeFeed();
+      safeCb(cb)(null, describeRoom(name));
       client.join(name);
       client.room = name;
-  }
+    }
 
     client.resources = {
         screen: false,
@@ -133,20 +171,18 @@ io.sockets.on('connection', function (client) {
         otherClient.emit('message', details);
     });
 
-    // client.on('shareScreen', function () {
-    //     client.resources.screen = true;
-    // });
+    client.on('shareScreen', function () {
+        client.resources.screen = true;
+    });
 
-    // client.on('unshareScreen', function (type) {
-    //     client.resources.screen = false;
-    //     removeFeed('screen');
-    // });
+    client.on('unshareScreen', function (type) {
+        client.resources.screen = false;
+        removeFeed('screen');
+    });
 
-    client.on('join', function (name, cb) {
-      client.join(name);
-      client.room = name;
-      client.emit('joined');
-  });
+    client.on('join', function(name, callback){
+      join(name, callback);
+    });
 
     // we don't want to pass "leave" directly because the
     // event type string of "socket end" gets passed too.
@@ -158,6 +194,7 @@ io.sockets.on('connection', function (client) {
     });
 
     client.on('create', function (name, cb) {
+      console.log('--------> create')
         if (arguments.length == 2) {
             cb = (typeof cb == 'function') ? cb : function () {};
             name = name || uuid();
@@ -173,6 +210,18 @@ io.sockets.on('connection', function (client) {
             safeCb(cb)(null, name);
         }
     });
+
+
+
+
+
+
+
+
+
+
+
+
 
     //CUSTOM CUBE SOCKETS==========
       // Setup the ready route, and emit talk event.
@@ -230,6 +279,17 @@ io.sockets.on('connection', function (client) {
         client.broadcast.emit('clientUpdatePosition', req);
       })
       //CUSTOM CUBE SOCKETS==========
+
+
+
+
+
+
+
+
+
+
+
 
     var config = {
     "isDev": true,

@@ -5,7 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <link rel=stylesheet href="css/base.css"/>
-  <script src="//simplewebrtc.com/latest.js"></script>
 </head>
 <body>
 
@@ -18,7 +17,8 @@
 <video height="300" id="localVideo"></video>
 <div id="remotesVideos"></div>
 
-<script src="js/socket.io.js"></script>
+<script src="http://localhost:3000/js/socket.io.js"></script>
+<script src="js/sockets/connect.js"></script>
 <script src="js/webRTCComponents/videoStream.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.js"></script>
@@ -29,9 +29,11 @@
 <script src="js/THREEx.FullScreen.js"></script>
 <script src="js/THREEx.WindowResize.js"></script>
 
+<script src="js/simplewebrtc.js"></script>
 <script src="js/3DComponents/main.js"></script>
 <script src="js/3DComponents/videoCube.js"></script>
 <script src="js/sockets/cubeSockets.js"></script>
+
 
 <!-- jQuery code to display an information button and box when clicked. -->
 <script src="js/jquery-1.9.1.js"></script>
