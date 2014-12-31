@@ -137,7 +137,7 @@ var renderSelfCube = function(err, roomDescription){
 var initWebRTC = function(){
   webrtc = new SimpleWebRTC({
     // the signalmaster URL to implement handshakes
-    url: 'http://realtalkclient.herokuapp.com/',
+    url: realTalkUrl,
     // the id/element dom element that will hold "our" video
     localVideoEl: 'localVideo',
     // the id/element dom element that will hold remote videos
@@ -148,6 +148,8 @@ var initWebRTC = function(){
 
   webrtc.on('channelMessage', function (peer, label, data) {
     if (data.type === 'setClientID') {
+      console.log(peer.id);
+      debugger;
       renderOtherCube(peer.id+'_video_incoming', data.payload);
     }
   });

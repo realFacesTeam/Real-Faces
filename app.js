@@ -239,7 +239,7 @@ io.sockets.on('connection', function (client) {
     ],
     "turnservers" : [
         /*
-        { "url": "turn:your.turn.server.here",
+        { "url": "turn:192.158.29.39:3478?transport=udp",
           "secret": "turnserversharedsecret"
           "expiry": 86400 }
           */
@@ -252,18 +252,24 @@ io.sockets.on('connection', function (client) {
 
     // create shared secret nonces for TURN authentication
     // the process is described in draft-uberti-behave-turn-rest
+    // var credentials = [];
+    // config.turnservers.forEach(function (server) {
+    //     var hmac = crypto.createHmac('sha1', server.secret);
+    //     // default to 86400 seconds timeout unless specified
+    //     var username = Math.floor(new Date().getTime() / 1000) + (server.expiry || 86400) + "";
+    //     hmac.update(username);
+    //     credentials.push({
+    //         username: username,
+    //         credential: hmac.digest('base64'),
+    //         url: server.url
+    //     });
+    // });
     var credentials = [];
-    config.turnservers.forEach(function (server) {
-        var hmac = crypto.createHmac('sha1', server.secret);
-        // default to 86400 seconds timeout unless specified
-        var username = Math.floor(new Date().getTime() / 1000) + (server.expiry || 86400) + "";
-        hmac.update(username);
-        credentials.push({
-            username: username,
-            credential: hmac.digest('base64'),
-            url: server.url
-        });
-    });
+    credentials.push({
+      username: '28224511:1379330808',
+      credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      url: 'turn:192.158.29.39:3478?transport=udp'
+    })
     client.emit('turnservers', credentials);
 });
 
