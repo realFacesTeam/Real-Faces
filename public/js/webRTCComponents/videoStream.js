@@ -88,7 +88,6 @@ function videoAdd(video,peer){
 
 
 var renderSelfCube = function(err, roomDescription){
-  alert('super called');
   var position =  {
       xPosition: 0,
       yPosition: 25.1,
@@ -149,11 +148,6 @@ var initWebRTC = function(){
 
   webrtc.on('channelMessage', function (peer, label, data) {
     if (data.type === 'setClientID') {
-      alert('cID received')
-      window.dave = {
-        otherCID: data.payload,
-        vidID: peer.id+'_video_incoming'
-      };
       renderOtherCube(peer.id+'_video_incoming', data.payload);
     }
   });
@@ -170,11 +164,6 @@ var initWebRTC = function(){
     // you can name it anything
     webrtc.joinRoom('realTalkClient', renderSelfCube);
   });
-
-  webrtc.connection.on('testConnection', function(obj){
-    alert(obj.testResult);
-  })
-
 
 };
 

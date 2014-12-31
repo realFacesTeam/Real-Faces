@@ -17,8 +17,6 @@ var yetify = require('yetify'),
     crypto = require('crypto'),
     port = parseInt(process.env.PORT || 3000);
 
-
-
 // Send the client html.
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/public/index.html')
@@ -34,17 +32,6 @@ app.get('*', function(req, res) {
 
 // var routes = require('./routes/index');
 // var users = require('./routes/users');
-
-
-
-
-
-
-
-
-
-
-
 
 //Data storage
 var db = {};
@@ -77,27 +64,6 @@ var clientDisconnect = function(clientID){
   delete db.clientList[clientID];
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var server    = app.listen(3000);
 var io        = require('socket.io').listen(server);
 
@@ -105,10 +71,6 @@ var io        = require('socket.io').listen(server);
 //====SOCKET.IO SERVER server==============================
 
 io.sockets.on('connection', function (client) {
-
-  client.on('testConnection', function(req) {
-    client.emit('testConnection', {testResult: 'goodTest'});
-  });
 
   function describeRoom(name) {
     var clients = io.sockets.clients(name);
@@ -122,7 +84,6 @@ io.sockets.on('connection', function (client) {
   }
 
   function safeCb(cb) {
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       if (typeof cb === 'function') {
           return cb;
       } else {
@@ -144,7 +105,6 @@ io.sockets.on('connection', function (client) {
   }
 
    function join(name, cb) {
-    console.log("JOINING ROOM: "+name+"<---------------------------");
       // sanity check
       if (typeof name !== 'string') return;
       // leave any existing rooms
@@ -211,18 +171,6 @@ io.sockets.on('connection', function (client) {
         }
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
     //CUSTOM CUBE SOCKETS==========
       // Setup the ready route, and emit talk event.
       client.on('login', function(req) {
@@ -279,17 +227,6 @@ io.sockets.on('connection', function (client) {
         client.broadcast.emit('clientUpdatePosition', req);
       })
       //CUSTOM CUBE SOCKETS==========
-
-
-
-
-
-
-
-
-
-
-
 
     var config = {
     "isDev": true,
