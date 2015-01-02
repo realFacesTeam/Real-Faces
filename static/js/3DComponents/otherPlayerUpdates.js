@@ -1,5 +1,5 @@
 var createPlayerCube = function(ID, createTranslation){
-
+  console.log('created player cube: '+ID);
   var geometry = new THREE.BoxGeometry( 10, 10, 10 );
   //var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 
