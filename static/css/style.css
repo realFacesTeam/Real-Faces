@@ -48,3 +48,7 @@ body {
   cursor: pointer;
 
 }
+
+#localVideo, #remotesVideos {
+  display: none;
+}
