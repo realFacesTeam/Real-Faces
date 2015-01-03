@@ -192,11 +192,15 @@ signal.on('connection', function(client){
     var servers = {
       "stunservers" :
         [
-            {url:'stun:stun.l.google.com:19302'},
-            {url:'stun:stun1.l.google.com:19302'},
-            {url:'stun:stun2.l.google.com:19302'},
-            {url:'stun:stun3.l.google.com:19302'},
-            {url:'stun:stun4.l.google.com:19302'}
+            {url: "stun:stun.sipgate.net"},
+            {url: "stun:217.10.68.152"},
+            {url: "stun:stun.sipgate.net:10000"},
+            {url: "stun:217.10.68.152:10000"}
+            // {url:'stun:stun.l.google.com:19302'},
+            // {url:'stun:stun1.l.google.com:19302'},
+            // {url:'stun:stun2.l.google.com:19302'},
+            // {url:'stun:stun3.l.google.com:19302'},
+            // {url:'stun:stun4.l.google.com:19302'}
             // {url:'stun:stun01.sipphone.com'},
             // {url:'stun:stun.ekiga.net'},
             // {url:'stun:stun.fwdnet.net'},
