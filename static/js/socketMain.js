@@ -9,7 +9,6 @@ $(document).ready(function() {
 
 
   //YOUR PLAYER UPDATES TO SERVER
-
   var playerTranslation = {
     position: {x:0, y:10, z:0},
     rotation: {x:0, y:0}
@@ -34,7 +33,6 @@ $(document).ready(function() {
 
 
   //OTHER PLAYER UPDATES FROM SERVER
-
   socket.on('preexisting_clients', function(clientTranslations, yourID){
     //draw pre-existing clients when you login
     for (var id in clientTranslations){
