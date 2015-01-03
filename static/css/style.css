@@ -49,6 +49,7 @@ body {
 
 }
 
-#localVideo, #remotesVideos {
-  display: none;
+#localVideo, #remotesVideos > video {
+  height: 50px;
+  width: 50px;
 }

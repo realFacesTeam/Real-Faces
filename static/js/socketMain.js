@@ -1,5 +1,3 @@
-
-
 var socketInterval = 200;
 
 $(document).ready(function() {
@@ -22,7 +20,7 @@ $(document).ready(function() {
   var storePlayerTranslation = function(translation){
     playerTranslation = translation;
     translated = true;
-  }
+  };
 
   playerEvents.addListener('player_movement', storePlayerTranslation);
 
@@ -48,6 +46,7 @@ $(document).ready(function() {
       }
     }
     //initialize webRTC connection after drawing other clients
+    console.log('starting webrtc from socketMain.js');
     playerEvents.emit('start_webRTC', yourID);
   });
 
@@ -57,6 +56,7 @@ $(document).ready(function() {
   });
 
   socket.on('client_disconnected', function(clientID){
+    console.log('server removing player: '+clientID);
     playerEvents.emit('remove_player', [clientID]);
   });
 

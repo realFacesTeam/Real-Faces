@@ -37,8 +37,9 @@ server.error(function(err, req, res, next){
 });
 server.listen( port);
 
+
 //Setup Socket.IO
-var clientTranslations = {}
+var clientTranslations = {};
 
 var io = io.listen(server);
 
@@ -50,7 +51,7 @@ translations.on('connection', function(client){
     clientTranslations[client.id] = {
       position: {x:0, y:10, z:0},
       rotation: {x:0, y:0}
-    }
+    };
 
     //tells new clients about pre-existing clients
     client.emit('preexisting_clients', clientTranslations, client.id);
@@ -75,16 +76,22 @@ translations.on('connection', function(client){
 
       delete clientTranslations[client.id];
 
-      client.broadcast.emit('client_disconnected', client.id)
+      client.broadcast.emit('client_disconnected', client.id);
     });
   });
 });
 
-var signal = io.of('/signalmaster');
-signal.on('connection', function(client){
-  //====================SIGNALMASTER CODE=====================
-    function describeRoom(name) {
-    var clients = io.sockets.clients(name);
+var signal;
+
+/*global console*/
+var uuid = require('node-uuid'),
+    crypto = require('crypto');
+
+//====================SIGNALMASTER CODE=====================
+
+function describeRoom(name) {
+  //var clients = io.of('/chat').clients('room');
+    var clients = signal.clients(name);
     var result = {
         clients: {}
     };
@@ -92,39 +99,18 @@ signal.on('connection', function(client){
         result.clients[client.id] = client.resources;
     });
     return result;
-  }
+}
 
-  function safeCb(cb) {
-      if (typeof cb === 'function') {
-          return cb;
-      } else {
-          return function () {};
-      }
-  }
-
-  function removeFeed(type) {
-      if (client.room) {
-          io.sockets.in(client.room).emit('remove', {
-              id: client.id,
-              type: type
-          });
-          if (!type) {
-              client.leave(client.room);
-              client.room = undefined;
-          }
-      }
-  }
-
-   function join(name, cb) {
-      // sanity check
-      if (typeof name !== 'string') return;
-      // leave any existing rooms
-      removeFeed();
-      safeCb(cb)(null, describeRoom(name));
-      client.join(name);
-      client.room = name;
+function safeCb(cb) {
+    if (typeof cb === 'function') {
+        return cb;
+    } else {
+        return function () {};
     }
+}
 
+signal = io.of('/signalmaster');
+signal.on('connection', function(client){
     client.resources = {
         screen: false,
         video: true,
@@ -135,7 +121,7 @@ signal.on('connection', function(client){
     client.on('message', function (details) {
         if (!details) return;
 
-        var otherClient = io.sockets.sockets[details.to];
+        var otherClient = signal.sockets[details.to];
         if (!otherClient) return;
 
         details.from = client.id;
@@ -151,16 +137,41 @@ signal.on('connection', function(client){
         removeFeed('screen');
     });
 
-    client.on('join', function(name, callback){
-      join(name, callback);
-    });
+    client.on('join', join);
 
+    function removeFeed(type) {
+        if (client.room) {
+            io.sockets.in(client.room).emit('remove', {
+                id: client.id,
+                type: type
+            });
+            if (!type) {
+                client.leave(client.room);
+                client.room = undefined;
+            }
+        }
+    }
+
+    function join(name, cb) {
+        // sanity check
+        if (typeof name !== 'string') return;
+        // leave any existing rooms
+        removeFeed();
+        safeCb(cb)(null, describeRoom(name));
+        client.join(name);
+        client.room = name;
+    }
+
+    // we don't want to pass "leave" directly because the
+    // event type string of "socket end" gets passed too.
+    client.on('disconnect', function () {
+        removeFeed();
+    });
     client.on('leave', function () {
         removeFeed();
     });
 
     client.on('create', function (name, cb) {
-      console.log('--------> create')
         if (arguments.length == 2) {
             cb = (typeof cb == 'function') ? cb : function () {};
             name = name || uuid();
@@ -169,17 +180,47 @@ signal.on('connection', function(client){
             name = uuid();
         }
         // check if exists
-        if (io.sockets.clients(name).length) {
+        if (signal.sockets.clients(name).length) {
             safeCb(cb)('taken');
         } else {
             join(name);
             safeCb(cb)(null, name);
         }
     });
-  //====================SIGNALMASTER CODE=====================
+
+
+    var servers = {
+      "stunservers" :
+        [
+            {"url": "stun:stun.l.google.com:19302"}
+        ],
+      "turnservers" :
+        [
+          /*
+          this is an example of how you can generate credentials. generally we dont need to.
+          {
+            "url": "turn:192.158.29.39:3478?transport=udp",
+            "secret": "turnserversharedsecret"
+            "expiry": 86400
+          }
+          */
+        ]
+    };
+
+    var credentials = [];
+      //here you can push in generated credentials
+    //here we push in public access pre-generated TURN server credentials
+    credentials.push({
+      username: '28224511:1379330808',
+      credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      url: 'turn:192.158.29.39:3478?transport=udp'
+    });
+
+    // tell client about stun and turn servers and generate nonces
+    client.emit('stunservers', servers.stunservers || []);
+    client.emit('turnservers', credentials);
 });
-
-
+  //====================SIGNALMASTER CODE=====================
 
 ///////////////////////////////////////////
 //              Routes                   //
@@ -214,6 +255,5 @@ function NotFound(msg){
     Error.call(this, msg);
     Error.captureStackTrace(this, arguments.callee);
 }
-
 
 console.log('Listening on http://0.0.0.0:' + port );
