@@ -39,7 +39,7 @@ server.listen( port);
 
 
 //Setup Socket.IO
-var clientTranslations = {}
+var clientTranslations = {};
 
 var io = io.listen(server);
 
@@ -51,7 +51,7 @@ translations.on('connection', function(client){
     clientTranslations[client.id] = {
       position: {x:0, y:10, z:0},
       rotation: {x:0, y:0}
-    }
+    };
 
     //tells new clients about pre-existing clients
     client.emit('preexisting_clients', clientTranslations, client.id);
@@ -76,7 +76,7 @@ translations.on('connection', function(client){
 
       delete clientTranslations[client.id];
 
-      client.broadcast.emit('client_disconnected', client.id)
+      client.broadcast.emit('client_disconnected', client.id);
     });
   });
 });
@@ -84,12 +84,10 @@ translations.on('connection', function(client){
 var signal;
 
 /*global console*/
-var yetify = require('yetify'),
-    // config = require('getconfig'),
-    uuid = require('node-uuid'),
+var uuid = require('node-uuid'),
     crypto = require('crypto');
 
-  //====================SIGNALMASTER CODE=====================
+//====================SIGNALMASTER CODE=====================
 
 function describeRoom(name) {
   //var clients = io.of('/chat').clients('room');
@@ -113,9 +111,6 @@ function safeCb(cb) {
 
 signal = io.of('/signalmaster');
 signal.on('connection', function(client){
-  console.log('========================================================')
-  console.log(signal.sockets);
-  console.log('========================================================')
     client.resources = {
         screen: false,
         video: true,
@@ -194,43 +189,38 @@ signal.on('connection', function(client){
     });
 
 
-    var config = {
-    "isDev": true,
-    "logLevel": 3,
-    "server": {
-        "port": 8081
-    },
-    "stunservers" : [
-        {"url": "stun:stun.l.google.com:19302"}
-    ],
-    "turnservers" : [
-        /*
-        { "url": "turn:192.158.29.39:3478?transport=udp",
-          "secret": "turnserversharedsecret"
-          "expiry": 86400 }
+    var servers = {
+      "stunservers" :
+        [
+            {"url": "stun:stun.l.google.com:19302"}
+        ],
+      "turnservers" :
+        [
+          /*
+          this is an example of how you can generate credentials. generally we dont need to.
+          {
+            "url": "turn:192.158.29.39:3478?transport=udp",
+            "secret": "turnserversharedsecret"
+            "expiry": 86400
+          }
           */
-    ]
+        ]
     };
 
-
-    // tell client about stun and turn servers and generate nonces
-    client.emit('stunservers', config.stunservers || []);
-
     var credentials = [];
+      //here you can push in generated credentials
+    //here we push in public access pre-generated TURN server credentials
     credentials.push({
       username: '28224511:1379330808',
       credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
       url: 'turn:192.158.29.39:3478?transport=udp'
     });
 
+    // tell client about stun and turn servers and generate nonces
+    client.emit('stunservers', servers.stunservers || []);
     client.emit('turnservers', credentials);
 });
   //====================SIGNALMASTER CODE=====================
-
-
-
-
-
 
 ///////////////////////////////////////////
 //              Routes                   //

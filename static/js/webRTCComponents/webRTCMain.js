@@ -36,7 +36,7 @@ var updateCubeWithVideo = function(divID, clientID){
   var cube  = scene.getObjectByName('player-'+clientID);
   cube.material = MovingCubeMat;
   cube.material.needsUpdate = true;
-}
+};
 
 
 function videoAdd(video,peer,clientID){

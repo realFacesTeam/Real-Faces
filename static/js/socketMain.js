@@ -1,5 +1,3 @@
-
-
 var socketInterval = 200;
 
 $(document).ready(function() {
@@ -22,7 +20,7 @@ $(document).ready(function() {
   var storePlayerTranslation = function(translation){
     playerTranslation = translation;
     translated = true;
-  }
+  };
 
   playerEvents.addListener('player_movement', storePlayerTranslation);
 
