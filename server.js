@@ -231,7 +231,7 @@ signal.on('connection', function(client){
         url: 'turn:192.158.29.39:3478?transport=udp',
         username: '28224511:1379330808',
         credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA='
-      },
+      }
       // {
       //   url: 'turn:numb.viagenie.ca',
       //   username: 'webrtc@live.com', 
