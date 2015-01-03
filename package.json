@@ -10,6 +10,7 @@
     "socket.io": "0.9.6",
     "node-uuid": "1.2.0"
   },
+  "start": "node server.js",
   "devDependencies": {
     "vows": "0.5.x",
 	"mocha": "*",
