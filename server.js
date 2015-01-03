@@ -192,10 +192,12 @@ signal.on('connection', function(client){
     var servers = {
       "stunservers" :
         [
-            {url: "stun:stun.sipgate.net"},
-            {url: "stun:217.10.68.152"},
-            {url: "stun:stun.sipgate.net:10000"},
-            {url: "stun:217.10.68.152:10000"}
+            {url: 'stun:stun.l.google.com:19302'},
+            {url: 'stun:stun.anyfirewall.com:3478'},
+            // {url: "stun:stun.sipgate.net"},
+            // {url: "stun:217.10.68.152"},
+            // {url: "stun:stun.sipgate.net:10000"},
+            // {url: "stun:217.10.68.152:10000"}
             // {url:'stun:stun.l.google.com:19302'},
             // {url:'stun:stun1.l.google.com:19302'},
             // {url:'stun:stun2.l.google.com:19302'},
@@ -239,6 +241,16 @@ signal.on('connection', function(client){
         url: 'turn:numb.viagenie.ca',
         username: 'webrtc@live.com', 
         credential: 'muazkh'
+      },
+      {
+        url: 'turn:turn.bistri.com:80',
+        credential: 'homeo',
+        username: 'homeo'
+      },
+      {
+        url: 'turn:turn.anyfirewall.com:443?transport=tcp',
+        credential: 'webrtc',
+        username: 'webrtc'
       }
     ];
 
