@@ -1,5 +1,12 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div()
+    a(id='sender')='Send a Message'
+    ul(id='receiver')
+  div(id='game')
+  div(id='blocker')
+    div(id='instructions')
+
+  video(id='localVideo')
+  span(id='remotesVideos')
