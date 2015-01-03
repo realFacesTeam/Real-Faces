@@ -2,7 +2,7 @@ var socketInterval = 200;
 
 $(document).ready(function() {
 
-  var socket = io.connect(realTalkUrl+'/translations');
+  var socket = io.connect('/translations');
 
   //PLAYER CONNECTED TO SERVER, TELL SERVER TO SEND BACK SELF DATA
   socket.emit('player_join');

@@ -59,7 +59,7 @@ var initWebRTC = function(yourID){
   //create webRTC obj from library
   webrtc = new SimpleWebRTC({
     // the signalmaster URL to implement handshakes
-    url: realTalkUrl+'/signalmaster',
+    url: '/signalmaster',
     // the id/element dom element that will hold "our" video
     localVideoEl: 'localVideo',
     // the id/element dom element that will hold remote videos
