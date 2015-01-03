@@ -52,6 +52,7 @@ function videoAdd(video,peer,clientID){
 
 //ongetclientID
 var initWebRTC = function(yourID){
+  console.log('initializing webrtc in rtcMain.js');
   //store clientID
   yourID = yourID;
 
@@ -64,7 +65,7 @@ var initWebRTC = function(yourID){
     // the id/element dom element that will hold remote videos
     remoteVideosEl: 'remotesVideos',
     // immediately ask for camera access
-    autoRequestMedia: true,
+    autoRequestMedia: true
   });
 
   //create webRTC listeners
@@ -81,11 +82,18 @@ var initWebRTC = function(yourID){
   webrtc.on('videoAdded', function(video,peer){
     videoAdd(video, peer, yourID);
   });
-  
+
   webrtc.on('readyToCall', function () {
+    console.log('rtc readyto call');
     // you can name it anything
     webrtc.joinRoom('realTalkClient');
   });
+
+  // webrtc.on('debug-consolelog', function (obj) {
+  //   console.log('debug console log from server');
+  //   console.log(obj);
+  // });
+
 };
 
 // // set volume on video tag for all peers takse a value between 0 and 1

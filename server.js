@@ -37,6 +37,7 @@ server.error(function(err, req, res, next){
 });
 server.listen( port);
 
+
 //Setup Socket.IO
 var clientTranslations = {}
 
@@ -80,11 +81,19 @@ translations.on('connection', function(client){
   });
 });
 
-var signal = io.of('/signalmaster');
-signal.on('connection', function(client){
+var signal;
+
+/*global console*/
+var yetify = require('yetify'),
+    // config = require('getconfig'),
+    uuid = require('node-uuid'),
+    crypto = require('crypto');
+
   //====================SIGNALMASTER CODE=====================
-    function describeRoom(name) {
-    var clients = io.sockets.clients(name);
+
+function describeRoom(name) {
+  //var clients = io.of('/chat').clients('room');
+    var clients = signal.clients(name);
     var result = {
         clients: {}
     };
@@ -92,39 +101,21 @@ signal.on('connection', function(client){
         result.clients[client.id] = client.resources;
     });
     return result;
-  }
+}
 
-  function safeCb(cb) {
-      if (typeof cb === 'function') {
-          return cb;
-      } else {
-          return function () {};
-      }
-  }
-
-  function removeFeed(type) {
-      if (client.room) {
-          io.sockets.in(client.room).emit('remove', {
-              id: client.id,
-              type: type
-          });
-          if (!type) {
-              client.leave(client.room);
-              client.room = undefined;
-          }
-      }
-  }
-
-   function join(name, cb) {
-      // sanity check
-      if (typeof name !== 'string') return;
-      // leave any existing rooms
-      removeFeed();
-      safeCb(cb)(null, describeRoom(name));
-      client.join(name);
-      client.room = name;
+function safeCb(cb) {
+    if (typeof cb === 'function') {
+        return cb;
+    } else {
+        return function () {};
     }
+}
 
+signal = io.of('/signalmaster');
+signal.on('connection', function(client){
+  console.log('========================================================')
+  console.log(signal.sockets);
+  console.log('========================================================')
     client.resources = {
         screen: false,
         video: true,
@@ -135,7 +126,7 @@ signal.on('connection', function(client){
     client.on('message', function (details) {
         if (!details) return;
 
-        var otherClient = io.sockets.sockets[details.to];
+        var otherClient = signal.sockets[details.to];
         if (!otherClient) return;
 
         details.from = client.id;
@@ -151,16 +142,41 @@ signal.on('connection', function(client){
         removeFeed('screen');
     });
 
-    client.on('join', function(name, callback){
-      join(name, callback);
-    });
+    client.on('join', join);
 
+    function removeFeed(type) {
+        if (client.room) {
+            io.sockets.in(client.room).emit('remove', {
+                id: client.id,
+                type: type
+            });
+            if (!type) {
+                client.leave(client.room);
+                client.room = undefined;
+            }
+        }
+    }
+
+    function join(name, cb) {
+        // sanity check
+        if (typeof name !== 'string') return;
+        // leave any existing rooms
+        removeFeed();
+        safeCb(cb)(null, describeRoom(name));
+        client.join(name);
+        client.room = name;
+    }
+
+    // we don't want to pass "leave" directly because the
+    // event type string of "socket end" gets passed too.
+    client.on('disconnect', function () {
+        removeFeed();
+    });
     client.on('leave', function () {
         removeFeed();
     });
 
     client.on('create', function (name, cb) {
-      console.log('--------> create')
         if (arguments.length == 2) {
             cb = (typeof cb == 'function') ? cb : function () {};
             name = name || uuid();
@@ -169,15 +185,50 @@ signal.on('connection', function(client){
             name = uuid();
         }
         // check if exists
-        if (io.sockets.clients(name).length) {
+        if (signal.sockets.clients(name).length) {
             safeCb(cb)('taken');
         } else {
             join(name);
             safeCb(cb)(null, name);
         }
     });
-  //====================SIGNALMASTER CODE=====================
+
+
+    var config = {
+    "isDev": true,
+    "logLevel": 3,
+    "server": {
+        "port": 8081
+    },
+    "stunservers" : [
+        {"url": "stun:stun.l.google.com:19302"}
+    ],
+    "turnservers" : [
+        /*
+        { "url": "turn:192.158.29.39:3478?transport=udp",
+          "secret": "turnserversharedsecret"
+          "expiry": 86400 }
+          */
+    ]
+    };
+
+
+    // tell client about stun and turn servers and generate nonces
+    client.emit('stunservers', config.stunservers || []);
+
+    var credentials = [];
+    credentials.push({
+      username: '28224511:1379330808',
+      credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      url: 'turn:192.158.29.39:3478?transport=udp'
+    });
+
+    client.emit('turnservers', credentials);
 });
+  //====================SIGNALMASTER CODE=====================
+
+
+
 
 
 
@@ -214,6 +265,5 @@ function NotFound(msg){
     Error.call(this, msg);
     Error.captureStackTrace(this, arguments.callee);
 }
-
 
 console.log('Listening on http://0.0.0.0:' + port );
