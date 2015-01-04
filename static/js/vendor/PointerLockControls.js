@@ -73,21 +73,22 @@ THREE.PointerLockControls = function ( camera ) {
 
       case 38: // up
       case 87: // w
-        moveForward = true;
+        moveForward = detectCollision("forward") ? false: true;
         break;
 
       case 37: // left
       case 65: // a
-        moveLeft = true; break;
+        moveLeft = detectCollision("left") ? false: true;
+        break;
 
       case 40: // down
       case 83: // s
-        moveBackward = true;
+        moveBackward = detectCollision("backward") ? false: true;
         break;
 
       case 39: // right
       case 68: // d
-        moveRight = true;
+        moveRight = detectCollision("right") ? false: true;
         break;
 
       case 32: // space

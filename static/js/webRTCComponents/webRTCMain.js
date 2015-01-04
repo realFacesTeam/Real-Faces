@@ -51,10 +51,10 @@ function videoAdd(video,peer,clientID){
 }
 
 //ongetclientID
-var initWebRTC = function(yourID){
+var initWebRTC = function(clientID){
   console.log('initializing webrtc in rtcMain.js');
   //store clientID
-  yourID = yourID;
+  yourID = clientID;
 
   //create webRTC obj from library
   webrtc = new SimpleWebRTC({

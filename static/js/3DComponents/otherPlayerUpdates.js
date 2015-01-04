@@ -26,7 +26,7 @@ var createPlayerCube = function(ID, createTranslation){
 
   objects.push( playerCube );
   scene.add( playerCube );
-
+  collidableMeshList.push(playerCube);
 
 };
 
