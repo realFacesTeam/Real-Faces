@@ -181,7 +181,7 @@ function init() {
   scene.add(wallNorth);
   collidableMeshList.push(wallNorth);
   //south wall
-  //wallGeometry = new THREE.CubeGeometry(500, 100, 10, 1, 1, 1 );
+  //wallGeometry = new T,,HREE.CubeGeometry(500, 100, 10, 1, 1, 1 );
   var wallSouth = new THREE.Mesh(wallGeometry, wireMaterial);
   wallSouth.position.set(0, 50, 250);
   scene.add(wallSouth);
@@ -190,6 +190,16 @@ function init() {
   ///////////////////////
   // END CREATE WALL ////
   ///////////////////////
+
+  /// CREATE VIKING MODEL
+
+  viking = new Skin(THREE, 'images/viking.png')
+
+  viking.mesh.position.z = -50
+
+  scene.add(viking.mesh)
+
+
 
   renderer = new THREE.WebGLRenderer();
   renderer.setClearColor( 0xffffff );

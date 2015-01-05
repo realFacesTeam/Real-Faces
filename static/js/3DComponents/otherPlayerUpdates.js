@@ -16,7 +16,7 @@ var createPlayerCube = function(ID, createTranslation){
   var playerCube = new THREE.Mesh( geometry, material );
 
   playerCube.name = 'player-' + ID;
-  playerCube.position.y += 10;
+  //playerCube.position.y += 10;
 
 
   playerCube.update = function(){
