@@ -163,26 +163,26 @@ function init() {
   var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
   var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe:true } );
   //west wall
-  wallGeometry = new THREE.CubeGeometry( 10, 100, 500, 1, 1, 1 );
+  wallGeometry = new THREE.BoxGeometry( 10, 100, 500, 1, 1, 1 );
   var wallWest = new THREE.Mesh(wallGeometry, wireMaterial);
   wallWest.position.set(-250, 50, 0);
   scene.add(wallWest);
   collidableMeshList.push(wallWest);
   //east wall
-  wallGeometry = new THREE.CubeGeometry(10, 100, 500, 1, 1, 1 );
+  //wallGeometry = new THREE.CubeGeometry(10, 100, 500, 1, 1, 1 );
   var wallEast = new THREE.Mesh(wallGeometry, wireMaterial);
   wallEast.position.set(250, 50, 0);
   scene.add(wallEast);
   collidableMeshList.push(wallEast);
   //north wall
-  wallGeometry = new THREE.CubeGeometry(500, 100, 10, 1, 1, 1 );
+  wallGeometry = new THREE.BoxGeometry(500, 100, 10, 1, 1, 1 );
   var wallNorth = new THREE.Mesh(wallGeometry, wireMaterial);
   wallNorth.position.set(0, 50, -250);
   scene.add(wallNorth);
   collidableMeshList.push(wallNorth);
   //south wall
+  //wallGeometry = new THREE.CubeGeometry(500, 100, 10, 1, 1, 1 );
   var wallSouth = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallGeometry = new THREE.CubeGeometry(500, 100, 10, 1, 1, 1 );
   wallSouth.position.set(0, 50, 250);
   scene.add(wallSouth);
   collidableMeshList.push(wallSouth);
