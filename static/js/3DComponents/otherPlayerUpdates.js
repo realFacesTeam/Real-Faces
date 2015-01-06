@@ -17,9 +17,9 @@ var createPlayerCube = function(ID, createTranslation){
 
   playerCube.name = 'player-' + ID;
 
-  body = new Skin(THREE, '')
+  body = new Skin(THREE, '');
 
-  body.mesh.position.y = -10
+  body.mesh.position.y = -10;
 
   // body.walkSpeed = 1.0;
   // body.startedWalking = 0.0;

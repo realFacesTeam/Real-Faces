@@ -92,7 +92,7 @@ THREE.PointerLockControls = function ( camera ) {
         break;
 
       case 32: // space
-        if ( canJump === true ) velocity.y += 350;
+        if ( canJump === true ) velocity.y += 250;
         canJump = false;
         break;
 
@@ -173,23 +173,12 @@ THREE.PointerLockControls = function ( camera ) {
 
   this.update = function () {
 
-    if (Math.abs(velocity.x) < 0.001) velocity.x = 0;
-    if (Math.abs(velocity.y) < 0.001) velocity.y = 0;
-    if (Math.abs(velocity.z) < 0.001) velocity.z = 0;
 
     if ( scope.enabled === false ) return;
 
     var time = performance.now();
     var delta = ( time - prevTime ) / 1000;
 
-
-    if (velocity.x !== 0 || velocity.y !== 0 || velocity.z !== 0 || rotated){
-
-      var translation = getTranslation();
-      playerEvents.emitEvent('player_movement', [translation]);
-      //socket.emit('movement', velocity);
-      rotated = false;
-    }
 
     velocity.x -= velocity.x * 10.0 * delta;
     velocity.z -= velocity.z * 10.0 * delta;
@@ -201,6 +190,12 @@ THREE.PointerLockControls = function ( camera ) {
 
     if ( moveLeft ) velocity.x -= 400.0 * delta;
     if ( moveRight ) velocity.x += 400.0 * delta;
+
+    // Min velocity is enables to prevent insignificant movements from being broadcast
+    // Max velocity is a work around for the after pause teleport bug in PointerLock vendor code
+    if (Math.abs(velocity.x) < 0.001  || Math.abs(velocity.x) > 100) velocity.x = 0;
+    if (Math.abs(velocity.y) < 0.001  || Math.abs(velocity.y) > 300) velocity.y = 0;
+    if (Math.abs(velocity.z) < 0.001  || Math.abs(velocity.z) > 100) velocity.z = 0;
 
     if ( isOnObject === true ) {
 
@@ -222,6 +217,14 @@ THREE.PointerLockControls = function ( camera ) {
     }
 
     prevTime = time;
+
+    if (velocity.x !== 0 || velocity.y !== 0 || velocity.z !== 0 || rotated){
+
+      var translation = getTranslation();
+      playerEvents.emitEvent('player_movement', [translation]);
+      //socket.emit('movement', velocity);
+      rotated = false;
+    }
 
   };
 
