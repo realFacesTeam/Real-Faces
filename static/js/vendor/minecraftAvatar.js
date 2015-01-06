@@ -12,7 +12,7 @@ function Skin(three, opts) {
   this.mesh = this.createPlayerObject()
   this.mesh.scale.set(this.sizeRatio, this.sizeRatio * 0.75, this.sizeRatio)
 
-  this.walkSpeed = 1;
+  this.walkSpeed = 0.6;
   this.startedWalking = 0.0;
   this.stoppedWalking = 0.0;
   this.walking = false;

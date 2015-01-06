@@ -75,11 +75,17 @@ var movePlayer = function(ID, newTranslation){
   var player = scene.getObjectByName('player-'+ID);
   var body = duckWalkers[ID];
 
+  console.log('translationChanges', player.position.x - newTranslation.position.x, player.position.y - newTranslation.position.y, player.position.z - newTranslation.position.z)
+
   // //console.log(body)
-  if (Math.abs(player.position.x - newTranslation.position.x) < 0.1 && Math.abs(player.position.y - newTranslation.position.y) < 0.1 && Math.abs(player.position.z - newTranslation.position.z) < 0.1)
+  if (body.isWalking() && Math.abs(player.position.x - newTranslation.position.x) < 1 && Math.abs(player.position.y - newTranslation.position.y) < 1 && Math.abs(player.position.z - newTranslation.position.z) < 1){
+    console.log('stop moving')
     body.stopWalking();
-  else if (!body.isWalking())
+  }else if(!body.walking && ( Math.abs(player.position.x - newTranslation.position.x) > 1|| Math.abs(player.position.y - newTranslation.position.y) > 1 || Math.abs(player.position.z - newTranslation.position.z) > 1 ) ){
+     console.log('not moving so start, body.walking=', body.walking)
      body.startWalking();
+   }
+
 
   if(!player.tweenedPosition){
     player.tweenedPosition = {

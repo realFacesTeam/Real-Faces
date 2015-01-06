@@ -16,14 +16,14 @@ Skin.prototype.render = function(){
   var time = Date.now() / 1000
   if (this.walking && time < this.startedWalking + this.acceleration){
     this.walkSpeed = (time - this.startedWalking) / this.acceleration
-    console.log('walking', this.walkSpeed)
+    //console.log('walking', this.walkSpeed)
   }
   if (!this.walking ){
     if (time < this.stoppedWalking + this.acceleration)
       this.walkSpeed = -1 / this.acceleration * (time - this.stoppedWalking) + 1
-    else if(this.walkSpeed > 0.05)
+    else if(this.walkSpeed > 0.02)
       this.walkSpeed *= 0.95;
-    console.log('not walking', this.walkSpeed)
+    //console.log('not walking', this.walkSpeed)
 
   }
 
