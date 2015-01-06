@@ -1,13 +1,22 @@
+//simplified adaption of the voxel skin node package with features that were incompatible with the new version of three.js removed
 
 function Skin(three, opts) {
 
+  opts = opts || {};
+
   THREE = three // hack until three.js fixes multiple instantiation
-  this.sizeRatio = 2// opts.sizeRatio || 8
+  this.sizeRatio = opts.sizeRatio || 0.4
   this.scale = opts.scale || new three.Vector3(1, 1, 1)
   this.fallbackImage = opts.fallbackImage || 'skin.png'
   this.createCanvases()
   this.mesh = this.createPlayerObject()
-  this.mesh.scale.set(0.4, 0.4, 0.4)
+  this.mesh.scale.set(this.sizeRatio, this.sizeRatio * 0.75, this.sizeRatio)
+
+  this.walkSpeed = 1;
+  this.startedWalking = 0.0;
+  this.stoppedWalking = 0.0;
+  this.walking = false;
+  this.acceleration = 0.5;
 }
 
 Skin.prototype.createCanvases = function() {

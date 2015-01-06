@@ -2,7 +2,7 @@ var camera, scene, renderer;
 var geometry, material, mesh;
 var controls;
 
-var objects = [];
+var objects = [], duckWalkers = [];
 
 var raycaster;
 var collidableMeshList = [];
@@ -10,7 +10,6 @@ var collidableMeshList = [];
 var blocker = document.getElementById( 'blocker' );
 var instructions = document.getElementById( 'instructions' );
 
-// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 
 var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
@@ -193,11 +192,6 @@ function init() {
 
   /// CREATE VIKING MODEL
 
-  viking = new Skin(THREE, 'images/viking.png')
-
-  viking.mesh.position.z = -50
-
-  scene.add(viking.mesh)
 
 
 
@@ -245,6 +239,12 @@ function animate() {
 
     if (object.hasOwnProperty('update'))
       object.update();
+
+  }
+
+  for(var ID in duckWalkers){
+
+    duckWalkers[ID].render();
 
   }
 
