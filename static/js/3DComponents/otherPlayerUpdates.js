@@ -1,6 +1,6 @@
 var createPlayerCube = function(ID, createTranslation){
   console.log('created player cube: '+ID);
-  var geometry = new THREE.BoxGeometry( 10, 10, 10 );
+  var geometry = new THREE.BoxGeometry( 6, 6, 6 );
   //var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 
   var materialArray = [];
@@ -16,6 +16,22 @@ var createPlayerCube = function(ID, createTranslation){
   var playerCube = new THREE.Mesh( geometry, material );
 
   playerCube.name = 'player-' + ID;
+
+  body = new Skin(THREE, '')
+
+  body.mesh.position.y = -10
+
+  // body.walkSpeed = 1.0;
+  // body.startedWalking = 0.0;
+  // body.stoppedWalking = 0.0;
+  // body.walking = false;
+
+  body.stopWalking();
+
+
+  duckWalkers[ID] = body;
+
+  playerCube.add(body.mesh);
   playerCube.position.y += 10;
 
 
@@ -57,6 +73,19 @@ var teleportPlayer = function(ID, translation){
 var movePlayer = function(ID, newTranslation){
 
   var player = scene.getObjectByName('player-'+ID);
+  var body = duckWalkers[ID];
+
+  console.log('translationChanges', player.position.x - newTranslation.position.x, player.position.y - newTranslation.position.y, player.position.z - newTranslation.position.z)
+
+  // //console.log(body)
+  if (body.isWalking() && Math.abs(player.position.x - newTranslation.position.x) < 1 && Math.abs(player.position.y - newTranslation.position.y) < 1 && Math.abs(player.position.z - newTranslation.position.z) < 1){
+    console.log('stop moving')
+    body.stopWalking();
+  }else if(!body.walking && ( Math.abs(player.position.x - newTranslation.position.x) > 1|| Math.abs(player.position.y - newTranslation.position.y) > 1 || Math.abs(player.position.z - newTranslation.position.z) > 1 ) ){
+     console.log('not moving so start, body.walking=', body.walking)
+     body.startWalking();
+   }
+
 
   if(!player.tweenedPosition){
     player.tweenedPosition = {

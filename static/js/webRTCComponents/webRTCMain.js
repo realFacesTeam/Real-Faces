@@ -4,14 +4,14 @@ var yourID;
 var updateCubeWithVideo = function(divID, clientID){
   console.log("updated cube videoid: "+clientID);
   var video = document.getElementById(divID);
-   var position =  {
-      xPosition: 0,
-      yPosition: 25.1,
-      zPosition: 0,
-      xRotation: 0,
-      yRotation: 0,
-      zRotation: 0
-    };
+   // var position =  {
+   //    xPosition: 0,
+   //    yPosition: 25.1,
+   //    zPosition: 0,
+   //    xRotation: 0,
+   //    yRotation: 0,
+   //    zRotation: 0
+   //  };
   var debugCube = false;
 
   var videoTexture = new THREE.VideoTexture( video );
