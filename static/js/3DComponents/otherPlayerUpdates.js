@@ -48,10 +48,11 @@ var createPlayerCube = function(ID, createTranslation){
 
 
 var removePlayer = function(ID){
-
   var player = scene.getObjectByName('player-'+ID);
   scene.remove(player);
-
+  var remotesContainer = document.getElementById('remotesVideos');
+  var remoteVideo = document.getElementById(ID);
+  remotesContainer.removeChild(remoteVideo);
 };
 
 var teleportPlayer = function(ID, translation){
