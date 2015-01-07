@@ -76,6 +76,8 @@ var initWebRTC = function(clientID){
       console.log('data object from channel message');
       console.log(data);
       updateCubeWithVideo(peer.id+'_video_incoming', data.payload);
+      //add clientID to DOM video node
+      document.getElementById(peer.id+'_video_incoming').setAttribute("id", data.payload);
     }
   });
 
