@@ -102,10 +102,10 @@ animate();
 
 function init() {
 
-  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 8000 );
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog( 0xffffff, 0, 2000 );
+  //scene.fog = new THREE.Fog( 0xffffff, 0, 4000 );
 
   var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
   light.position.set( 0.5, 1, 0.75 );
@@ -143,19 +143,7 @@ function init() {
   // CREATE SKYBOX    //
   //////////////////////
 
-  // var urlPrefix  = "images/skyboxes/unionSquare/";
-  //   var urls = [ urlPrefix + "posx.jpg", urlPrefix + "negx.jpg",
-  //       urlPrefix + "posy.jpg", urlPrefix + "negy.jpg",
-  //       urlPrefix + "posz.jpg", urlPrefix + "negz.jpg" ];
-  //   var textureCube  = THREE.ImageUtils.loadTextureCube( urls );
 
-  //   var shader  = THREE.ShaderLib["cube"];
-  //   shader.uniforms["tCube"].texture = textureCube;
-  //   var material = new THREE.ShaderMaterial({
-  //     fragmentShader  : shader.fragmentShader,
-  //     vertexShader  : shader.vertexShader,
-  //     uniforms  : shader.uniforms
-  //   });
 
     var skyMaterials = [
 
@@ -168,7 +156,7 @@ function init() {
 
     ];
 
-    var skyMesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000, 7, 7, 7 ), new THREE.MeshFaceMaterial( skyMaterials ) );
+    var skyMesh = new THREE.Mesh( new THREE.BoxGeometry( 4000, 4000, 4000, 7, 7, 7 ), new THREE.MeshFaceMaterial( skyMaterials ) );
     skyMesh.scale.x = - 1;
     skyMesh.position.set(0, 0, 0);
     scene.add(skyMesh);
