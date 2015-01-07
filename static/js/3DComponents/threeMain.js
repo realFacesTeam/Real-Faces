@@ -128,23 +128,6 @@ function init() {
   geometry = new THREE.PlaneBufferGeometry( 500, 500, 100, 100 );
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
-  // for ( var i = 0, l = geometry.vertices.length; i < l; i ++ ) {
-
-  //   var vertex = geometry.vertices[ i ];
-  //   vertex.x += Math.random() * 20 - 10;
-  //   vertex.y += Math.random() * 2;
-  //   vertex.z += Math.random() * 20 - 10;
-
-  // }
-
-  // for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
-
-  //   var face = geometry.faces[ i ];
-  //   face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-  //   face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-  //   face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-
-  // }
 
   material = new THREE.MeshBasicMaterial( { color: new THREE.Color('lightgreen'), wireframe:true } );
 
@@ -154,6 +137,31 @@ function init() {
   //////////////////////
   // END CREATE FLOOR //
   //////////////////////
+
+  //////////////////////
+  // CREATE SKYBOX    //
+  //////////////////////
+
+  var urlPrefix  = "images/Bridge2/";
+    var urls = [ urlPrefix + "posx.jpg", urlPrefix + "negx.jpg",
+        urlPrefix + "posy.jpg", urlPrefix + "negy.jpg",
+        urlPrefix + "posz.jpg", urlPrefix + "negz.jpg" ];
+    var textureCube  = THREE.ImageUtils.loadTextureCube( urls );
+
+    var shader  = THREE.ShaderUtils.lib["cube"];
+    shader.uniforms["tCube"].texture = textureCube;
+    var material = new THREE.MeshShaderMaterial({
+      fragmentShader  : shader.fragmentShader,
+      vertexShader  : shader.vertexShader,
+      uniforms  : shader.uniforms
+    });
+
+
+
+    skyboxMesh  = new THREE.Mesh( new THREE.CubeGeometry( 100000, 100000, 100000, 1, 1, 1, null, true ), material );
+
+
+    scene.addObject( skyboxMesh );
 
   ///////////////////
   // CREATE WALL ////

@@ -1,4 +1,4 @@
-//slightly adapted copy of the voxel duckWalk node package
+//Adapted copy of the voxel duckWalk node package
 
 //animates walking players
 
@@ -40,7 +40,6 @@ Skin.prototype.render = function(){
 }
 
 Skin.prototype.startWalking = function(){
-  console.log('startWalking', this)
   var now = Date.now() / 1000
   this.walking = true
   if (this.stoppedWalking + this.acceleration > now){
@@ -52,7 +51,6 @@ Skin.prototype.startWalking = function(){
 }
 
 Skin.prototype.stopWalking = function() {
-  console.log('stopWalking', this)
   var now = Date.now() / 1000
   this.walking = false
   if (this.startedWalking + this.acceleration > now){

@@ -1,4 +1,4 @@
-var socketInterval = 200;
+var socketInterval = 100;
 
 $(document).ready(function() {
 
@@ -17,7 +17,6 @@ $(document).ready(function() {
   var translated = false;
 
   var storePlayerTranslation = function(translation){
-    console.log('translation', translation);
     playerTranslation = translation;
     translated = true;
   };
@@ -38,14 +37,14 @@ $(document).ready(function() {
     //draw pre-existing clients when you login
     for (var id in clientTranslations){
       if (clientTranslations.hasOwnProperty(id) && clientTranslations[id] && id !== yourID){
-        console.log('drawing new client: '+id);
-        console.log('your client id is: '+yourID);
+        //console.log('drawing new client: '+id);
+        //console.log('your client id is: '+yourID);
         playerEvents.emit('new_player', id, clientTranslations[id]);
         playerEvents.emit('teleport_other_player', id, clientTranslations[id]);
       }
     }
     //initialize webRTC connection after drawing other clients
-    console.log('starting webrtc from socketMain.js');
+    //console.log('starting webrtc from socketMain.js');
     playerEvents.emit('start_webRTC', yourID);
   });
 
