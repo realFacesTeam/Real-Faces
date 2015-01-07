@@ -104,7 +104,7 @@ function init() {
   camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
+  scene.fog = new THREE.Fog( 0xffffff, 0, 2000 );
 
   var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
   light.position.set( 0.5, 1, 0.75 );
@@ -125,7 +125,7 @@ function init() {
   // CREATE FLOOR ///
   ///////////////////
 
-  geometry = new THREE.PlaneBufferGeometry( 500, 500, 100, 100 );
+  geometry = new THREE.PlaneBufferGeometry( 500, 500);
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
 
@@ -142,26 +142,39 @@ function init() {
   // CREATE SKYBOX    //
   //////////////////////
 
-  var urlPrefix  = "images/Bridge2/";
-    var urls = [ urlPrefix + "posx.jpg", urlPrefix + "negx.jpg",
-        urlPrefix + "posy.jpg", urlPrefix + "negy.jpg",
-        urlPrefix + "posz.jpg", urlPrefix + "negz.jpg" ];
-    var textureCube  = THREE.ImageUtils.loadTextureCube( urls );
+  // var urlPrefix  = "images/skyboxes/unionSquare/";
+  //   var urls = [ urlPrefix + "posx.jpg", urlPrefix + "negx.jpg",
+  //       urlPrefix + "posy.jpg", urlPrefix + "negy.jpg",
+  //       urlPrefix + "posz.jpg", urlPrefix + "negz.jpg" ];
+  //   var textureCube  = THREE.ImageUtils.loadTextureCube( urls );
 
-    var shader  = THREE.ShaderUtils.lib["cube"];
-    shader.uniforms["tCube"].texture = textureCube;
-    var material = new THREE.MeshShaderMaterial({
-      fragmentShader  : shader.fragmentShader,
-      vertexShader  : shader.vertexShader,
-      uniforms  : shader.uniforms
-    });
+  //   var shader  = THREE.ShaderLib["cube"];
+  //   shader.uniforms["tCube"].texture = textureCube;
+  //   var material = new THREE.ShaderMaterial({
+  //     fragmentShader  : shader.fragmentShader,
+  //     vertexShader  : shader.vertexShader,
+  //     uniforms  : shader.uniforms
+  //   });
+
+    var skyMaterials = [
+
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/posx.jpg' ) } ), // right
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/negx.jpg' ) } ), // left
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/posy.jpg' ) } ), // top
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/negy.jpg' ) } ), // bottom
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/posz.jpg' ) } ), // back
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/negz.jpg' ) } )  // front
+
+    ];
+
+    var skyMesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000, 7, 7, 7 ), new THREE.MeshFaceMaterial( skyMaterials ) );
+    skyMesh.scale.x = - 1;
+    skyMesh.position.set(0, 0, 0);
+    scene.add(skyMesh);
+
+    //
 
 
-
-    skyboxMesh  = new THREE.Mesh( new THREE.CubeGeometry( 100000, 100000, 100000, 1, 1, 1, null, true ), material );
-
-
-    scene.addObject( skyboxMesh );
 
   ///////////////////
   // CREATE WALL ////
@@ -197,9 +210,6 @@ function init() {
   ///////////////////////
   // END CREATE WALL ////
   ///////////////////////
-
-  /// CREATE VIKING MODEL
-
 
 
 
