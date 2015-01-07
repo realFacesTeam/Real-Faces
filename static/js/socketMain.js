@@ -17,7 +17,7 @@ $(document).ready(function() {
   var translated = false;
 
   var storePlayerTranslation = function(translation){
-    console.log('translation', translation);
+    //console.log('translation', translation);
     playerTranslation = translation;
     translated = true;
   };
