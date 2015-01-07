@@ -85,7 +85,7 @@ Skin.prototype.createPlayerObject = function(scene) {
   var plainMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color('grey') } );
 
   // Left leg
-  var leftleggeo = new THREE.CubeGeometry(4, 12, 4);
+  var leftleggeo = new THREE.BoxGeometry(4, 12, 4);
   for(var i=0; i < 8; i+=1) {
     leftleggeo.vertices[i].y -= 6;
   }
@@ -94,7 +94,7 @@ Skin.prototype.createPlayerObject = function(scene) {
   leftleg.position.y = -6;
 
   // Right leg
-  var rightleggeo = new THREE.CubeGeometry(4, 12, 4);
+  var rightleggeo = new THREE.BoxGeometry(4, 12, 4);
   for(var i=0; i < 8; i+=1) {
     rightleggeo.vertices[i].y -= 6;
   }
@@ -104,13 +104,13 @@ Skin.prototype.createPlayerObject = function(scene) {
 
 
   // Body
-  var bodygeo = new THREE.CubeGeometry(4, 12, 8);
+  var bodygeo = new THREE.BoxGeometry(4, 12, 8);
   var bodymesh = this.body = new THREE.Mesh(bodygeo, plainMaterial);
   upperbody.add(bodymesh);
 
 
   // Left arm
-  var leftarmgeo = new THREE.CubeGeometry(4, 12, 4);
+  var leftarmgeo = new THREE.BoxGeometry(4, 12, 4);
   for(var i=0; i < 8; i+=1) {
     leftarmgeo.vertices[i].y -= 4;
   }
@@ -133,7 +133,7 @@ Skin.prototype.createPlayerObject = function(scene) {
   upperbody.add(rightarm);
 
   //Head
-  var headgeo = new THREE.CubeGeometry(8, 8, 8);
+  var headgeo = new THREE.BoxGeometry(8, 8, 8);
   var headmesh = this.head = new THREE.Mesh(headgeo, plainMaterial);
   headmesh.position.y = 2;
 

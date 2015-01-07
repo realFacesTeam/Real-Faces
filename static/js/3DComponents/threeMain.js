@@ -102,10 +102,10 @@ animate();
 
 function init() {
 
-  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 8000 );
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
+  //scene.fog = new THREE.Fog( 0xffffff, 0, 4000 );
 
   var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
   light.position.set( 0.5, 1, 0.75 );
@@ -126,26 +126,9 @@ function init() {
   // CREATE FLOOR ///
   ///////////////////
 
-  geometry = new THREE.PlaneBufferGeometry( 500, 500, 100, 100 );
+  geometry = new THREE.PlaneBufferGeometry( 500, 500);
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
-  // for ( var i = 0, l = geometry.vertices.length; i < l; i ++ ) {
-
-  //   var vertex = geometry.vertices[ i ];
-  //   vertex.x += Math.random() * 20 - 10;
-  //   vertex.y += Math.random() * 2;
-  //   vertex.z += Math.random() * 20 - 10;
-
-  // }
-
-  // for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
-
-  //   var face = geometry.faces[ i ];
-  //   face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-  //   face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-  //   face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-
-  // }
 
   material = new THREE.MeshBasicMaterial( { color: new THREE.Color('lightgreen'), wireframe:true } );
 
@@ -155,6 +138,32 @@ function init() {
   //////////////////////
   // END CREATE FLOOR //
   //////////////////////
+
+  //////////////////////
+  // CREATE SKYBOX    //
+  //////////////////////
+
+
+
+    var skyMaterials = [
+
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/posx.jpg' ) } ), // right
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/negx.jpg' ) } ), // left
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/posy.jpg' ) } ), // top
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/negy.jpg' ) } ), // bottom
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/posz.jpg' ) } ), // back
+      new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/skyboxes/unionSquare/negz.jpg' ) } )  // front
+
+    ];
+
+    var skyMesh = new THREE.Mesh( new THREE.BoxGeometry( 4000, 4000, 4000, 7, 7, 7 ), new THREE.MeshFaceMaterial( skyMaterials ) );
+    skyMesh.scale.x = - 1;
+    skyMesh.position.set(0, 0, 0);
+    scene.add(skyMesh);
+
+    //
+
+
 
   ///////////////////
   // CREATE WALL ////
@@ -190,9 +199,6 @@ function init() {
   ///////////////////////
   // END CREATE WALL ////
   ///////////////////////
-
-  /// CREATE VIKING MODEL
-
 
 
 
