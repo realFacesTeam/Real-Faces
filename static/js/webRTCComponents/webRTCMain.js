@@ -2,42 +2,42 @@ var webrtc;
 var yourID;
 
 var updateCubeWithVideo = function(divID, clientID){
-  // console.log("updated cube videoid: "+clientID);
-  // var audioContext = new window.webkitAudioContext();
+  console.log("updated cube videoid: "+clientID);
+  var audioContext = new window.webkitAudioContext();
 
-  // console.log(video);
-   // var position =  {
-   //    xPosition: 0,
-   //    yPosition: 25.1,
-   //    zPosition: 0,
-   //    xRotation: 0,
-   //    yRotation: 0,
-   //    zRotation: 0
-   //  };
- //  var debugCube = false;
+  console.log(video);
+   var position =  {
+      xPosition: 0,
+      yPosition: 25.1,
+      zPosition: 0,
+      xRotation: 0,
+      yRotation: 0,
+      zRotation: 0
+    };
+  var debugCube = false;
 
- //  var videoTexture = new THREE.VideoTexture( video );
- //  videoTexture.generateMipmaps = false;
- //  videoTexture.minFilter = THREE.LinearFilter;
- //  videoTexture.magFilter = THREE.LinearFilter;
+  var videoTexture = new THREE.VideoTexture( video );
+  videoTexture.generateMipmaps = false;
+  videoTexture.minFilter = THREE.LinearFilter;
+  videoTexture.magFilter = THREE.LinearFilter;
 
- // var materialArray = [];
- //  scene = scene || window.scene;
- //  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xpos.png' ) }));
- //  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xneg.png' ) }));
- //  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/ypos.png' ) }));
- //  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/yneg.png' ) }));
- //  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zpos.png' ) }));
- //  if(debugCube){
- //    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zneg.png' ) }));
- //  }else{
- //    materialArray.push(new THREE.MeshBasicMaterial( { map: videoTexture }));
- //  }
- //  var MovingCubeMat = new THREE.MeshFaceMaterial(materialArray);
+ var materialArray = [];
+  scene = scene || window.scene;
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xpos.png' ) }));
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xneg.png' ) }));
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/ypos.png' ) }));
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/yneg.png' ) }));
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zpos.png' ) }));
+  if(debugCube){
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zneg.png' ) }));
+  }else{
+    materialArray.push(new THREE.MeshBasicMaterial( { map: videoTexture }));
+  }
+  var MovingCubeMat = new THREE.MeshFaceMaterial(materialArray);
 
- //  var cube  = scene.getObjectByName('player-'+clientID);
- //  cube.material = MovingCubeMat;
- //  cube.material.needsUpdate = true;
+  var cube  = scene.getObjectByName('player-'+clientID);
+  cube.material = MovingCubeMat;
+  cube.material.needsUpdate = true;
 
 
   var video = document.getElementById(divID);
@@ -93,7 +93,8 @@ var initWebRTC = function(clientID){
       //console.log(data);
       updateCubeWithVideo(peer.id+'_video_incoming', data.payload);
 
-
+      //add clientID to DOM video node
+      document.getElementById(peer.id+'_video_incoming').setAttribute("id", data.payload);
     }
   });
 

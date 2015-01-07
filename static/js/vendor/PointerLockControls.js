@@ -92,7 +92,7 @@ THREE.PointerLockControls = function ( camera ) {
         break;
 
       case 32: // space
-        if ( canJump === true ) velocity.y += 250;
+        if ( canJump === true ) velocity.y += 180;
         canJump = false;
         break;
 
@@ -187,11 +187,26 @@ THREE.PointerLockControls = function ( camera ) {
 
     velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
-    if ( moveForward ) velocity.z -= 400.0 * delta;
-    if ( moveBackward ) velocity.z += 400.0 * delta;
+    //make sure character position is within boundary, reset it to outer edge if it is not
+    if ( yawObject.position.z > positiveBoundary){
+      yawObject.position.z  = positiveBoundary;
+    } else if (yawObject.position.z < negativeBoundary ){
+      yawObject.position.z  = negativeBoundary;   
+    } else if ( yawObject.position.x > positiveBoundary){
+      yawObject.position.x  = positiveBoundary;
+    } else if (yawObject.position.x < negativeBoundary ){
+      yawObject.position.x  = negativeBoundary;   
+    }
 
-    if ( moveLeft ) velocity.x -= 400.0 * delta;
-    if ( moveRight ) velocity.x += 400.0 * delta;
+    //default is 400
+    var speed = 300.0;
+    //add velocity to your character if key is pressed
+    if ( moveForward ) velocity.z -= speed * delta;
+    if ( moveBackward ) velocity.z += speed * delta;
+
+    if ( moveLeft ) velocity.x -= speed * delta;
+    if ( moveRight ) velocity.x += speed * delta;
+
 
     // Min velocity is enables to prevent insignificant movements from being broadcast
     // Max velocity is a work around for the after pause teleport bug in PointerLock vendor code

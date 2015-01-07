@@ -6,6 +6,7 @@ var objects = [], duckWalkers = [];
 
 var raycaster;
 var collidableMeshList = [];
+var negativeBoundary = -250, positiveBoundary = 250;
 
 var blocker = document.getElementById( 'blocker' );
 var instructions = document.getElementById( 'instructions' );
@@ -201,7 +202,7 @@ function init() {
   scene.add(wallNorth);
   collidableMeshList.push(wallNorth);
   //south wall
-  //wallGeometry = new T,,HREE.CubeGeometry(500, 100, 10, 1, 1, 1 );
+  //wallGeometry = new THREE.CubeGeometry(500, 100, 10, 1, 1, 1 );
   var wallSouth = new THREE.Mesh(wallGeometry, wireMaterial);
   wallSouth.position.set(0, 50, 250);
   scene.add(wallSouth);
