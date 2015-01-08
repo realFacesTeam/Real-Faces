@@ -102,7 +102,7 @@ animate();
 
 function init() {
 
-  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 2000 );
+  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 5000 );
 
   scene = new THREE.Scene();
   scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
@@ -128,12 +128,12 @@ function init() {
 
 
 
-  geometry = new THREE.PlaneBufferGeometry( 500, 500);
+  geometry = new THREE.PlaneBufferGeometry( 500, 500, 8,8);
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
 
 
-  material = new THREE.MeshBasicMaterial( { color: new THREE.Color('lightgreen'), wireframe:true } );
+  material = new THREE.MeshBasicMaterial( { color: new THREE.Color('grey'), wireframe:true } );
 
   mesh = new THREE.Mesh( geometry, material );
   scene.add( mesh );
@@ -172,8 +172,8 @@ function init() {
 
   } ),
 
-  mesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), material );
-  mesh.position.set(0, 400, 0);
+  mesh = new THREE.Mesh( new THREE.BoxGeometry( 4000, 4000, 4000 ), material );
+  mesh.position.set(0, 1500, 0);
   scene.add( mesh );
 
 
@@ -183,9 +183,10 @@ function init() {
   ///////////////////
   var wallGeometry;
   var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
-  var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe:true } );
+  var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe:true, visible:false } );
+
   //west wall
-  wallGeometry = new THREE.BoxGeometry( 10, 100, 500, 1, 1, 1 );
+  wallGeometry = new THREE.BoxGeometry( 10, 100, 500);
   var wallWest = new THREE.Mesh(wallGeometry, wireMaterial);
   wallWest.position.set(-250, 50, 0);
   scene.add(wallWest);
