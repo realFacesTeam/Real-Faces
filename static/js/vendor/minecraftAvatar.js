@@ -84,12 +84,26 @@ Skin.prototype.createPlayerObject = function(scene) {
   var upperbody = this.upperbody = new THREE.Object3D();
   var plainMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color('grey') } );
 
+  var armMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/bodyTextures/defaultPerson/arm.png' )});
+  var bodyMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/bodyTextures/defaultPerson/body.png' )});
+  var bottomMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/bodyTextures/defaultPerson/bottom.png' )});
+  var handMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/bodyTextures/defaultPerson/hand.png' )});
+  var legMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/bodyTextures/defaultPerson/leg.png' )});
+  var shoeMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/bodyTextures/defaultPerson/shoe.png' )});
+  var shoulderMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/bodyTextures/defaultPerson/shoulder.png' )});
+  var sideMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/bodyTextures/defaultPerson/side.png' )});
+
+  var armMatFull = new THREE.MeshFaceMaterial([armMaterial, armMaterial, shoulderMaterial, handMaterial, armMaterial,armMaterial])
+  var bodyMatFull = new THREE.MeshFaceMaterial([bodyMaterial, bodyMaterial, bottomMaterial, bottomMaterial, bodyMaterial,bodyMaterial])
+  var legMatFull = new THREE.MeshFaceMaterial([legMaterial, legMaterial, shoeMaterial, shoeMaterial, legMaterial,legMaterial])
   // Left leg
   var leftleggeo = new THREE.CubeGeometry(4, 12, 4);
   for(var i=0; i < 8; i+=1) {
     leftleggeo.vertices[i].y -= 6;
   }
-  var leftleg = this.leftLeg = new THREE.Mesh(leftleggeo, plainMaterial);
+
+
+  var leftleg = this.leftLeg = new THREE.Mesh(leftleggeo, legMatFull);
   leftleg.position.z = -2;
   leftleg.position.y = -6;
 
@@ -98,14 +112,14 @@ Skin.prototype.createPlayerObject = function(scene) {
   for(var i=0; i < 8; i+=1) {
     rightleggeo.vertices[i].y -= 6;
   }
-  var rightleg = this.rightLeg =new THREE.Mesh(rightleggeo, plainMaterial);
+  var rightleg = this.rightLeg =new THREE.Mesh(rightleggeo, legMatFull);
   rightleg.position.z = 2;
   rightleg.position.y = -6;
 
 
   // Body
   var bodygeo = new THREE.CubeGeometry(4, 12, 8);
-  var bodymesh = this.body = new THREE.Mesh(bodygeo, plainMaterial);
+  var bodymesh = this.body = new THREE.Mesh(bodygeo, bodyMatFull);
   upperbody.add(bodymesh);
 
 
@@ -114,7 +128,7 @@ Skin.prototype.createPlayerObject = function(scene) {
   for(var i=0; i < 8; i+=1) {
     leftarmgeo.vertices[i].y -= 4;
   }
-  var leftarm = this.leftArm = new THREE.Mesh(leftarmgeo, plainMaterial);
+  var leftarm = this.leftArm = new THREE.Mesh(leftarmgeo, armMatFull);
   leftarm.position.z = -6;
   leftarm.position.y = 4;
   leftarm.rotation.x = Math.PI/32;
@@ -125,7 +139,7 @@ Skin.prototype.createPlayerObject = function(scene) {
   for(var i=0; i < 8; i+=1) {
     rightarmgeo.vertices[i].y -= 4;
   }
-  var rightarm =this.rightArm = new THREE.Mesh(rightarmgeo, plainMaterial);
+  var rightarm =this.rightArm = new THREE.Mesh(rightarmgeo, armMatFull);
   rightarm.position.z = 6;
   rightarm.position.y = 4;
   rightarm.rotation.x = -Math.PI/32;
@@ -133,7 +147,7 @@ Skin.prototype.createPlayerObject = function(scene) {
   upperbody.add(rightarm);
 
   //Head
-  var headgeo = new THREE.CubeGeometry(8, 8, 8);
+  var headgeo = new THREE.CubeGeometry(0.1, 0.1, 0.1);
   var headmesh = this.head = new THREE.Mesh(headgeo, plainMaterial);
   headmesh.position.y = 2;
 
