@@ -147,7 +147,7 @@ Skin.prototype.createPlayerObject = function(scene) {
   upperbody.add(rightarm);
 
   //Head
-  var headgeo = new THREE.CubeGeometry(8, 8, 8);
+  var headgeo = new THREE.CubeGeometry(0.1, 0.1, 0.1);
   var headmesh = this.head = new THREE.Mesh(headgeo, plainMaterial);
   headmesh.position.y = 2;
 
