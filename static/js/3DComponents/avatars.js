@@ -1,13 +1,13 @@
-//simplified adaption of the voxel skin node package with features that were incompatible with the new version of three.js removed
+//simplified adaption of the voxel avatar node package with features that were incompatible with the new version of three.js removed
 
-function Skin(three, opts) {
+function Avatar(three, opts) {
 
   opts = opts || {};
 
   THREE = three // hack until three.js fixes multiple instantiation
   this.sizeRatio = opts.sizeRatio || 0.4
   this.scale = opts.scale || new three.Vector3(1, 1, 1)
-  this.fallbackImage = opts.fallbackImage || 'skin.png'
+  this.fallbackImage = opts.fallbackImage || 'avatar.png'
   this.createCanvases()
   this.mesh = this.createPlayerObject()
   this.mesh.scale.set(this.sizeRatio, this.sizeRatio * 0.75, this.sizeRatio)
@@ -19,67 +19,20 @@ function Skin(three, opts) {
   this.acceleration = 0.5;
 }
 
-Skin.prototype.createCanvases = function() {
-  this.skinBig = document.createElement('canvas')
-  this.skinBigContext = this.skinBig.getContext('2d')
-  this.skinBig.width = 64 * this.sizeRatio
-  this.skinBig.height = 32 * this.sizeRatio
+Avatar.prototype.createCanvases = function() {
+  this.avatarBig = document.createElement('canvas')
+  this.avatarBigContext = this.avatarBig.getContext('2d')
+  this.avatarBig.width = 64 * this.sizeRatio
+  this.avatarBig.height = 32 * this.sizeRatio
 
-  this.skin = document.createElement('canvas')
-  this.skinContext = this.skin.getContext('2d')
-  this.skin.width = 64
-  this.skin.height = 32
+  this.avatar = document.createElement('canvas')
+  this.avatarContext = this.avatar.getContext('2d')
+  this.avatar.width = 64
+  this.avatar.height = 32
 }
 
 
-// Skin.prototype.cubeFromPlanes = function (size, mat) {
-//   var cube = new THREE.Object3D();
-//   var meshes = [];
-//   for(var i=0; i < 6; i++) {
-//     var mesh = new THREE.Mesh(new THREE.PlaneGeometry(size, size), mat);
-//     mesh.doubleSided = true;
-//     cube.add(mesh);
-//     meshes.push(mesh);
-//   }
-//   // Front
-//   meshes[0].rotation.x = Math.PI/2;
-//   meshes[0].rotation.z = -Math.PI/2;
-//   meshes[0].position.x = size/2;
-
-//   // Back
-//   meshes[1].rotation.x = Math.PI/2;
-//   meshes[1].rotation.z = Math.PI/2;
-//   meshes[1].position.x = -size/2;
-
-//   // Top
-//   meshes[2].position.y = size/2;
-
-//   // Bottom
-//   meshes[3].rotation.y = Math.PI;
-//   meshes[3].rotation.z = Math.PI;
-//   meshes[3].position.y = -size/2;
-
-//   // Left
-//   meshes[4].rotation.x = Math.PI/2;
-//   meshes[4].position.z = size/2;
-
-//   // Right
-//   meshes[5].rotation.x = -Math.PI/2;
-//   meshes[5].rotation.y = Math.PI;
-//   meshes[5].position.z = -size/2;
-
-//   return cube;
-// }
-
-//exporting these meshes for manipulation:
-//leftLeg
-//rightLeg
-//leftArm
-//rightArm
-//body
-//head
-
-Skin.prototype.createPlayerObject = function(scene) {
+Avatar.prototype.createPlayerObject = function(scene) {
   var headgroup = new THREE.Object3D();
   var upperbody = this.upperbody = new THREE.Object3D();
   var plainMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color('grey') } );
@@ -94,7 +47,7 @@ Skin.prototype.createPlayerObject = function(scene) {
   var sideMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/bodyTextures/defaultPerson/side.png' )});
 
   var armMatFull = new THREE.MeshFaceMaterial([armMaterial, armMaterial, shoulderMaterial, handMaterial, armMaterial,armMaterial])
-  var bodyMatFull = new THREE.MeshFaceMaterial([bodyMaterial, bodyMaterial, bottomMaterial, bottomMaterial, bodyMaterial,bodyMaterial])
+  var bodyMatFull = new THREE.MeshFaceMaterial([bodyMaterial, bodyMaterial, bottomMaterial, bottomMaterial, sideMaterial,sideMaterial])
   var legMatFull = new THREE.MeshFaceMaterial([legMaterial, legMaterial, shoeMaterial, shoeMaterial, legMaterial,legMaterial])
   // Left leg
   var leftleggeo = new THREE.CubeGeometry(4, 12, 4);
@@ -184,4 +137,67 @@ Skin.prototype.createPlayerObject = function(scene) {
   playerGroup.add(playerRotation);
   playerGroup.scale  = this.scale
   return playerGroup
+};
+
+//slightly adapted copy of the voxel duckWalk node package
+
+Avatar.prototype.render = function(){
+
+
+  var time = Date.now() / 1000
+  if (this.walking && time < this.startedWalking + this.acceleration){
+    this.walkSpeed = (time - this.startedWalking) / this.acceleration
+    //console.log('walking', this.walkSpeed)
+  }
+  if (!this.walking ){
+    if (time < this.stoppedWalking + this.acceleration)
+      this.walkSpeed = -1 / this.acceleration * (time - this.stoppedWalking) + 1
+    else if(this.walkSpeed > 0.02)
+      this.walkSpeed *= 0.95;
+    //console.log('not walking', this.walkSpeed)
+
+  }
+
+  this.head.rotation.y = Math.sin(time * 1.5) / 3 * this.walkSpeed
+  this.head.rotation.z = Math.sin(time) / 2 * this.walkSpeed
+
+  this.rightArm.rotation.z = 2 * Math.cos(0.6662 * time * 10 + Math.PI) * this.walkSpeed
+  this.rightArm.rotation.x = 1 * (Math.cos(0.2812 * time * 10) - 1) * this.walkSpeed
+  this.leftArm.rotation.z = 2 * Math.cos(0.6662 * time * 10) * this.walkSpeed
+  this.leftArm.rotation.x = 1 * (Math.cos(0.2312 * time * 10) + 1) * this.walkSpeed
+
+  this.rightLeg.rotation.z = 1.4 * Math.cos(0.6662 * time * 10) * this.walkSpeed
+  this.leftLeg.rotation.z = 1.4 * Math.cos(0.6662 * time * 10 + Math.PI) * this.walkSpeed
+}
+
+Avatar.prototype.startWalking = function(){
+  //console.log('startWalking', this)
+  var now = Date.now() / 1000
+  this.walking = true
+  if (this.stoppedWalking + this.acceleration > now){
+    var progress = now - this.stoppedWalking;
+    this.startedWalking = now - (this.stoppedWalking + this.acceleration - now)
+  } else {
+    this.startedWalking = Date.now() / 1000
+  }
+}
+
+Avatar.prototype.stopWalking = function() {
+  //console.log('stopWalking', this)
+  var now = Date.now() / 1000
+  this.walking = false
+  if (this.startedWalking + this.acceleration > now){
+    this.stoppedWalking = now - (this.startedWalking + this.acceleration - now)
+  } else {
+    this.stoppedWalking = Date.now() / 1000
+  }
+  //this.walkSpeed = 0;
+}
+
+Avatar.prototype.isWalking = function(){
+  return this.walking
+}
+
+Avatar.prototype.setAcceleration = function(newA){
+  this.acceleration = newA
 }

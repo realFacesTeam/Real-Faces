@@ -12,7 +12,7 @@ THREE.PointerLockControls = function ( camera ) {
   pitchObject.add( camera );
 
   var yawObject = new THREE.Object3D();
-  yawObject.position.y = 12;
+  yawObject.position.y = sceneVars.playerStartHeight;
   yawObject.add( pitchObject );
 
 
@@ -199,7 +199,7 @@ THREE.PointerLockControls = function ( camera ) {
     }
 
     //default is 400
-    var speed = 300.0;
+    var speed = sceneVars.playerSpeed;
     //add velocity to your character if key is pressed
     if ( moveForward ) velocity.z -= speed * delta;
     if ( moveBackward ) velocity.z += speed * delta;
@@ -208,11 +208,11 @@ THREE.PointerLockControls = function ( camera ) {
     if ( moveRight ) velocity.x += speed * delta;
 
 
-    // Min velocity is enables to prevent insignificant movements from being broadcast
+    // Min velocity is enabled to prevent insignificant movements from being broadcast
     // Max velocity is a work around for the after pause teleport bug in PointerLock vendor code
-    if (Math.abs(velocity.x) < 0.001  || Math.abs(velocity.x) > 100 || Math.abs(velocity.x * delta) > 100) velocity.x = 0;
-    if (Math.abs(velocity.y) < 0.001  || Math.abs(velocity.y) > 500 || Math.abs(velocity.y * delta) > 500) velocity.y = 0;
-    if (Math.abs(velocity.z) < 0.001  || Math.abs(velocity.z) > 100 || Math.abs(velocity.z * delta) > 100) velocity.z = 0;
+    if (Math.abs(velocity.x) < 0.001  || Math.abs(velocity.x) > 300 || Math.abs(velocity.x * delta) > 50) velocity.x = 0;
+    if (Math.abs(velocity.y) < 0.001  || Math.abs(velocity.y) > 500 || Math.abs(velocity.y * delta) > 250) velocity.y = 0;
+    if (Math.abs(velocity.z) < 0.001  || Math.abs(velocity.z) > 300 || Math.abs(velocity.z * delta) > 50) velocity.z = 0;
 
     if ( isOnObject === true ) {
 
@@ -224,10 +224,10 @@ THREE.PointerLockControls = function ( camera ) {
     yawObject.translateY( velocity.y * delta );
     yawObject.translateZ( velocity.z * delta );
 
-    if ( yawObject.position.y < 12 ) {
+    if ( yawObject.position.y < sceneVars.playerStartHeight ) {
 
       velocity.y = 0;
-      yawObject.position.y = 12;
+      yawObject.position.y = sceneVars.playerStartHeight;
 
       if (!canJump)
         jumped = true;
