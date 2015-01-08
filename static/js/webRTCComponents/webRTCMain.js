@@ -21,13 +21,14 @@ var updateCubeWithVideo = function(divID, clientID){
 
  var materialArray = [];
   scene = scene || window.scene;
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xpos.png' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xneg.png' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/ypos.png' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/yneg.png' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zpos.png' ) }));
+  var plainMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color('grey') } );
+  materialArray.push(plainMaterial);
+  materialArray.push(plainMaterial);
+  materialArray.push(plainMaterial);
+  materialArray.push(plainMaterial);
+  materialArray.push(plainMaterial);
   if(debugCube){
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zneg.png' ) }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/smiley.png' ) }));
   }else{
     materialArray.push(new THREE.MeshBasicMaterial( { map: videoTexture }));
   }

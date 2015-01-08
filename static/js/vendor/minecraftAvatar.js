@@ -94,7 +94,7 @@ Skin.prototype.createPlayerObject = function(scene) {
   var sideMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/bodyTextures/defaultPerson/side.png' )});
 
   var armMatFull = new THREE.MeshFaceMaterial([armMaterial, armMaterial, shoulderMaterial, handMaterial, armMaterial,armMaterial])
-  var bodyMatFull = new THREE.MeshFaceMaterial([bodyMaterial, bodyMaterial, bottomMaterial, bottomMaterial, bodyMaterial,bodyMaterial])
+  var bodyMatFull = new THREE.MeshFaceMaterial([bodyMaterial, bodyMaterial, bottomMaterial, bottomMaterial, sideMaterial,sideMaterial])
   var legMatFull = new THREE.MeshFaceMaterial([legMaterial, legMaterial, shoeMaterial, shoeMaterial, legMaterial,legMaterial])
   // Left leg
   var leftleggeo = new THREE.CubeGeometry(4, 12, 4);
