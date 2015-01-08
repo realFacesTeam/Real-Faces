@@ -6,14 +6,13 @@ var objects = [], duckWalkers = [];
 
 var raycaster;
 var collidableMeshList = [];
-var negativeBoundary = -250, positiveBoundary = 250;
 
 var blocker = document.getElementById( 'blocker' );
 var instructions = document.getElementById( 'instructions' );
 
 var sceneVars = {
   playerStartHeight:12,
-  playerSpeed: 'x',
+  playerSpeed: 300,
   playerJump: 'x',
   playerSize: 'x',
 
@@ -22,6 +21,7 @@ var sceneVars = {
   skySize: 4000
 
 }
+
 var negativeBoundary = -sceneVars.sceneSize/2, positiveBoundary = sceneVars.sceneSize/2;
 
 var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
