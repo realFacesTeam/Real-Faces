@@ -102,10 +102,10 @@ animate();
 
 function init() {
 
-  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 5000 );
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
+  scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
 
   var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
   light.position.set( 0.5, 1, 0.75 );
@@ -126,28 +126,14 @@ function init() {
   // CREATE FLOOR ///
   ///////////////////
 
-  geometry = new THREE.PlaneBufferGeometry( 500, 500, 100, 100 );
+
+
+  geometry = new THREE.PlaneBufferGeometry( 500, 500, 8,8);
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
-  // for ( var i = 0, l = geometry.vertices.length; i < l; i ++ ) {
 
-  //   var vertex = geometry.vertices[ i ];
-  //   vertex.x += Math.random() * 20 - 10;
-  //   vertex.y += Math.random() * 2;
-  //   vertex.z += Math.random() * 20 - 10;
 
-  // }
-
-  // for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
-
-  //   var face = geometry.faces[ i ];
-  //   face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-  //   face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-  //   face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-
-  // }
-
-  material = new THREE.MeshBasicMaterial( { color: new THREE.Color('lightgreen'), wireframe:true } );
+  material = new THREE.MeshBasicMaterial( { color: new THREE.Color('grey'), wireframe:true } );
 
   mesh = new THREE.Mesh( geometry, material );
   scene.add( mesh );
@@ -156,14 +142,51 @@ function init() {
   // END CREATE FLOOR //
   //////////////////////
 
+  //////////////////////
+  // CREATE SKYBOX   ///
+  //////////////////////
+
+  var skyBoxDir = 'UnionSquare';
+
+  var path = "images/skyBoxes/" + skyBoxDir + "/";
+  var format = '.jpg';
+  var urls = [
+    path + 'posx' + format, path + 'negx' + format,
+    path + 'posy' + format, path + 'negy' + format,
+    path + 'posz' + format, path + 'negz' + format
+  ];
+
+  var reflectionCube = THREE.ImageUtils.loadTextureCube( urls );
+  reflectionCube.format = THREE.RGBFormat;
+
+  var shader = THREE.ShaderLib[ "cube" ];
+  shader.uniforms[ "tCube" ].value = reflectionCube;
+
+  var material = new THREE.ShaderMaterial( {
+
+    fragmentShader: shader.fragmentShader,
+    vertexShader: shader.vertexShader,
+    uniforms: shader.uniforms,
+    depthWrite: false,
+    side: THREE.BackSide
+
+  } ),
+
+  mesh = new THREE.Mesh( new THREE.BoxGeometry( 4000, 4000, 4000 ), material );
+  mesh.position.set(0, 1500, 0);
+  scene.add( mesh );
+
+
+
   ///////////////////
   // CREATE WALL ////
   ///////////////////
   var wallGeometry;
   var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
-  var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe:true } );
+  var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe:true, visible:false } );
+
   //west wall
-  wallGeometry = new THREE.BoxGeometry( 10, 100, 500, 1, 1, 1 );
+  wallGeometry = new THREE.BoxGeometry( 10, 100, 500);
   var wallWest = new THREE.Mesh(wallGeometry, wireMaterial);
   wallWest.position.set(-250, 50, 0);
   scene.add(wallWest);
