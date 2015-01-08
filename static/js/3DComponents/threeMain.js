@@ -128,7 +128,7 @@ function init() {
 
 
 
-  geometry = new THREE.PlaneBufferGeometry( 500, 500, 8,8);
+  geometry = new THREE.PlaneBufferGeometry( 500, 500, 50,50);
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
 
