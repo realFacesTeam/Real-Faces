@@ -6,11 +6,23 @@ var objects = [], duckWalkers = [];
 
 var raycaster;
 var collidableMeshList = [];
-var negativeBoundary = -250, positiveBoundary = 250;
 
 var blocker = document.getElementById( 'blocker' );
 var instructions = document.getElementById( 'instructions' );
 
+var sceneVars = {
+  playerStartHeight:12,
+  playerSpeed: 300,
+  playerJump: 'x',
+  playerSize: 'x',
+
+  sceneSize: 500,
+
+  skySize: 4000
+
+}
+
+var negativeBoundary = -sceneVars.sceneSize/2, positiveBoundary = sceneVars.sceneSize/2;
 
 var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
@@ -74,7 +86,7 @@ if ( havePointerLock ) {
           element.requestPointerLock();
         }
 
-      }
+      };
 
       document.addEventListener( 'fullscreenchange', fullscreenchange, false );
       document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
@@ -128,7 +140,7 @@ function init() {
 
 
 
-  geometry = new THREE.PlaneBufferGeometry( 500, 500, 50,50);
+  geometry = new THREE.PlaneBufferGeometry( sceneVars.sceneSize, sceneVars.sceneSize, 50,50);
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
 
@@ -172,49 +184,49 @@ function init() {
 
   } ),
 
-  mesh = new THREE.Mesh( new THREE.BoxGeometry( 4000, 4000, 4000 ), material );
-  mesh.position.set(0, 1500, 0);
-  scene.add( mesh );
+  skyBox = new THREE.Mesh( new THREE.BoxGeometry( sceneVars.skySize, sceneVars.skySize, sceneVars.skySize ), material );
+  skyBox.position.set(0, sceneVars.skySize * 0.4, 0);
+  scene.add( skyBox );
 
-
+  ////////////////////////
+  // END CREATE SKYBOX ///
+  ////////////////////////
 
   ///////////////////
   // CREATE WALL ////
   ///////////////////
   var wallGeometry;
   var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
-  var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe:true, visible:false } );
+  var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, visible:false } );
 
   //west wall
-  wallGeometry = new THREE.BoxGeometry( 10, 100, 500);
+  wallGeometry = new THREE.BoxGeometry( 10, 100, sceneVars.sceneSize);
   var wallWest = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallWest.position.set(-250, 50, 0);
+  wallWest.position.set(-sceneVars.sceneSize/2, 50, 0);
   scene.add(wallWest);
   collidableMeshList.push(wallWest);
   //east wall
   //wallGeometry = new THREE.CubeGeometry(10, 100, 500, 1, 1, 1 );
   var wallEast = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallEast.position.set(250, 50, 0);
+  wallEast.position.set(sceneVars.sceneSize/2, 50, 0);
   scene.add(wallEast);
   collidableMeshList.push(wallEast);
   //north wall
-  wallGeometry = new THREE.BoxGeometry(500, 100, 10, 1, 1, 1 );
+  wallGeometry = new THREE.BoxGeometry(sceneVars.sceneSize, 100, 10, 1, 1, 1 );
   var wallNorth = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallNorth.position.set(0, 50, -250);
+  wallNorth.position.set(0, 50, -sceneVars.sceneSize/2);
   scene.add(wallNorth);
   collidableMeshList.push(wallNorth);
   //south wall
   //wallGeometry = new THREE.CubeGeometry(500, 100, 10, 1, 1, 1 );
   var wallSouth = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallSouth.position.set(0, 50, 250);
+  wallSouth.position.set(0, 50, sceneVars.sceneSize/2);
   scene.add(wallSouth);
   collidableMeshList.push(wallSouth);
 
   ///////////////////////
   // END CREATE WALL ////
   ///////////////////////
-
-  /// CREATE VIKING MODEL
 
 
 
