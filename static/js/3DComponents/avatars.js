@@ -100,17 +100,17 @@ Avatar.prototype.createPlayerObject = function(scene) {
   upperbody.add(rightarm);
 
   //Head
-  var headgeo = new THREE.CubeGeometry(0.1, 0.1, 0.1);
-  var headmesh = this.head = new THREE.Mesh(headgeo, plainMaterial);
-  headmesh.position.y = 2;
+  // var headgeo = new THREE.CubeGeometry(0.1, 0.1, 0.1);
+  // var headmesh = this.head = new THREE.Mesh(headgeo, plainMaterial);
+  // headmesh.position.y = 2;
 
 
-  var unrotatedHeadMesh = new THREE.Object3D();
-  unrotatedHeadMesh.rotation.y = Math.PI / 2;
-  unrotatedHeadMesh.add(headmesh);
+  // var unrotatedHeadMesh = new THREE.Object3D();
+  // unrotatedHeadMesh.rotation.y = Math.PI / 2;
+  // unrotatedHeadMesh.add(headmesh);
 
-  headgroup.add(unrotatedHeadMesh);
-  headgroup.position.y = 8;
+  // headgroup.add(unrotatedHeadMesh);
+  // headgroup.position.y = 8;
 
   var playerModel = this.playerModel = new THREE.Object3D();
 
@@ -124,11 +124,11 @@ Avatar.prototype.createPlayerObject = function(scene) {
   playerRotation.position.y = 12
   playerRotation.add(playerModel)
 
-  var rotatedHead = new THREE.Object3D();
-  rotatedHead.rotation.y = -Math.PI/2;
-  rotatedHead.add(headgroup);
+  // var rotatedHead = new THREE.Object3D();
+  // rotatedHead.rotation.y = -Math.PI/2;
+  // rotatedHead.add(headgroup);
 
-  playerModel.add(rotatedHead);
+  // playerModel.add(rotatedHead);
   playerModel.position.y = 6;
 
   var playerGroup = new THREE.Object3D();
@@ -158,8 +158,8 @@ Avatar.prototype.render = function(){
 
   }
 
-  this.head.rotation.y = Math.sin(time * 1.5) / 3 * this.walkSpeed
-  this.head.rotation.z = Math.sin(time) / 2 * this.walkSpeed
+  // this.head.rotation.y = Math.sin(time * 1.5) / 3 * this.walkSpeed;
+  // this.head.rotation.z = Math.sin(time) / 2 * this.walkSpeed;
 
   this.rightArm.rotation.z = 2 * Math.cos(0.6662 * time * 10 + Math.PI) * this.walkSpeed
   this.rightArm.rotation.x = 1 * (Math.cos(0.2812 * time * 10) - 1) * this.walkSpeed
