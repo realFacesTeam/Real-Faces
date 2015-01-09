@@ -1,12 +1,15 @@
 extends layout
 
 block content
-  div()
-    a(id='sender')='Send a Message'
-    ul(id='receiver')
   div(id='game')
   div(id='blocker')
-    div(id='instructions')
+    h3(id='instructions')
+        |Welcome to Real Faces <br />
+        |To work properly the website requires access to your webcam and to disable your cursor.<br />
+        |When the browser asks if you want to allow access (at the top of the window), click allow. <br />
+        |To move use W,A,S,D or the arrows. To look around use your mouse. Press Esc to pause. <br />
+        |Click to start!
 
   video(id='localVideo')
   span(id='remotesVideos')
+  div(id='controls')='Pause/Help: Esc        Move:W,A,S,D / Arrows       Jump:Space         Rotate:Mouse'

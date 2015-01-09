@@ -21,6 +21,12 @@ body {
 
 }
 
+#controls {
+
+  white-space: pre;
+
+}
+
 #instructions {
 
   width: 100%;
