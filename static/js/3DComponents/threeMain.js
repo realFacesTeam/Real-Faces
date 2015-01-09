@@ -138,17 +138,31 @@ function init() {
   // CREATE FLOOR ///
   ///////////////////
 
+  // Tiled floor
+
+  // note: 4x4 checkboard pattern scaled so that each square is 25 by 25 pixels.
+  var floorTexture = new THREE.ImageUtils.loadTexture( 'images/checkerboard.jpg' );
+  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+  floorTexture.repeat.set( 10, 10 );
+  // DoubleSide: render texture on both sides of mesh
+  var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+  var floorGeometry = new THREE.PlaneGeometry(sceneVars.sceneSize, sceneVars.sceneSize, 1, 1);
+  var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  floor.position.y = -0.5;
+  floor.rotation.x = Math.PI / 2;
+  scene.add(floor);
 
 
-  geometry = new THREE.PlaneBufferGeometry( sceneVars.sceneSize, sceneVars.sceneSize, 50,50);
-  geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
+  //basic floor
+  // geometry = new THREE.PlaneBufferGeometry( sceneVars.sceneSize, sceneVars.sceneSize, 50,50);
+  // geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
 
 
-  material = new THREE.MeshBasicMaterial( { color: new THREE.Color('grey'), wireframe:true } );
+  // material = new THREE.MeshBasicMaterial( { color: new THREE.Color('grey'), wireframe:true } );
 
-  mesh = new THREE.Mesh( geometry, material );
-  scene.add( mesh );
+  // mesh = new THREE.Mesh( geometry, material );
+  // scene.add( mesh );
 
   //////////////////////
   // END CREATE FLOOR //
