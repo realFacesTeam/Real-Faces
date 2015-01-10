@@ -2,10 +2,17 @@
 var connect = require('connect')
     , express = require('express')
     , io = require('socket.io')
+    , https = require('https')
+    , fs = require('fs')
+    , privateKey = fs.readFileSync('./static/certs/key.pem').toString()
+    , certificate = fs.readFileSync('./static/certs/cert.pem').toString()
     , port = (process.env.PORT || 8081);
 
 //Setup Express
-var server = express.createServer();
+var server = express.createServer({
+  key : privateKey
+, cert : certificate
+});
 server.configure(function(){
     server.set('views', __dirname + '/views');
     server.set('view options', { layout: false });
@@ -36,7 +43,10 @@ server.error(function(err, req, res, next){
     }
 });
 server.listen( port);
-
+// start server
+// https.createServer(server).listen(port, function(){
+//   console.log("Express server listening on port " + port);
+// });
 ///////////////////////////////////////////
 //              Socket.io                //
 ///////////////////////////////////////////

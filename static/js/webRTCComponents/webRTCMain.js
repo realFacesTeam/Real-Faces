@@ -39,16 +39,48 @@ var updateCubeWithVideo = function(divID, clientID){
   cube.material.needsUpdate = true;
 };
 
+var updateWallWithScreen = function(divID){
+  var video = document.getElementById(divID);
 
-function videoAdd(video,peer,clientID){
-  // Now, open the dataChannel
-  var dc = peer.getDataChannel('realTalkClient');
-  // Now send my name to all the peers
-  // Add a small timeout so dataChannel has time to be ready
-  setTimeout(function(){
-    console.log('sent videoAdd clientID: '+clientID);
-    webrtc.sendDirectlyToAll('realTalkClient','setClientID', clientID);
-  }, 3000);
+  var videoTexture = new THREE.VideoTexture( video );
+  videoTexture.generateMipmaps = false;
+  videoTexture.minFilter = THREE.LinearFilter;
+  videoTexture.magFilter = THREE.LinearFilter;
+
+  scene = scene || window.scene;
+  var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.DoubleSide } );
+  // the geometry on which the movie will be displayed;
+  //    movie image will be scaled to fit these dimensions.
+  var movieGeometry = new THREE.PlaneGeometry( 250, 100, 1, 1 );
+  var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+  movieScreen.position.set(0,50,0);
+  scene.add(movieScreen);
+};
+
+
+
+
+function videoAdd(video, peer, clientID, isScreen){
+  //if regular peer video stream
+  if(!isScreen){
+    // Now, open the dataChannel
+    var dc = peer.getDataChannel('realTalkClient');
+    // Now send my name to all the peers
+    // Add a small timeout so dataChannel has time to be ready
+    setTimeout(function(){
+      console.log('sent videoAdd clientID: '+clientID);
+      webrtc.sendDirectlyToAll('realTalkClient','setClientID', clientID);
+    }, 3000);
+  }
+  //else if is a screenshare connection
+  else{
+    // Now send my name to all the peers
+    // Add a small timeout so dataChannel has time to be ready
+    // console.log('sent screenShare clientID: '+clientID);
+    // webrtc.sendDirectlyToAll('realTalkClient','startScreenShare', clientID);
+    updateWallWithScreen(peer.id+'_screen_incoming');
+    // document.getElementById(peer.id+'_screen_incoming').setAttribute("id", data.payload);
+  }
 }
 
 //ongetclientID
@@ -83,7 +115,11 @@ var initWebRTC = function(clientID){
   });
 
   webrtc.on('videoAdded', function(video,peer){
-    videoAdd(video, peer, yourID);
+    var isScreen = false;
+    if(peer.type === 'screen'){
+      isScreen = true;
+    }
+    videoAdd(video, peer, yourID, isScreen);
   });
 
   webrtc.on('readyToCall', function () {

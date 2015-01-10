@@ -2,7 +2,7 @@ var socketInterval = 200;
 
 $(document).ready(function() {
 
-  var socket = io.connect('/translations');
+  var socket = io.connect('https://127.0.0.1:8081/translations', {secure: true});
 
   //PLAYER CONNECTED TO SERVER, TELL SERVER TO SEND BACK SELF DATA
   socket.emit('player_join');
