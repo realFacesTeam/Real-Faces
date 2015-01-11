@@ -87,7 +87,8 @@ var initWebRTC = function(clientID){
   });
 
   webrtc.on('readyToCall', function () {
-    console.log('rtc readyto call');
+    //variable that allows pointer lock
+    webrtc.webcam = true;
     // you can name it anything
     webrtc.joinRoom('realTalkClient');
   });

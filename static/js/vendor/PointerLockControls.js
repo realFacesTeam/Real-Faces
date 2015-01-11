@@ -124,6 +124,10 @@ THREE.PointerLockControls = function ( camera ) {
         moveRight = false;
         break;
 
+      //press p to re-request webcam
+      case 80: // p
+        webrtc.startLocalVideo();
+
     }
 
   };

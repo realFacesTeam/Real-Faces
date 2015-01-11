@@ -59,3 +59,9 @@ body {
   height: 50px;
   width: 50px;
 }
+
+#webcamWarning {
+  visibility: hidden;
+  font-size: 20px;
+  color: red;
+}
