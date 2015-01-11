@@ -34,11 +34,23 @@ if ( havePointerLock ) {
 
     if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
 
+      if(!webrtc.webcam){
+        document.getElementById('webcamWarning').style.visibility = 'visible';
+      }else{
+        document.getElementById('webcamWarning').style.visibility = 'hidden';
+      }
+
       controls.enabled = true;
 
       blocker.style.display = 'none';
 
     } else {
+
+      if(!webrtc.webcam){
+        document.getElementById('webcamWarning').style.visibility = 'visible';
+      }else{
+        document.getElementById('webcamWarning').style.visibility = 'hidden';
+      }
 
       controls.enabled = false;
 
