@@ -33,5 +33,26 @@ function startChatTyping () {
   // $('#chatInput').focus();
 }
 
+//send a chat message
+function sendChatMessage (message){
+  console.log(message);
+  webrtc.sendDirectlyToAll('realTalkClient','chatMessage', {message:message, username:username});
+  addChatMessage(null, message, 'You');
+};
+
+//receive a chat message from a peer
+function addChatMessage (peerID, msgText, msgOwner){
+  //construct new chat el
+  var chatMessage = $('<div></div>').html(msgOwner+': '+msgText).attr('id','chatMessage');
+  //add new chat message to the chatBox
+  $('#chatInput').before(chatMessage);
+  //attach a timer, after 10 seconds, fade it out slowly, then remove it from the DOM
+  setTimeout(function(){
+    chatMessage.hide('slow', function(){ chatMessage.remove(); });
+  },20000);
+}
+
 chatInit();
 playerEvents.addListener('start_chat_typing', startChatTyping);
+playerEvents.addListener('sendChatMessage', sendChatMessage);
+playerEvents.addListener('addChatMessage', addChatMessage);
