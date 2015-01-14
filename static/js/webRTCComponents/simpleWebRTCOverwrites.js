@@ -24,7 +24,7 @@ SimpleWebRTC.prototype.setVolumeForAll = function (harkVolume) {
           var vdm = volumeDistanceModifier(peer.socketID);
           console.log('vdm', vdm);
           console.log(peer);
-          peer.videoEl.volume = volume * vdm;
+          peer.videoEl.volume = volume * vdm * vdm;
        }
     });
 };
