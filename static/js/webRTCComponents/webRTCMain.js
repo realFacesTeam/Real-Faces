@@ -74,6 +74,7 @@ var initWebRTC = function(clientID){
   //listen for other clients joining webRTC room, render their video
   webrtc.on('channelMessage', function (peer, label, data) {
     if (data.type === 'setClientID') {
+      peer.socketID = data.payload;
       console.log('data object from channel message');
       console.log(data);
       updateCubeWithVideo(peer.id+'_video_incoming', data.payload);
@@ -97,7 +98,10 @@ var initWebRTC = function(clientID){
   //   console.log('debug console log from server');
   //   console.log(obj);
   // });
-
+  setInterval(function(){
+    console.log('updating sound')
+    webrtc.setVolumeForAll(0);
+  },1000);
 };
 
 // // set volume on video tag for all peers takse a value between 0 and 1
