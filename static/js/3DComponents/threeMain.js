@@ -159,13 +159,28 @@ function init() {
 
   //cannon fps copy floor
 
+  var floorTexture = new THREE.ImageUtils.loadTexture( 'images/grid.png' );
+  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+  floorTexture.repeat.set( 100, 100 );
   geometry = new THREE.PlaneGeometry( 300, 300, 50, 50 );
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
-  material = new THREE.MeshLambertMaterial( { color: 0xdddddd } );
-  mesh = new THREE.Mesh( geometry, material );
-  mesh.castShadow = true;
-  mesh.receiveShadow = true;
-  scene.add( mesh );
+  material = new THREE.MeshLambertMaterial( { map: floorTexture} );
+  floor = new THREE.Mesh( geometry, material );
+  floor.castShadow = true;
+  floor.receiveShadow = true;
+  scene.add( floor );
+
+  //note: 4x4 checkboard pattern scaled so that each square is 25 by 25 pixels.
+
+  // DoubleSide: render texture on both sides of mesh
+  // var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture} )
+  // var floorGeometry = new THREE.PlaneGeometry(sceneVars.sceneSize, sceneVars.sceneSize, 1, 1);
+  // var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  // floor.position.y = -0.5;
+  // floor.rotation.x = Math.PI / 2;
+  // floor.castShadow = true;
+  // floor.receiveShadow = true;
+  // scene.add(floor);
 
 
 
