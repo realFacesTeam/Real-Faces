@@ -229,11 +229,40 @@ THREE.PointerLockControls = function ( camera ) {
     }
 
     //check for current overlap (due to asyncronous client updates) and move player away if true
+
+
+    // var futurePositionX = yawObject.position.x + (velocity.x * delta);
+    // var futurePositionZ = yawObject.position.z + (velocity.z * delta);
+
+    // // small is included to prevent a large delta from allowing a player to "jump" through another player
+    // var futurePositionXSmall = yawObject.position.x + (velocity.x * delta * 0.1);
+    // var futurePositionZSmall = yawObject.position.z + (velocity.z * delta * 0.1);
+
+    // var futurePositionXMed = yawObject.position.x + (velocity.x * delta * 0.4);
+    // var futurePositionZMed = yawObject.position.z + (velocity.z * delta * 0.4);
+
+    // //check for future collision
+    // var collisionBuffer = 1.3;
+    // var collidedPlayerPosition = findOtherPlayerCollision(futurePositionXSmall, futurePositionZSmall, collisionBuffer) || findOtherPlayerCollision(futurePositionXMed, futurePositionZMed, collisionBuffer) || findOtherPlayerCollision(futurePositionX, futurePositionZ, collisionBuffer);
+
+    // if(collidedPlayerPosition){
+    //   console.log('inside collision zone')
+    //   if(isFuturePositionCloser(yawObject.position.x, yawObject.position.z, futurePositionX, futurePositionZ, collidedPlayerPosition.x, collidedPlayerPosition.z)){
+    //     //console.log('collision', collidedPlayerPosition);
+    //     velocity.x = 0;
+    //     velocity.z = 0;
+    //   }
+    // }
+
+    yawObject.translateX( velocity.x * delta );
+    yawObject.translateY( velocity.y * delta );
+    yawObject.translateZ( velocity.z * delta );
+
     var overlappedPlayerPosition = findOtherPlayerCollision(yawObject.position.x, yawObject.position.z);
 
     if (overlappedPlayerPosition){
 
-      console.log('overlap', overlappedPlayerPosition);
+      //console.log('overlap', overlappedPlayerPosition);
 
       var xzTuple = findCollisionZoneEdge(overlappedPlayerPosition, yawObject.position);
 
@@ -242,25 +271,7 @@ THREE.PointerLockControls = function ( camera ) {
 
     }
 
-    var futurePositionX = yawObject.position.x + (velocity.x * delta);
-    var futurePositionZ = yawObject.position.z + (velocity.z * delta);
-
-    // small is included to prevent a large delta from allowing a player to "jump" through another player
-    var futurePositionXSmall = yawObject.position.x + (velocity.x * delta * 0.1);
-    var futurePositionZSmall = yawObject.position.z + (velocity.z * delta * 0.1);
-
-    //check for future collision and remove velocity if true
-    var collidedPlayerPosition = findOtherPlayerCollision(futurePositionXSmall, futurePositionZSmall) || findOtherPlayerCollision(futurePositionX, futurePositionZ);
-
-    if(collidedPlayerPosition){
-      console.log('collision', collidedPlayerPosition);
-      velocity.x = 0;
-      velocity.z = 0;
-    }
-
-    yawObject.translateX( velocity.x * delta );
-    yawObject.translateY( velocity.y * delta );
-    yawObject.translateZ( velocity.z * delta );
+    if(yawObject)
 
     if ( yawObject.position.y < sceneVars.playerStartHeight ) {
 

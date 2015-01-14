@@ -34,15 +34,13 @@
 //   }
 // }
 
-var findOtherPlayerCollision = function(positionX, positionZ){
-  var playerSpacing = 9;
+var findOtherPlayerCollision = function(positionX, positionZ, buffer){
+  var buffer = buffer || 1;
+  var playerSpacing = 9 * buffer;
 
   for (var ID in lastRecordedPlayerTranslations){
     if (lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== yourID){
       var otherPlayerPosition = lastRecordedPlayerTranslations[ID].position;
-      // console.log(lastRecordedPlayerTranslations)
-      // console.log(lastRecordedPlayerTranslations[ID], ID);
-      // console.log(otherPlayerPosition)
 
       var distanceX = Math.abs(positionX - otherPlayerPosition.x);
       var distanceZ = Math.abs(positionZ - otherPlayerPosition.z);
@@ -55,7 +53,6 @@ var findOtherPlayerCollision = function(positionX, positionZ){
         return {x : otherPlayerPosition.x, z:otherPlayerPosition.z};
 
       }
-
     }
   }
 
@@ -63,13 +60,35 @@ var findOtherPlayerCollision = function(positionX, positionZ){
 };
 
 var findCollisionZoneEdge = function(otherPlayer, yourPlayer, playerSpacing){
-
+  var buffer = 1.01;
   var playerSpacing = playerSpacing || 9;
-  var radius = playerSpacing * 1.05;
+  var radius = playerSpacing * buffer;
   var denominator = Math.sqrt(Math.pow((yourPlayer.x - otherPlayer.x), 2) + Math.pow((yourPlayer.z - otherPlayer.z), 2));
 
   var edgeX = otherPlayer.x + (radius * ((yourPlayer.x - otherPlayer.x)/denominator));
   var edgeZ = otherPlayer.z + (radius * ((yourPlayer.z - otherPlayer.z)/denominator));
 
   return [edgeX, edgeZ];
-}
+};
+
+// var isFuturePositionCloser = function(currentX, currentZ, futureX, futureZ, otherX, otherZ){
+
+//   var currentDistanceX = Math.abs(currentX - otherX);
+//   var currentDistanceZ = Math.abs(currentZ - otherZ);
+
+//   var currentDistance = Math.sqrt((currentDistanceX * currentDistanceX) + (currentDistanceZ * currentDistanceZ));
+
+//   var futureDistanceX = Math.abs(futureX - otherX);
+//   var futureDistanceZ = Math.abs(futureZ - otherZ);
+
+//   var futureDistance = Math.sqrt((futureDistanceX * futureDistanceX) + (futureDistanceZ * futureDistanceZ));
+
+//   console.log('current distances', currentDistanceX, currentDistanceZ);
+//   console.log('all coords', currentX, currentZ, futureX, futureZ, otherX, otherZ);
+//   if (futureDistance < currentDistance){
+//     console.log('smaller future distance', currentDistance, futureDistance);
+//     return true;
+//   }
+//   console.log('larger future distance', currentDistance, futureDistance);
+//   return false;
+// }
