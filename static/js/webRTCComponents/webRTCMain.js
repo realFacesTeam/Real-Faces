@@ -128,11 +128,11 @@ var addChatMessage = function(peerID, msgText){
   //construct new chat el
   var chatMessage = $('<div></div>').html(peerID+': '+msgText).attr('id','chatMessage');
   //add new chat message to the chatBox
-  $('#chatBox').prepend(chatMessage);
+  $('#chatBox').append(chatMessage);
   //after 10 seconds, fade it out slowly, then remove it from the DOM
   setTimeout(function(){
     chatMessage.hide('slow', function(){ chatMessage.remove(); });
-  },10000);
+  },20000);
 }
 // // set volume on video tag for all peers takse a value between 0 and 1
 // SimpleWebRTC.prototype.setVolumeForAll = function (volume) {
