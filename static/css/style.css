@@ -65,3 +65,64 @@ body {
   font-size: 20px;
   color: red;
 }
+
+#chatBox{
+  border: 2px solid;
+  border-color: white;
+  border-radius: 10px;
+  background: no-repeat scroll 0% 0% transparent;
+  background-color: #D3D3D3;
+  width: 40%;
+  overflow: auto;
+  min-height: 10%;
+  position: absolute;
+  bottom: 5%;
+  opacity: 0.35;
+} 
+
+#chatBox:hover{
+  opacity: 1.0;
+} 
+
+#chatMessage {
+  border: 2px solid;
+  border-color: white;
+  border-radius: 10px;
+  background: no-repeat scroll 0% 0% transparent;
+  background-color: #A9A9A9;
+  height: 2%;
+  text-align: left;
+  margin-top:2px;
+  padding: 2px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+  position: relative;
+}
+
+#chatInput {
+  border: 2px solid;
+  border-color: white;
+  border-radius: 5px;
+  background: no-repeat scroll 0% 0% transparent;
+  background-color: #A9A9A9;
+  width: 90%;
+  height: 20px;
+  position: relative;
+  margin-top: 5%; 
+  float: left;
+}
+
+#chatInputButton {
+  border: 2px solid;
+  border-color: white;
+  border-radius: 2px;
+  background: no-repeat scroll 0% 0% transparent;
+  background-color: #A9A9A9;
+  width: 5%;
+  height: 20px;
+  position: relative;
+  margin-right: 2%;
+  margin-top: 5%;
+  float: right;
+}
