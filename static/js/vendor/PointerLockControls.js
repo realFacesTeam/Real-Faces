@@ -96,6 +96,14 @@ THREE.PointerLockControls = function ( camera ) {
         canJump = false;
         break;
 
+      case 84: //T for talk
+        playerEvents.emitEvent('start_chat_typing');
+        break;
+
+      //press p to re-request webcam
+      case 80: // p
+        webrtc.startLocalVideo();
+        break;
     }
 
   };
@@ -123,10 +131,6 @@ THREE.PointerLockControls = function ( camera ) {
       case 68: // d
         moveRight = false;
         break;
-
-      //press p to re-request webcam
-      case 80: // p
-        webrtc.startLocalVideo();
 
     }
 
