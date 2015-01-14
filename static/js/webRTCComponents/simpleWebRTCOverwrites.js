@@ -16,7 +16,7 @@ SimpleWebRTC.prototype.setVolumeForAll = function (harkVolume) {
     }else if (speaking === false){
       volume = 1;
     }else if (speaking === true){
-      volume = 0;
+      volume = 0.25;
     }
 
     this.webrtc.peers.forEach(function (peer) {
