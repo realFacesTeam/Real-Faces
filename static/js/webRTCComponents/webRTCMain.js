@@ -1,5 +1,6 @@
 var webrtc;
 var yourID;
+var username;
 
 var updateCubeWithVideo = function(divID, clientID){
   console.log("updated cube videoid: "+clientID);
@@ -59,6 +60,8 @@ var initWebRTC = function(clientID){
   //console.log('initializing webrtc in rtcMain.js');
   //store clientID
   yourID = clientID;
+  //ask for username
+  username = prompt("Please enter your name", "Anonymous");
 
   //create webRTC obj from library
   webrtc = new SimpleWebRTC({
@@ -84,7 +87,7 @@ var initWebRTC = function(clientID){
       //add clientID to DOM video node
       document.getElementById(peer.id+'_video_incoming').setAttribute("id", data.payload);
     } else if (data.type === 'chatMessage'){
-      addChatMessage(peer.id, data.payload);
+      addChatMessage(peer.id, data.payload.message, data.payload.username);
     }
   });
 
@@ -103,6 +106,7 @@ var initWebRTC = function(clientID){
   //   console.log('debug console log from server');
   //   console.log(obj);
   // });
+
   setInterval(function(){
     //console.log('updating sound')
     webrtc.setVolumeForAll(0);
@@ -112,23 +116,18 @@ var initWebRTC = function(clientID){
 //send a chat message
 var sendChatMessage = function(message){
   console.log(message);
-  webrtc.sendDirectlyToAll('realTalkClient','chatMessage', message);
-  addChatMessage('You', message);
+  webrtc.sendDirectlyToAll('realTalkClient','chatMessage', {message:message, username:username});
+  addChatMessage(null, message, 'You');
 };
 
 //receive a chat message from a peer
-var addChatMessage = function(peerID, msgText){
-  // var inbox = $('#chatBox').children();
-  // //if theres already 5 or more messages, delete one to make space for new message
-  // while(inbox.length >= 5){
-  //   //keep removing messages from oldest to newest until 5 are left
-  //   inbox[0].remove();
-  // }
-
+var addChatMessage = function(peerID, msgText, msgOwner){
   //construct new chat el
-  var chatMessage = $('<div></div>').html(peerID+': '+msgText).attr('id','chatMessage');
+  var chatMessage = $('<div></div>').html(msgOwner+': '+msgText).attr('id','chatMessage');
   //add new chat message to the chatBox
-  $('#chatBox').append(chatMessage);
+  $('#chatInput').before(chatMessage);
+
+  //attach a timer
   //after 10 seconds, fade it out slowly, then remove it from the DOM
   setTimeout(function(){
     chatMessage.hide('slow', function(){ chatMessage.remove(); });
