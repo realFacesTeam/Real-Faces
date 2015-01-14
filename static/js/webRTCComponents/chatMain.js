@@ -1,7 +1,7 @@
 function chatInit(){
   //on press enter in chat box, send chat message
   $('#chatInput').on("keypress", function(e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       parseChatInput();
       return false; // prevent the default behavior from happening
     }

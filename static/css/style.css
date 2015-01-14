@@ -77,12 +77,12 @@ body {
   min-height: 10%;
   position: absolute;
   bottom: 5%;
-  opacity: 0.35;
-} 
+  opacity: 0.75;
+}
 
 #chatBox:hover{
   opacity: 1.0;
-} 
+}
 
 #chatMessage {
   border: 2px solid;
@@ -103,24 +103,25 @@ body {
 #chatInput {
   border: 2px solid;
   border-color: white;
-  border-radius: 5px;
+  border-radius: 2px;
   background: no-repeat scroll 0% 0% transparent;
   background-color: #A9A9A9;
-  width: 90%;
+  width: 80%;
   height: 20px;
   position: relative;
-  margin-top: 5%; 
+  margin-top: 5%;
+  margin-left: 2%;
   float: left;
 }
 
 #chatInputButton {
   border: 2px solid;
   border-color: white;
-  border-radius: 2px;
+  border-radius: 5px;
   background: no-repeat scroll 0% 0% transparent;
   background-color: #A9A9A9;
-  width: 5%;
-  height: 20px;
+  width: 10%;
+  height: 25px;
   position: relative;
   margin-right: 2%;
   margin-top: 5%;
