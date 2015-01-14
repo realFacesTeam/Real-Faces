@@ -97,7 +97,9 @@ var initWebRTC = function(clientID){
   //   console.log('debug console log from server');
   //   console.log(obj);
   // });
-
+  setInterval(function(){
+    webrtc.setVolumeForAll(0);
+  },2000);
 };
 
 // // set volume on video tag for all peers takse a value between 0 and 1
