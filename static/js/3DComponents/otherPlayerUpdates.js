@@ -47,6 +47,9 @@ var removePlayer = function(ID){
 };
 
 var teleportPlayer = function(ID, translation){
+  if(ID === yourID){
+    return;
+  }
 
   var player = scene.getObjectByName('player-'+ID);
 

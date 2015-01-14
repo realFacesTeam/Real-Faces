@@ -1,6 +1,6 @@
 var volumeDistanceModifier = function(clientID){
-  var min = 20;
-  var max = 100;
+  var min = 10;
+  var max = 50;
   console.log(lastRecordedPlayerTranslations)
   console.log(clientID)
   var otherTranslation = lastRecordedPlayerTranslations[clientID];
