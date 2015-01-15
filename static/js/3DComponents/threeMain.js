@@ -182,6 +182,64 @@ function init() {
   // floor.receiveShadow = true;
   // scene.add(floor);
 
+  ///////////////
+  // FURNITURE //
+  ///////////////
+
+  var wallMaterial = new THREE.MeshBasicMaterial( {side:THREE.DoubleSide} );
+
+  //wall 1
+  var wall1 = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 30), wallMaterial );
+  wall1.position.set(25,10,50);
+  scene.add(wall1);
+
+  var wall2 = new THREE.Mesh( new THREE.PlaneBufferGeometry(100, 30), wallMaterial );
+  wall2.position.set(-50,10,0);
+  wall2.rotation.y = Math.PI / 2;
+  scene.add(wall2);
+
+  var wall3 = new THREE.Mesh( new THREE.PlaneBufferGeometry(100, 30), wallMaterial );
+  wall3.position.set(0,10,-50);
+  scene.add(wall3);
+
+  var wall4 = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 30), wallMaterial );
+  wall4.rotation.y = Math.PI / 2;
+  wall4.position.set(100,10,-25);
+  scene.add(wall4);
+
+  var wall5 = new THREE.Mesh( new THREE.PlaneBufferGeometry(200, 30), wallMaterial );
+  wall5.position.set(0,10,-100);
+  scene.add(wall5);
+
+  var wall6 = new THREE.Mesh( new THREE.PlaneBufferGeometry(100, 30), wallMaterial );
+  wall6.rotation.y = Math.PI / 2;
+  wall6.position.set(-100,10,-50);
+  scene.add(wall6);
+
+  var wall7 = new THREE.Mesh( new THREE.PlaneBufferGeometry(50, 30), wallMaterial );
+  wall7.position.set(-125,10,0);
+  scene.add(wall7);
+
+  var wall8 = new THREE.Mesh( new THREE.PlaneBufferGeometry(50, 30), wallMaterial );
+  wall8.rotation.y = Math.PI / 2;
+  wall8.position.set(50,10,-25);
+  scene.add(wall8);
+
+  var wall9 = new THREE.Mesh( new THREE.PlaneBufferGeometry(50, 30), wallMaterial );
+  wall9.rotation.y = Math.PI / 2;
+  wall9.position.set(-150,10, 25);
+  scene.add(wall9);
+
+  var wall10 = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 30), wallMaterial );
+  wall10.position.set(-75,10,50);
+  scene.add(wall10);
+
+
+
+
+
+
+
 
 
   renderer = new THREE.WebGLRenderer();
