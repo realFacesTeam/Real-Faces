@@ -1,5 +1,5 @@
 var camera, scene, renderer;
-var geometry, material, mesh;
+var geometry, material, mesh, verticalMirror;
 var controls;
 
 var objects = [], duckWalkers = [];
@@ -13,6 +13,7 @@ var instructions = document.getElementById( 'instructions' );
 var sceneVars = {
   playerStartHeight:12,
   playerSpeed: 300,
+  //EDIT FIX
   playerJump: 'x',
   playerSize: 'x',
 
@@ -126,7 +127,7 @@ animate();
 
 function init() {
 
-  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 5000 );
+  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
 
   scene = new THREE.Scene();
 
@@ -150,6 +151,7 @@ function init() {
   }
   scene.add( light );
 
+
   controls = new THREE.PointerLockControls( camera );
   scene.add( controls.getObject() );
 
@@ -161,8 +163,8 @@ function init() {
 
   var floorTexture = new THREE.ImageUtils.loadTexture( 'images/grid.png' );
   floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-  floorTexture.repeat.set( 100, 100 );
-  geometry = new THREE.PlaneGeometry( 300, 300, 50, 50 );
+  floorTexture.repeat.set( 75, 75 );
+  geometry = new THREE.PlaneGeometry( 300, 300, 5, 5 );
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
   material = new THREE.MeshLambertMaterial( { map: floorTexture} );
   floor = new THREE.Mesh( geometry, material );
@@ -170,32 +172,27 @@ function init() {
   floor.receiveShadow = true;
   scene.add( floor );
 
-  //note: 4x4 checkboard pattern scaled so that each square is 25 by 25 pixels.
-
-  // DoubleSide: render texture on both sides of mesh
-  // var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture} )
-  // var floorGeometry = new THREE.PlaneGeometry(sceneVars.sceneSize, sceneVars.sceneSize, 1, 1);
-  // var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-  // floor.position.y = -0.5;
-  // floor.rotation.x = Math.PI / 2;
-  // floor.castShadow = true;
-  // floor.receiveShadow = true;
-  // scene.add(floor);
 
 
-
-  renderer = new THREE.WebGLRenderer();
+  renderer = new THREE.WebGLRenderer({ antialias: true } );
   renderer.shadowMapEnabled = true;
   renderer.shadowMapSoft = true;
   renderer.setClearColor( scene.fog.color, 1  );
   renderer.setSize( window.innerWidth, window.innerHeight );
 
-  document.body.appendChild( renderer.domElement );
 
-  //
+  document.body.appendChild( renderer.domElement );
 
   window.addEventListener( 'resize', onWindowResize, false );
 
+
+  verticalMirror = new THREE.Mirror( renderer, camera, { clipBias: 0.003, textureWidth: 10, textureHeight: 10, color:0x889999 } );
+
+  var verticalMirrorMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 10, 10 ), verticalMirror.material );
+  verticalMirrorMesh.add( verticalMirror );
+  verticalMirrorMesh.position.y = 5;
+  verticalMirrorMesh.position.z = -45;
+  scene.add( verticalMirrorMesh );
 }
 
 function onWindowResize() {
@@ -239,11 +236,13 @@ function animate() {
 
   }
 
-
+  // cubeCamera.updateCubeMap( renderer, scene );
 
   TWEEN.update();
 
   controls.update();
+
+  verticalMirror.render()
 
   renderer.render( scene, camera );
 

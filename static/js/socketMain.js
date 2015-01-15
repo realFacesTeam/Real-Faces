@@ -1,4 +1,4 @@
-var socketInterval = 200;
+var socketInterval = 100;
 var lastRecordedPlayerTranslations;
 var yourPlayerTranslation;
 
