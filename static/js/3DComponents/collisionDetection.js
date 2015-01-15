@@ -38,7 +38,7 @@ var findOtherPlayerCollision = function(positionX, positionZ){
   var playerSpacing = 9;
 
   for (var ID in lastRecordedPlayerTranslations){
-    if (lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== yourID){
+    if (lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== realFaces.yourID){
       var otherPlayerPosition = lastRecordedPlayerTranslations[ID].position;
       // console.log(lastRecordedPlayerTranslations)
       // console.log(lastRecordedPlayerTranslations[ID], ID);

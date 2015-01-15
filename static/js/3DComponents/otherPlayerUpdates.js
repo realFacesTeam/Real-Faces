@@ -47,7 +47,7 @@ var removePlayer = function(ID){
 };
 
 var teleportPlayer = function(ID, translation){
-  if(ID === yourID){
+  if(ID === realFaces.yourID){
     return;
   }
 

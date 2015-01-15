@@ -34,7 +34,7 @@ if ( havePointerLock ) {
 
     if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
 
-      if(!webrtc.webcam){
+      if(!realFaces.webrtc.webcam){
         document.getElementById('webcamWarning').style.visibility = 'visible';
       }else{
         document.getElementById('webcamWarning').style.visibility = 'hidden';
@@ -46,7 +46,7 @@ if ( havePointerLock ) {
 
     } else {
 
-      if(!webrtc.webcam){
+      if(!realFaces.webrtc.webcam){
         document.getElementById('webcamWarning').style.visibility = 'visible';
       }else{
         document.getElementById('webcamWarning').style.visibility = 'hidden';
