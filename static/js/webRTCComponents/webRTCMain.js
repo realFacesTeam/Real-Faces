@@ -1,5 +1,6 @@
 var webrtc;
 var yourID;
+var username;
 
 var updateCubeWithVideo = function(divID, clientID){
   console.log("updated cube videoid: "+clientID);
@@ -59,6 +60,8 @@ var initWebRTC = function(clientID){
   //console.log('initializing webrtc in rtcMain.js');
   //store clientID
   yourID = clientID;
+  //ask for username
+  username = prompt("Please enter your name", "Anonymous");
 
   //create webRTC obj from library
   webrtc = new SimpleWebRTC({
@@ -84,7 +87,7 @@ var initWebRTC = function(clientID){
       //add clientID to DOM video node
       document.getElementById(peer.id+'_video_incoming').setAttribute("id", data.payload);
     } else if (data.type === 'chatMessage'){
-      addChatMessage(peer.id, data.payload);
+      playerEvents.emit('addChatMessage', peer.id, data.payload.message, data.payload.username);
     }
   });
 
@@ -103,37 +106,14 @@ var initWebRTC = function(clientID){
   //   console.log('debug console log from server');
   //   console.log(obj);
   // });
+
   setInterval(function(){
     //console.log('updating sound')
     webrtc.setVolumeForAll(0);
   },1000);
 };
 
-//send a chat message
-var sendChatMessage = function(message){
-  console.log(message);
-  webrtc.sendDirectlyToAll('realTalkClient','chatMessage', message);
-  addChatMessage('You', message);
-};
 
-//receive a chat message from a peer
-var addChatMessage = function(peerID, msgText){
-  // var inbox = $('#chatBox').children();
-  // //if theres already 5 or more messages, delete one to make space for new message
-  // while(inbox.length >= 5){
-  //   //keep removing messages from oldest to newest until 5 are left
-  //   inbox[0].remove();
-  // }
-
-  //construct new chat el
-  var chatMessage = $('<div></div>').html(peerID+': '+msgText).attr('id','chatMessage');
-  //add new chat message to the chatBox
-  $('#chatBox').prepend(chatMessage);
-  //after 10 seconds, fade it out slowly, then remove it from the DOM
-  setTimeout(function(){
-    chatMessage.hide('slow', function(){ chatMessage.remove(); });
-  },10000);
-}
 // // set volume on video tag for all peers takse a value between 0 and 1
 // SimpleWebRTC.prototype.setVolumeForAll = function (volume) {
 //     this.webrtc.peers.forEach(function (peer) {
@@ -142,4 +122,4 @@ var addChatMessage = function(peerID, msgText){
 // };
 
 playerEvents.addListener('start_webRTC', initWebRTC);
-playerEvents.addListener('sendChatMessage', sendChatMessage);
+
