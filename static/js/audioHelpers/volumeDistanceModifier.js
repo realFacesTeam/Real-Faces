@@ -1,15 +1,13 @@
 var volumeDistanceModifier = function(clientID){
   var min = 10;
   var max = 50;
-  console.log(lastRecordedPlayerTranslations)
-  console.log(clientID)
-  var otherTranslation = lastRecordedPlayerTranslations[clientID];
+  var otherTranslation = realFaces.socket.socketio.lastRecordedPlayerTranslations[clientID];
 
   var ox = otherTranslation.position.x;
-  var yourx = yourPlayerTranslation.position.x;
+  var yourx = realFaces.socket.yourPlayerTranslation.position.x;
 
-  var xDistance = Math.abs(otherTranslation.position.x - yourPlayerTranslation.position.x);
-  var yDistance = Math.abs(otherTranslation.position.y - yourPlayerTranslation.position.y);
+  var xDistance = Math.abs(otherTranslation.position.x - realFaces.socket.yourPlayerTranslation.position.x);
+  var yDistance = Math.abs(otherTranslation.position.y - realFaces.socket.yourPlayerTranslation.position.y);
 
   var totalDistance = Math.sqrt((xDistance * xDistance)+(yDistance * yDistance));
 
