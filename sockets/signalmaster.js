@@ -1,3 +1,6 @@
+var stunServers = require('config.json')('./config/stunservers.json');
+var turnServers = require('config.json')('./config/turnservers.json');
+
 module.exports = function(io){
   //create socket.io client signalmaster namespacing
   var signal = io.of('/signalmaster');
@@ -105,35 +108,10 @@ module.exports = function(io){
       });
 
 
+      console.log(JSON.stringify(stunServers.servers));
+      console.log('=========================================')
       var servers = {
-        "stunservers" :
-          [
-              {url: 'stun:stun.l.google.com:19302'},
-              {url: 'stun:stun.anyfirewall.com:3478'},
-              // {url: "stun:stun.sipgate.net"},
-              // {url: "stun:217.10.68.152"},
-              // {url: "stun:stun.sipgate.net:10000"},
-              // {url: "stun:217.10.68.152:10000"}
-              // {url:'stun:stun.l.google.com:19302'},
-              // {url:'stun:stun1.l.google.com:19302'},
-              // {url:'stun:stun2.l.google.com:19302'},
-              // {url:'stun:stun3.l.google.com:19302'},
-              // {url:'stun:stun4.l.google.com:19302'}
-              // {url:'stun:stun01.sipphone.com'},
-              // {url:'stun:stun.ekiga.net'},
-              // {url:'stun:stun.fwdnet.net'},
-              // {url:'stun:stun.ideasip.com'},
-              // {url:'stun:stun.iptel.org'},
-              // {url:'stun:stun.rixtelecom.se'},
-              // {url:'stun:stun.schlund.de'},
-              // {url:'stun:stunserver.org'},
-              // {url:'stun:stun.softjoys.com'},
-              // {url:'stun:stun.voiparound.com'},
-              // {url:'stun:stun.voipbuster.com'},
-              // {url:'stun:stun.voipstunt.com'},
-              // {url:'stun:stun.voxgratia.org'},
-              // {url:'stun:stun.xten.com'}
-          ],
+        "stunservers" : stunServers.servers,
         "turnservers" :
           [
             /*
@@ -147,38 +125,10 @@ module.exports = function(io){
           ]
       };
 
-      var credentials = [
-        {
-          url: 'turn:54.187.203.135',
-          username: 'a',
-          credential: 'b'
-        },
-        {
-          url: 'turn:192.158.29.39:3478?transport=udp',
-          username: '28224511:1379330808',
-          credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA='
-        },
-        {
-          url: 'turn:numb.viagenie.ca',
-          username: 'webrtc@live.com', 
-          credential: 'muazkh'
-        },
-        {
-          url: 'turn:turn.bistri.com:80',
-          credential: 'homeo',
-          username: 'homeo'
-        },
-        {
-          url: 'turn:turn.anyfirewall.com:443?transport=tcp',
-          credential: 'webrtc',
-          username: 'webrtc'
-        }
-      ];
+      //load pre-generated credentials
+      var credentials = turnServers.servers;
 
-
-
-        //here you can push in generated credentials
-      //here we push in public access pre-generated TURN server credentials
+      //here you can generate credentials from secret
       //e.g.
       //credentials.push(generateCredentialObj());
 

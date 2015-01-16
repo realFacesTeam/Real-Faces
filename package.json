@@ -2,20 +2,23 @@
   "name": "realTalk",
   "description": "A 3D webGL videoconferencing tool using webRTC.",
   "author": "Rory Campbell <roryc89@gmail.com>",
-  "contributors" : ["Dave Mun <mun.dave@gmail.com>"],
+  "contributors": [
+    "Dave Mun <mun.dave@gmail.com>"
+  ],
   "version": "1.0.0",
   "dependencies": {
+    "config.json": "0.0.3",
     "connect": "1.8.5",
     "express": "2.5.2",
     "jade": "0.20.0",
-    "socket.io": "0.9.6",
-    "node-uuid": "1.2.0"
+    "node-uuid": "1.2.0",
+    "socket.io": "0.9.6"
   },
   "start": "node server.js",
   "devDependencies": {
     "vows": "0.5.x",
-	"mocha": "*",
-	"should": "*"
+    "mocha": "*",
+    "should": "*"
   },
   "engine": "node 0.10.0"
 }
