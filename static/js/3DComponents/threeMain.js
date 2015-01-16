@@ -160,7 +160,7 @@ RealTHREE.prototype.animate = function () {
 
   for(var i = 0, len = realFaces.THREE.objects.length; i < len; i++){
     var object = realFaces.THREE.objects[i];
-    if (object.hasOwnProperty('update'))
+    if (typeof(object.update) === 'function')
       object.update();
   }
 

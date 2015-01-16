@@ -16,7 +16,7 @@ function chatInit(){
 
 function parseChatInput (){
   //create a copy of chat message
-  var message = $('#chatInput').val().slice(0);
+  var message = $('#chatInput').val();
   //before we delete it
   $('#chatInput').val("");
   //and then emit event that webRTCMain will use to send data message
