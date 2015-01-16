@@ -15,12 +15,14 @@ RealSocket.prototype.createPlayerScreen = function(ID, createTranslation){
   var material = new THREE.MeshFaceMaterial(materialArray);
 
   var playerScreen = new THREE.Mesh( geometry, material );
+  playerScreen.castShadow = true;
 
   playerScreen.name = 'player-' + ID;
 
   body = new Avatar(THREE);
 
   body.mesh.position.y = -realFaces.THREE.sceneVars.playerStartHeight;
+
 
   body.stopWalking();
 
@@ -73,7 +75,6 @@ RealSocket.prototype.movePlayer = function(ID, newTranslation){
   }else if(!body.walking && ( Math.abs(player.position.x - newTranslation.position.x) > 1|| Math.abs(player.position.y - newTranslation.position.y) > 1 || Math.abs(player.position.z - newTranslation.position.z) > 1 ) ){
      body.startWalking();
    }
-
 
   if(!player.tweenedPosition){
     player.tweenedPosition = {

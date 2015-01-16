@@ -1,6 +1,5 @@
 var RealSocket = function () {
-  this.socketInterval = 200;
-  // this.lastRecordedPlayerTranslations;
+  this.socketInterval = 100;
   this.yourPlayerTranslation;
 
   //YOUR PLAYER UPDATES TO SERVER
