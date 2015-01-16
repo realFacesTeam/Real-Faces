@@ -41,7 +41,6 @@ var RealSocket = function () {
 
   this.socketio.on('client_disconnected', function(clientID){
     delete this.lastRecordedPlayerTranslations[clientID]
-    console.log('server removing player: '+clientID);
     playerEvents.emit('remove_player', [clientID]);
   });
 
@@ -62,7 +61,7 @@ var RealSocket = function () {
 };
 
 RealSocket.prototype.storePlayerTranslation = function(translation){
-  this.yourPlayerTranslation = translation;
-  this.translated = true;
+  realFaces.socket.yourPlayerTranslation = translation;
+  realFaces.socket.translated = true;
 };
 

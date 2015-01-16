@@ -66,11 +66,8 @@ RealSocket.prototype.teleportPlayer = function(ID, translation){
 };
 
 RealSocket.prototype.movePlayer = function(ID, newTranslation){
-
   var player = realFaces.THREE.scene.getObjectByName('player-'+ID);
   var body = realFaces.THREE.duckWalkers[ID];
-
-  //console.log('translationChanges', player.position.x - newTranslation.position.x, player.position.y - newTranslation.position.y, player.position.z - newTranslation.position.z)
 
   // //console.log(body)
   if (body.isWalking() && Math.abs(player.position.x - newTranslation.position.x) < 1 && Math.abs(player.position.y - newTranslation.position.y) < 1 && Math.abs(player.position.z - newTranslation.position.z) < 1){
@@ -93,8 +90,8 @@ RealSocket.prototype.movePlayer = function(ID, newTranslation){
     };
   }
 
-  player.positionTween = new TWEEN.Tween(player.tweenedPosition).to(newTranslation.position, socketInterval);
-  player.rotationTween = new TWEEN.Tween(player.tweenedRotation).to(newTranslation.rotation, socketInterval);
+  player.positionTween = new TWEEN.Tween(player.tweenedPosition).to(newTranslation.position, realFaces.THREE.socket.socketInterval);
+  player.rotationTween = new TWEEN.Tween(player.tweenedRotation).to(newTranslation.rotation, realFaces.THREE.socket.socketInterval);
 
   player.positionTween.onUpdate(function(){
     player.position.x = player.tweenedPosition.x;
