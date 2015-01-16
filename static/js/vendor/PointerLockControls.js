@@ -13,6 +13,7 @@ THREE.PointerLockControls = function ( camera ) {
 
   var yawObject = new THREE.Object3D();
   yawObject.position.y = sceneVars.playerStartHeight;
+  //createPlayerScreen(yourID);
   yawObject.add( pitchObject );
 
 
@@ -96,10 +97,6 @@ THREE.PointerLockControls = function ( camera ) {
           canJump = false;
         break;
 
-      case 84: //T for talk
-        playerEvents.emitEvent('start_chat_typing');
-        break;
-
       //press p to re-request webcam
       case 80: // p
         webrtc.startLocalVideo();
@@ -130,6 +127,10 @@ THREE.PointerLockControls = function ( camera ) {
       case 39: // right
       case 68: // d
         moveRight = false;
+        break;
+
+      case 84: //T for talk
+        playerEvents.emitEvent('start_chat_typing');
         break;
 
     }

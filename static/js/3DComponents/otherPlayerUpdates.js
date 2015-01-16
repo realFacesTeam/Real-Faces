@@ -68,6 +68,8 @@ var teleportPlayer = function(ID, translation){
 
 var movePlayer = function(ID, newTranslation){
 
+  //socketInterval= tweenTime || socketInterval;
+
   var player = scene.getObjectByName('player-'+ID);
   var body = duckWalkers[ID];
 
