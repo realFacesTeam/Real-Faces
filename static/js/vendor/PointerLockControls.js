@@ -277,6 +277,7 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
 
       var translation = getTranslation();
       playerEvents.emitEvent('player_movement', [translation]);
+      console('player movement emitted in pointer lock. translation:', translation);
       //socket.emit('movement', velocity);
       rotated = false;
     }
