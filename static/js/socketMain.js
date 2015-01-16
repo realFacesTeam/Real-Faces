@@ -23,8 +23,6 @@ var RealSocket = function () {
     this.lastRecordedPlayerTranslations = clientTranslations;
     for (var id in clientTranslations){
       if (clientTranslations.hasOwnProperty(id) && clientTranslations[id] && id !== yourID){
-        console.log('drawing new client: '+id);
-        console.log('your client id is: '+yourID);
         playerEvents.emit('new_player', id, clientTranslations[id]);
         playerEvents.emit('teleport_other_player', id, clientTranslations[id]);
       }

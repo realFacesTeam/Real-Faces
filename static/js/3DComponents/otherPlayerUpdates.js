@@ -1,6 +1,5 @@
 
 RealSocket.prototype.createPlayerScreen = function(ID, createTranslation){
-  console.log('created player cube: '+ID);
   var geometry = new THREE.BoxGeometry( 9, 9, 1 );
 
   var plainMaterial = new THREE.MeshBasicMaterial( {color: 'lightgrey'} );
@@ -69,12 +68,9 @@ RealSocket.prototype.movePlayer = function(ID, newTranslation){
   var player = realFaces.THREE.scene.getObjectByName('player-'+ID);
   var body = realFaces.THREE.duckWalkers[ID];
 
-  // //console.log(body)
   if (body.isWalking() && Math.abs(player.position.x - newTranslation.position.x) < 1 && Math.abs(player.position.y - newTranslation.position.y) < 1 && Math.abs(player.position.z - newTranslation.position.z) < 1){
-    //console.log('stop moving')
     body.stopWalking();
   }else if(!body.walking && ( Math.abs(player.position.x - newTranslation.position.x) > 1|| Math.abs(player.position.y - newTranslation.position.y) > 1 || Math.abs(player.position.z - newTranslation.position.z) > 1 ) ){
-     //console.log('not moving so start, body.walking=', body.walking)
      body.startWalking();
    }
 
