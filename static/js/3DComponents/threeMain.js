@@ -1,4 +1,4 @@
-var RealTHREE = function () {
+var RealTHREE = function (sceneName) {
   this.collidableMeshList = [];
   this.objects = [];
   this.duckWalkers = [];
@@ -26,20 +26,154 @@ var RealTHREE = function () {
 
   this.raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
-
-
   this.renderer = new THREE.WebGLRenderer();
   this.renderer.setClearColor( 0xffffff );
   this.renderer.setSize( window.innerWidth, window.innerHeight );
 
   document.body.appendChild( this.renderer.domElement );
 
-  //
-
   window.addEventListener( 'resize', this.onWindowResize, false );
+
 };
 
 RealTHREE.prototype.createSceneOutdoor = function () {
+  ////////////////////
+  // CREATE FLOOR ///
+  ///////////////////
+
+  // Tiled floor
+  // note: 4x4 checkboard pattern scaled so that each square is 25 by 25 pixels.
+  var floorTexture = new THREE.ImageUtils.loadTexture( 'images/checkerboard.jpg' );
+  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+  floorTexture.repeat.set( 10, 10 );
+  // DoubleSide: render texture on both sides of mesh
+  var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+  var floorGeometry = new THREE.PlaneBufferGeometry(this.sceneVars.sceneSize, this.sceneVars.sceneSize, 1, 1);
+  var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  floor.position.y = -0.5;
+  floor.rotation.x = Math.PI / 2;
+  this.scene.add(floor);
+
+  //////////////////////
+  // END CREATE FLOOR //
+  //////////////////////
+
+  //////////////////////
+  // CREATE SKYBOX   ///
+  //////////////////////
+
+  createSkybox('UnionSquare', this.sceneVars.skySize);
+
+  ////////////////////////
+  // END CREATE SKYBOX ///
+  ////////////////////////
+
+  ///////////////////
+  // CREATE WALL ////
+  ///////////////////
+  var wallGeometry;
+  var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
+  var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, visible:false } );
+
+  //west wall
+  wallGeometry = new THREE.BoxGeometry( 10, 100, this.sceneVars.sceneSize);
+  var wallWest = new THREE.Mesh(wallGeometry, wireMaterial);
+  wallWest.position.set(-this.sceneVars.sceneSize/2, 50, 0);
+  this.scene.add(wallWest);
+  this.collidableMeshList.push(wallWest);
+
+  //east wall
+  var wallEast = new THREE.Mesh(wallGeometry, wireMaterial);
+  wallEast.position.set(this.sceneVars.sceneSize/2, 50, 0);
+  this.scene.add(wallEast);
+  this.collidableMeshList.push(wallEast);
+
+  //north wall
+  wallGeometry = new THREE.BoxGeometry(this.sceneVars.sceneSize, 100, 10, 1, 1, 1 );
+  var wallNorth = new THREE.Mesh(wallGeometry, wireMaterial);
+  wallNorth.position.set(0, 50, -this.sceneVars.sceneSize/2);
+  this.scene.add(wallNorth);
+  this.collidableMeshList.push(wallNorth);
+
+  //south wall
+  var wallSouth = new THREE.Mesh(wallGeometry, wireMaterial);
+  wallSouth.position.set(0, 50, this.sceneVars.sceneSize/2);
+  this.scene.add(wallSouth);
+  this.collidableMeshList.push(wallSouth);
+
+  ///////////////////////
+  // END CREATE WALL ////
+  ///////////////////////
+};
+
+
+RealTHREE.prototype.createSceneArtGallery = function () {
+
+
+  var ambient = new THREE.AmbientLight( 0x444444 );
+  this.scene.add( ambient );
+
+  var light = new THREE.SpotLight( 0xffffff, 0.85, 0, Math.PI / 2, 1 );
+  light.position.set( 0, 1500, 1000 );
+  light.target.position.set( 0, 0, 0 );
+
+  this.scene.add( light );
+
+  //cannon fps copy floor
+
+  var floorTexture = new THREE.ImageUtils.loadTexture( 'images/grid.png' );
+  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+  floorTexture.repeat.set( 50, 30 );
+  var geometry = new THREE.PlaneBufferGeometry( 250, 150, 5, 5 );
+  geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
+  var material = new THREE.MeshLambertMaterial( { map: floorTexture} );
+  var floor = new THREE.Mesh( geometry, material );
+  floor.position.z = -25;
+  floor.position.x = -25;
+
+  floor.castShadow = false;
+  floor.receiveShadow = false;
+  this.scene.add( floor );
+
+  createWalls();
+      //fix this function call
+  createCeiling();
+
+  createSkybox('Sorsele3', this.sceneVars.skySize);
+
+  ///////////////
+  // FURNITURE //
+  ///////////////
+
+  renderer = new THREE.WebGLRenderer({ antialias: true} );
+  renderer.context.canvas = WebGLDebugUtils.makeLostContextSimulatingCanvas(renderer.context.canvas);
+  renderer.context.canvas.addEventListener("webglcontextlost", function(event) {
+      event.preventDefault();
+      // animationID would have been set by your call to requestAnimationFrame
+      cancelAnimationFrame(animationID);
+      console.log('animation cancelled due to lost webGL context')
+  }, false);
+  //renderer.setClearColor( scene.fog.color );
+  //renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  //container.appendChild( renderer.domElement );
+
+  renderer.autoClear = false;
+
+
+  this.verticalMirror = new THREE.Mirror( this.renderer, this.camera, { clipBias: 0.01, textureWidth: window.innerWidth, textureHeight: window.innerHeight } );
+
+  var verticalMirrorMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 25 ), this.verticalMirror.material );
+  verticalMirrorMesh.add( this.verticalMirror );
+  verticalMirrorMesh.position.y = 15;
+  verticalMirrorMesh.position.z = -47.49;
+  this.scene.add( verticalMirrorMesh );
+
+  document.body.appendChild( renderer.domElement );
+
+}
+
+RealTHREE.prototype.createSceneUnionSquare  = function () {
   ////////////////////
   // CREATE FLOOR ///
   ///////////////////
@@ -99,43 +233,7 @@ RealTHREE.prototype.createSceneOutdoor = function () {
   // END CREATE SKYBOX ///
   ////////////////////////
 
-  ///////////////////
-  // CREATE WALL ////
-  ///////////////////
-  var wallGeometry;
-  var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
-  var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, visible:false } );
-
-  //west wall
-  wallGeometry = new THREE.BoxGeometry( 10, 100, this.sceneVars.sceneSize);
-  var wallWest = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallWest.position.set(-this.sceneVars.sceneSize/2, 50, 0);
-  this.scene.add(wallWest);
-  this.collidableMeshList.push(wallWest);
-
-  //east wall
-  var wallEast = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallEast.position.set(this.sceneVars.sceneSize/2, 50, 0);
-  this.scene.add(wallEast);
-  this.collidableMeshList.push(wallEast);
-
-  //north wall
-  wallGeometry = new THREE.BoxGeometry(this.sceneVars.sceneSize, 100, 10, 1, 1, 1 );
-  var wallNorth = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallNorth.position.set(0, 50, -this.sceneVars.sceneSize/2);
-  this.scene.add(wallNorth);
-  this.collidableMeshList.push(wallNorth);
-
-  //south wall
-  var wallSouth = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallSouth.position.set(0, 50, this.sceneVars.sceneSize/2);
-  this.scene.add(wallSouth);
-  this.collidableMeshList.push(wallSouth);
-
-  ///////////////////////
-  // END CREATE WALL ////
-  ///////////////////////
-};
+}
 
 RealTHREE.prototype.onWindowResize = function() {
   realFaces.THREE.camera.aspect = window.innerWidth / window.innerHeight;
@@ -169,6 +267,7 @@ RealTHREE.prototype.animate = function () {
   }
 
   TWEEN.update();
+  realFaces.THREE.verticalMirror.render();
   realFaces.THREE.controls.update();
   realFaces.THREE.renderer.render( realFaces.THREE.scene, realFaces.THREE.camera );
 }
@@ -281,7 +380,3 @@ RealTHREE.prototype.pointerLock = function () {
   }
   //POINTER LOCK
 }
-
-
-
-

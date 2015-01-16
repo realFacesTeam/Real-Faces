@@ -17,7 +17,9 @@ realFaces.THREE.pointerLock();
 
 //construct scene based on url
 //eg
-realFaces.THREE.createSceneOutdoor();
+realFaces.THREE.createSceneArtGallery();
+//realFaces.THREE.createSceneOutdoor();
+//realFaces.THREE.createSceneUnionSquare();
 
 //start animations
 realFaces.THREE.animate();

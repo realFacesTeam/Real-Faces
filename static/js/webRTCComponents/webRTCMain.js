@@ -1,4 +1,5 @@
 var RealWebRTC =  function (clientID) {
+
   //create webRTC obj from library
   this.webrtc = new SimpleWebRTC({
     // the signalmaster URL to implement handshakes
@@ -94,4 +95,3 @@ var videoAdd = function (video, peer, clientID) {
     realFaces.webrtc.webrtc.webrtc.sendDirectlyToAll('realTalkClient','setClientID', realFaces.socket.socketio.yourID);
   }, 3000);
 };
-
