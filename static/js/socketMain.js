@@ -54,11 +54,11 @@ var RealSocket = function () {
   //check for movement to broadcast to server at regular intervals
   var thisPointer = this;
   setInterval(function(){
-    if (realFaces.socket.translated){
-      realFaces.socket.socketio.emit('translate', realFaces.socket.yourPlayerTranslation);
-      realFaces.socket.translated = false;
+    if (thisPointer.translated){
+      thisPointer.socketio.emit('translate', thisPointer.yourPlayerTranslation);
+      thisPointer.translated = false;
     }
-  }, realFaces.socket.socketInterval);
+  }, thisPointer.socketInterval);
 };
 
 RealSocket.prototype.storePlayerTranslation = function(translation){
