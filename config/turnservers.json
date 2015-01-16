@@ -1,0 +1,19 @@
+{
+  "servers": [
+              {
+                "url": "turn:54.187.203.135",
+                "username": "a",
+                "credential": "b"
+              },
+              {
+                "url":"turn:turn.anyfirewall.com:3478?transport=udp",
+                "username":"1421510621:KellyApp",
+                "credential":"a2w1Z2kwZ2Y"
+              },
+              {
+                "url":"turn:turn.anyfirewall.com:443?transport=tcp",
+                "username":"1421510621:KellyApp",
+                "credential":"a2w1Z2kwZ2Y"
+              }
+            ]
+}
