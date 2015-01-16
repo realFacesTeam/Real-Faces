@@ -32,7 +32,8 @@ function startChatTyping () {
 
 //send a chat message
 function sendChatMessage (message){
-  webrtc.sendDirectlyToAll('realTalkClient','chatMessage', {message:message, username:username});
+  var webrtc = realFaces.webrtc.webrtc;
+  webrtc.sendDirectlyToAll('realTalkClient','chatMessage', {message:message, username:webrtc.username});
   addChatMessage(null, message, 'You');
 };
 

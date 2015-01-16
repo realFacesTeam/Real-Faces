@@ -1,4 +1,5 @@
-var createPlayerScreen = function(ID, createTranslation){
+
+RealSocket.prototype.createPlayerScreen = function(ID, createTranslation){
   console.log('created player cube: '+ID);
   var geometry = new THREE.BoxGeometry( 9, 9, 1 );
 
@@ -20,38 +21,38 @@ var createPlayerScreen = function(ID, createTranslation){
 
   body = new Avatar(THREE);
 
-  body.mesh.position.y = -sceneVars.playerStartHeight;
+  body.mesh.position.y = -realFaces.THREE.sceneVars.playerStartHeight;
 
   body.stopWalking();
 
-  duckWalkers[ID] = body;
+  realFaces.THREE.duckWalkers[ID] = body;
 
   playerScreen.add(body.mesh);
   playerScreen.position.y += 10;
 
 
-  objects.push( playerScreen );
-  scene.add( playerScreen );
-  collidableMeshList.push(playerScreen);
+  realFaces.THREE.objects.push( playerScreen );
+  realFaces.THREE.scene.add( playerScreen );
+  realFaces.THREE.collidableMeshList.push(playerScreen);
 
 };
 
 
-var removePlayer = function(ID){
-  var player = scene.getObjectByName('player-'+ID);
-  scene.remove(player);
+RealSocket.prototype.removePlayer = function(ID){
+  var player = realFaces.THREE.scene.getObjectByName('player-'+ID);
+  realFaces.THREE.scene.remove(player);
   var remotesContainer = document.getElementById('remotesVideos');
   var remoteVideo = document.getElementById(ID);
   if (remoteVideo)
     remotesContainer.removeChild(remoteVideo);
 };
 
-var teleportPlayer = function(ID, translation){
-  if(ID === yourID){
+RealSocket.prototype.teleportPlayer = function(ID, translation){
+  if(ID === realFaces.yourID){
     return;
   }
 
-  var player = scene.getObjectByName('player-'+ID);
+  var player = realFaces.THREE.scene.getObjectByName('player-'+ID);
 
   player.position.x = translation.position.x;
   player.position.y = translation.position.y;
@@ -64,10 +65,10 @@ var teleportPlayer = function(ID, translation){
 
 };
 
-var movePlayer = function(ID, newTranslation){
+RealSocket.prototype.movePlayer = function(ID, newTranslation){
 
-  var player = scene.getObjectByName('player-'+ID);
-  var body = duckWalkers[ID];
+  var player = realFaces.THREE.scene.getObjectByName('player-'+ID);
+  var body = realFaces.THREE.duckWalkers[ID];
 
   //console.log('translationChanges', player.position.x - newTranslation.position.x, player.position.y - newTranslation.position.y, player.position.z - newTranslation.position.z)
 
@@ -108,13 +109,5 @@ var movePlayer = function(ID, newTranslation){
   player.positionTween.start();
   player.rotationTween.start();
 };
-
-playerEvents.addListener('new_player', createPlayerScreen);
-
-playerEvents.addListener('remove_player', removePlayer);
-
-playerEvents.addListener('teleport_other_player', teleportPlayer);
-
-playerEvents.addListener('move_other_player', movePlayer);
 
 
