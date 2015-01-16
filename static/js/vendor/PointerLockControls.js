@@ -229,9 +229,41 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
     }
 
     //check for current overlap (due to asyncronous client updates) and move player away if true
+    // var overlappedPlayerPosition = realFaces.THREE.findOtherPlayerCollision(yawObject.position.x, yawObject.position.z);
+
+    // if (overlappedPlayerPosition){
+
+    //   var xzTuple = realFaces.THREE.findCollisionZoneEdge(overlappedPlayerPosition, yawObject.position);
+
+    //   yawObject.position.setX(xzTuple[0]);
+    //   yawObject.position.setZ(xzTuple[1]);
+
+    // }
+
+    // var futurePositionX = yawObject.position.x + (velocity.x * delta);
+    // var futurePositionZ = yawObject.position.z + (velocity.z * delta);
+
+    // // small is included to prevent a large delta from allowing a player to "jump" through another player
+    // var futurePositionXSmall = yawObject.position.x + (velocity.x * delta * 0.1);
+    // var futurePositionZSmall = yawObject.position.z + (velocity.z * delta * 0.1);
+
+    // //check for future collision and remove velocity if true
+    // var collidedPlayerPosition = realFaces.THREE.findOtherPlayerCollision(futurePositionXSmall, futurePositionZSmall) || realFaces.THREE.findOtherPlayerCollision(futurePositionX, futurePositionZ);
+
+    // if(collidedPlayerPosition){
+    //   velocity.x = 0;
+    //   velocity.z = 0;
+    // }
+
+    yawObject.translateX( velocity.x * delta );
+    yawObject.translateY( velocity.y * delta );
+    yawObject.translateZ( velocity.z * delta );
+
     var overlappedPlayerPosition = realFaces.THREE.findOtherPlayerCollision(yawObject.position.x, yawObject.position.z);
 
     if (overlappedPlayerPosition){
+
+      //console.log('overlap', overlappedPlayerPosition);
 
       var xzTuple = realFaces.THREE.findCollisionZoneEdge(overlappedPlayerPosition, yawObject.position);
 
@@ -240,29 +272,10 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
 
     }
 
-    var futurePositionX = yawObject.position.x + (velocity.x * delta);
-    var futurePositionZ = yawObject.position.z + (velocity.z * delta);
-
-    // small is included to prevent a large delta from allowing a player to "jump" through another player
-    var futurePositionXSmall = yawObject.position.x + (velocity.x * delta * 0.1);
-    var futurePositionZSmall = yawObject.position.z + (velocity.z * delta * 0.1);
-
-    //check for future collision and remove velocity if true
-    var collidedPlayerPosition = realFaces.THREE.findOtherPlayerCollision(futurePositionXSmall, futurePositionZSmall) || realFaces.THREE.findOtherPlayerCollision(futurePositionX, futurePositionZ);
-
-    if(collidedPlayerPosition){
-      velocity.x = 0;
-      velocity.z = 0;
-    }
-
-    yawObject.translateX( velocity.x * delta );
-    yawObject.translateY( velocity.y * delta );
-    yawObject.translateZ( velocity.z * delta );
-
-    if ( yawObject.position.y < sceneVars.playerStartHeight ) {
+    if ( yawObject.position.y < realFaces.THREE.sceneVars.playerStartHeight ) {
 
       velocity.y = 0;
-      yawObject.position.y = sceneVars.playerStartHeight;
+      yawObject.position.y = realFaces.THREE.sceneVars.playerStartHeight;
 
       if (!canJump)
         jumped = true;
@@ -277,7 +290,6 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
 
       var translation = getTranslation();
       playerEvents.emitEvent('player_movement', [translation]);
-      console('player movement emitted in pointer lock. translation:', translation);
       //socket.emit('movement', velocity);
       rotated = false;
     }
