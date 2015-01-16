@@ -1,16 +1,20 @@
-var camera, scene, renderer;
-var geometry, material, mesh;
-var controls;
+realFaces.THREE = {};
+realFaces.THREE.collidableMeshList = [];
+realFaces.THREE.objects = [];
+realFaces.THREE.duckWalkers = [];
 
-var objects = [], duckWalkers = [];
+// var camera, scene, renderer;
+// var controls;
 
-var raycaster;
-var collidableMeshList = [];
+// var objects = [], duckWalkers = [];
+
+// var raycaster;
+// var collidableMeshList = [];
 
 var blocker = document.getElementById( 'blocker' );
 var instructions = document.getElementById( 'instructions' );
 
-var sceneVars = {
+realFaces.sceneVars = {
   playerStartHeight:12,
   playerSpeed: 300,
   playerJump: 'x',
@@ -22,7 +26,7 @@ var sceneVars = {
 
 }
 
-var negativeBoundary = -sceneVars.sceneSize/2, positiveBoundary = sceneVars.sceneSize/2;
+var negativeBoundary = -realFaces.sceneVars.sceneSize/2, positiveBoundary = realFaces.sceneVars.sceneSize/2;
 
 var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
@@ -121,24 +125,22 @@ if ( havePointerLock ) {
 
 }
 
-init();
-animate();
 
-function init() {
+realFaces.THREE.init = function () {
 
-  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 5000 );
+  realFaces.THREE.camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 5000 );
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
+  realFaces.THREE.scene = new THREE.Scene();
+  realFaces.THREE.scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
 
   var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
   light.position.set( 0.5, 1, 0.75 );
-  scene.add( light );
+  realFaces.THREE.scene.add( light );
 
-  controls = new THREE.PointerLockControls( camera );
-  scene.add( controls.getObject() );
+  controls = new THREE.PointerLockControls( realFaces.THREE.camera );
+  realFaces.THREE.scene.add( controls.getObject() );
 
-  raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+  realFaces.THREE.raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
   // var geometry = new THREE.BoxGeometry( 10, 10, 10 );
   // var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
@@ -158,11 +160,11 @@ function init() {
   floorTexture.repeat.set( 10, 10 );
   // DoubleSide: render texture on both sides of mesh
   var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-  var floorGeometry = new THREE.PlaneGeometry(sceneVars.sceneSize, sceneVars.sceneSize, 1, 1);
+  var floorGeometry = new THREE.PlaneGeometry(realFaces.sceneVars.sceneSize, realFaces.sceneVars.sceneSize, 1, 1);
   var floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.position.y = -0.5;
   floor.rotation.x = Math.PI / 2;
-  scene.add(floor);
+  realFaces.THREE.scene.add(floor);
 
 
   //basic floor
@@ -210,9 +212,9 @@ function init() {
 
   } ),
 
-  skyBox = new THREE.Mesh( new THREE.BoxGeometry( sceneVars.skySize, sceneVars.skySize, sceneVars.skySize ), material );
-  skyBox.position.set(0, sceneVars.skySize * 0.4, 0);
-  scene.add( skyBox );
+  skyBox = new THREE.Mesh( new THREE.BoxGeometry( realFaces.sceneVars.skySize, realFaces.sceneVars.skySize, realFaces.sceneVars.skySize ), material );
+  skyBox.position.set(0, realFaces.sceneVars.skySize * 0.4, 0);
+  realFaces.THREE.scene.add( skyBox );
 
   ////////////////////////
   // END CREATE SKYBOX ///
@@ -226,68 +228,66 @@ function init() {
   var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, visible:false } );
 
   //west wall
-  wallGeometry = new THREE.BoxGeometry( 10, 100, sceneVars.sceneSize);
+  wallGeometry = new THREE.BoxGeometry( 10, 100, realFaces.sceneVars.sceneSize);
   var wallWest = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallWest.position.set(-sceneVars.sceneSize/2, 50, 0);
-  scene.add(wallWest);
-  collidableMeshList.push(wallWest);
+  wallWest.position.set(-realFaces.sceneVars.sceneSize/2, 50, 0);
+  realFaces.THREE.scene.add(wallWest);
+  realFaces.THREE.collidableMeshList.push(wallWest);
   //east wall
   //wallGeometry = new THREE.CubeGeometry(10, 100, 500, 1, 1, 1 );
   var wallEast = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallEast.position.set(sceneVars.sceneSize/2, 50, 0);
-  scene.add(wallEast);
-  collidableMeshList.push(wallEast);
+  wallEast.position.set(realFaces.sceneVars.sceneSize/2, 50, 0);
+  realFaces.THREE.scene.add(wallEast);
+  realFaces.THREE.collidableMeshList.push(wallEast);
   //north wall
-  wallGeometry = new THREE.BoxGeometry(sceneVars.sceneSize, 100, 10, 1, 1, 1 );
+  wallGeometry = new THREE.BoxGeometry(realFaces.sceneVars.sceneSize, 100, 10, 1, 1, 1 );
   var wallNorth = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallNorth.position.set(0, 50, -sceneVars.sceneSize/2);
-  scene.add(wallNorth);
-  collidableMeshList.push(wallNorth);
+  wallNorth.position.set(0, 50, -realFaces.sceneVars.sceneSize/2);
+  realFaces.THREE.scene.add(wallNorth);
+  realFaces.THREE.collidableMeshList.push(wallNorth);
   //south wall
   //wallGeometry = new THREE.CubeGeometry(500, 100, 10, 1, 1, 1 );
   var wallSouth = new THREE.Mesh(wallGeometry, wireMaterial);
-  wallSouth.position.set(0, 50, sceneVars.sceneSize/2);
-  scene.add(wallSouth);
-  collidableMeshList.push(wallSouth);
+  wallSouth.position.set(0, 50, realFaces.sceneVars.sceneSize/2);
+  realFaces.THREE.scene.add(wallSouth);
+  realFaces.THREE.collidableMeshList.push(wallSouth);
 
   ///////////////////////
   // END CREATE WALL ////
   ///////////////////////
 
 
+  realFaces.THREE.renderer = new THREE.WebGLRenderer();
+  realFaces.THREE.renderer.setClearColor( 0xffffff );
+  realFaces.THREE.renderer.setSize( window.innerWidth, window.innerHeight );
 
-
-  renderer = new THREE.WebGLRenderer();
-  renderer.setClearColor( 0xffffff );
-  renderer.setSize( window.innerWidth, window.innerHeight );
-
-  document.body.appendChild( renderer.domElement );
+  document.body.appendChild( realFaces.THREE.renderer.domElement );
 
   //
 
-  window.addEventListener( 'resize', onWindowResize, false );
+  window.addEventListener( 'resize', realFaces.THREE.onWindowResize, false );
 
 }
 
-function onWindowResize() {
+realFaces.THREE.onWindowResize = function() {
 
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+  realFaces.THREE.camera.aspect = window.innerWidth / window.innerHeight;
+  realFaces.THREE.camera.updateProjectionMatrix();
 
-  renderer.setSize( window.innerWidth, window.innerHeight );
+  realFaces.THREE.renderer.setSize( window.innerWidth, window.innerHeight );
 
 }
 
-function animate() {
+realFaces.THREE.animate = function () {
 
-  requestAnimationFrame( animate );
+  requestAnimationFrame( realFaces.THREE.animate );
 
   controls.isOnObject( false );
 
-  raycaster.ray.origin.copy( controls.getObject().position );
-  raycaster.ray.origin.y -= 10;
+  realFaces.THREE.raycaster.ray.origin.copy( controls.getObject().position );
+  realFaces.THREE.raycaster.ray.origin.y -= 10;
 
-  var intersections = raycaster.intersectObjects( objects );
+  var intersections = realFaces.THREE.raycaster.intersectObjects( realFaces.THREE.objects );
 
   if ( intersections.length > 0 ) {
 
@@ -295,18 +295,18 @@ function animate() {
 
   }
 
-  for(var i = 0, len = objects.length; i < len; i++){
+  for(var i = 0, len = realFaces.THREE.objects.length; i < len; i++){
 
-    var object = objects[i];
+    var object = realFaces.THREE.objects[i];
 
     if (object.hasOwnProperty('update'))
       object.update();
 
   }
 
-  for(var ID in duckWalkers){
+  for(var ID in realFaces.THREE.duckWalkers){
 
-    duckWalkers[ID].render();
+    realFaces.THREE.duckWalkers[ID].render();
 
   }
 
@@ -316,6 +316,10 @@ function animate() {
 
   controls.update();
 
-  renderer.render( scene, camera );
+  realFaces.THREE.renderer.render( realFaces.THREE.scene, realFaces.THREE.camera );
 
 }
+
+
+realFaces.THREE.init();
+realFaces.THREE.animate();

@@ -34,7 +34,7 @@
 //   }
 // }
 
-var findOtherPlayerCollision = function(positionX, positionZ){
+realFaces.findOtherPlayerCollision = function(positionX, positionZ){
   var playerSpacing = 9;
 
   for (var ID in lastRecordedPlayerTranslations){
@@ -62,7 +62,7 @@ var findOtherPlayerCollision = function(positionX, positionZ){
   return false;
 };
 
-var findCollisionZoneEdge = function(otherPlayer, yourPlayer, playerSpacing){
+realFaces.findCollisionZoneEdge = function(otherPlayer, yourPlayer, playerSpacing){
 
   var playerSpacing = playerSpacing || 9;
   var radius = playerSpacing * 1.05;

@@ -9,7 +9,7 @@ var realFaces = {
     videoTexture.magFilter = THREE.LinearFilter;
 
     var materialArray = [];
-    scene = scene || window.scene;
+    realFaces.THREE.scene = realFaces.THREE.scene || window.scene;
     var plainMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color('grey') } );
     materialArray.push(plainMaterial);
     materialArray.push(plainMaterial);
@@ -19,7 +19,7 @@ var realFaces = {
     materialArray.push(new THREE.MeshBasicMaterial( { map: videoTexture }));
     var MovingCubeMat = new THREE.MeshFaceMaterial(materialArray);
 
-    var cube  = scene.getObjectByName('player-'+clientID);
+    var cube  = realFaces.THREE.scene.getObjectByName('player-'+clientID);
     cube.material = MovingCubeMat;
     cube.material.needsUpdate = true;
   },

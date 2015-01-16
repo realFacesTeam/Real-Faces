@@ -18,13 +18,13 @@ $(document).ready(function() {
 
   var translated = false;
 
-  var storePlayerTranslation = function(translation){
+  realFaces.socket.storePlayerTranslation = function(translation){
     //console.log('translation', translation);
     yourPlayerTranslation = translation;
     translated = true;
   };
 
-  playerEvents.addListener('player_movement', storePlayerTranslation);
+  playerEvents.addListener('player_movement', realFaces.socket.storePlayerTranslation);
 
   setInterval(function(){
     if (translated){
