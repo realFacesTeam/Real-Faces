@@ -58,11 +58,11 @@ var RealSocket = function () {
       realFaces.socket.socketio.emit('translate', realFaces.socket.yourPlayerTranslation);
       realFaces.socket.translated = false;
     }
-  }, this.socketInterval);
+  }, realFaces.socket.socketInterval);
 };
 
 RealSocket.prototype.storePlayerTranslation = function(translation){
   this.yourPlayerTranslation = translation;
-  translated = true;
+  this.translated = true;
 };
 
