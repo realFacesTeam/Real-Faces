@@ -37,7 +37,7 @@ THREE.ShaderLib['mirror'] = {
 		"float blendOverlay(float base, float blend) {",
 			"return( base < 0.5 ? ( 2.0 * base * blend ) : (1.0 - 2.0 * ( 1.0 - base ) * ( 1.0 - blend ) ) );",
 		"}",
-		
+
 		"void main() {",
 
 			"vec4 color = texture2DProj(mirrorSampler, mirrorCoord);",
@@ -76,7 +76,7 @@ THREE.Mirror = function ( renderer, camera, options ) {
 	this.rotationMatrix = new THREE.Matrix4();
 	this.lookAtPosition = new THREE.Vector3(0, 0, -1);
 	this.clipPlane = new THREE.Vector4();
-	
+
 	// For debug only, show the normal and plane of the mirror
 	var debugMode = options.debugMode !== undefined ? options.debugMode : false;
 

@@ -2,7 +2,7 @@ var webrtc;
 var yourID;
 var username;
 
-var updateCubeWithVideo = function(divID, clientID){
+var updateCubeWithVideo = function(divID, clientID, isOwn){
   console.log("updated cube videoid: "+clientID);
   var video = document.getElementById(divID);
    // var position =  {

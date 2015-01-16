@@ -1,6 +1,11 @@
-var camera, scene, renderer;
+var camera, scene, renderer, light;
 var geometry, material, mesh, verticalMirror;
 var controls;
+
+
+var SCREEN_WIDTH = window.innerWidth;
+var SCREEN_HEIGHT = window.innerHeight;
+
 
 var objects = [], duckWalkers = [];
 
@@ -35,11 +40,11 @@ if ( havePointerLock ) {
 
     if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
 
-      if(!webrtc.webcam){
-        document.getElementById('webcamWarning').style.visibility = 'visible';
-      }else{
-        document.getElementById('webcamWarning').style.visibility = 'hidden';
-      }
+      // if(!webrtc.webcam){
+      //   document.getElementById('webcamWarning').style.visibility = 'visible';
+      // }else{
+      //   document.getElementById('webcamWarning').style.visibility = 'hidden';
+      // }
 
       controls.enabled = true;
 
@@ -47,11 +52,11 @@ if ( havePointerLock ) {
 
     } else {
 
-      if(!webrtc.webcam){
-        document.getElementById('webcamWarning').style.visibility = 'visible';
-      }else{
-        document.getElementById('webcamWarning').style.visibility = 'hidden';
-      }
+      // if(!webrtc.webcam){
+      //   document.getElementById('webcamWarning').style.visibility = 'visible';
+      // }else{
+      //   document.getElementById('webcamWarning').style.visibility = 'hidden';
+      // }
 
       controls.enabled = false;
 
@@ -127,28 +132,23 @@ animate();
 
 function init() {
 
-  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+  console.log('3 init')
+
+  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 5000 );
 
   scene = new THREE.Scene();
 
-  scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
-  scene.fog = new THREE.Fog( 0x000000, 0, 500 );
-  var ambient = new THREE.AmbientLight( 0x111111 );
+  //scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
+
+
+  var ambient = new THREE.AmbientLight( 0x444444 );
   scene.add( ambient );
-  light = new THREE.SpotLight( 0xffffff );
-  light.position.set( 50, 150, 200 );
+
+  light = new THREE.SpotLight( 0xffffff, 0.85, 0, Math.PI / 2, 1 );
+  light.position.set( 0, 1500, 1000 );
   light.target.position.set( 0, 0, 0 );
-  if(true){
-      light.castShadow = true;
-      light.shadowCameraNear = 50;
-      light.shadowCameraFar = 1000;//camera.far;
-      light.shadowCameraFov = 40;
-      light.shadowMapBias = 0.1;
-      light.shadowMapDarkness = 0.7;
-      light.shadowMapWidth = 2*512;
-      light.shadowMapHeight = 2*512;
-      //light.shadowCameraVisible = true;
-  }
+
+
   scene.add( light );
 
 
@@ -157,6 +157,26 @@ function init() {
 
   raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
+  // (function() {
+  //   var start_time = (new Date()).getTime();
+  //   var cube_geometry = new THREE.CubeGeometry( 6, 6, 6 );
+  //   var cube_mesh = new THREE.Mesh( cube_geometry );
+  //   cube_mesh.position.x = -30;
+  //   cube_mesh.position.y = 35;
+  //   var cube_bsp = new ThreeBSP( cube_mesh );
+  //   var sphere_geometry = new THREE.SphereGeometry( 3.6, 32, 32 );
+  //   var sphere_mesh = new THREE.Mesh( sphere_geometry );
+  //   sphere_mesh.position.x = -30;
+  //   sphere_mesh.position.y = 35;
+  //   var sphere_bsp = new ThreeBSP( sphere_mesh );
+
+  //   var subtract_bsp = cube_bsp.subtract( sphere_bsp );
+  //   var result = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({ shading: THREE.SmoothShading, map: THREE.ImageUtils.loadTexture('images/CSGtexture.png') }) );
+  //   result.geometry.computeVertexNormals();
+  //   scene.add( result );
+  //   console.log( 'Example 1: ' + ((new Date()).getTime() - start_time) + 'ms' );
+  // })();
+
 
 
   //cannon fps copy floor
@@ -164,111 +184,101 @@ function init() {
   var floorTexture = new THREE.ImageUtils.loadTexture( 'images/grid.png' );
   floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
   floorTexture.repeat.set( 75, 75 );
-  geometry = new THREE.PlaneGeometry( 300, 300, 5, 5 );
+  geometry = new THREE.PlaneBufferGeometry( 300, 300, 5, 5 );
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
   material = new THREE.MeshLambertMaterial( { map: floorTexture} );
   floor = new THREE.Mesh( geometry, material );
-  floor.castShadow = true;
-  floor.receiveShadow = true;
+  floor.castShadow = false;
+  floor.receiveShadow = false;
   scene.add( floor );
 
+  //////////////////////
+  // CREATE SKYBOX   ///
+  //////////////////////
 
-  //note: 4x4 checkboard pattern scaled so that each square is 25 by 25 pixels.
+  var skyBoxDir = 'Sorsele3';
 
-  // DoubleSide: render texture on both sides of mesh
-  // var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture} )
-  // var floorGeometry = new THREE.PlaneGeometry(sceneVars.sceneSize, sceneVars.sceneSize, 1, 1);
-  // var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-  // floor.position.y = -0.5;
-  // floor.rotation.x = Math.PI / 2;
-  // floor.castShadow = true;
-  // floor.receiveShadow = true;
-  // scene.add(floor);
+  var path = "images/skyBoxes/" + skyBoxDir + "/";
+  var format = '.jpg';
+  var urls = [
+    path + 'posx' + format, path + 'negx' + format,
+    path + 'posy' + format, path + 'negy' + format,
+    path + 'posz' + format, path + 'negz' + format
+  ];
+
+  var reflectionCube = THREE.ImageUtils.loadTextureCube( urls );
+  reflectionCube.format = THREE.RGBFormat;
+
+  var shader = THREE.ShaderLib[ "cube" ];
+  shader.uniforms[ "tCube" ].value = reflectionCube;
+
+  var material = new THREE.ShaderMaterial( {
+
+    fragmentShader: shader.fragmentShader,
+    vertexShader: shader.vertexShader,
+    uniforms: shader.uniforms,
+    depthWrite: false,
+    side: THREE.BackSide
+
+  } ),
+
+  skyBox = new THREE.Mesh( new THREE.BoxGeometry( sceneVars.skySize, sceneVars.skySize, sceneVars.skySize ), material );
+  skyBox.position.set(0, sceneVars.skySize * 0.4, 0);
+  scene.add( skyBox );
+
+  ////////////////////////
+  // END CREATE SKYBOX ///
+  ////////////////////////
+
 
   ///////////////
   // FURNITURE //
   ///////////////
 
-  var wallMaterial = new THREE.MeshBasicMaterial( {side:THREE.DoubleSide} );
-
-  //wall 1
-  var wall1 = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 30), wallMaterial );
-  wall1.position.set(25,10,50);
-  scene.add(wall1);
-
-  var wall2 = new THREE.Mesh( new THREE.PlaneBufferGeometry(100, 30), wallMaterial );
-  wall2.position.set(-50,10,0);
-  wall2.rotation.y = Math.PI / 2;
-  scene.add(wall2);
-
-  var wall3 = new THREE.Mesh( new THREE.PlaneBufferGeometry(100, 30), wallMaterial );
-  wall3.position.set(0,10,-50);
-  scene.add(wall3);
-
-  var wall4 = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 30), wallMaterial );
-  wall4.rotation.y = Math.PI / 2;
-  wall4.position.set(100,10,-25);
-  scene.add(wall4);
-
-  var wall5 = new THREE.Mesh( new THREE.PlaneBufferGeometry(200, 30), wallMaterial );
-  wall5.position.set(0,10,-100);
-  scene.add(wall5);
-
-  var wall6 = new THREE.Mesh( new THREE.PlaneBufferGeometry(100, 30), wallMaterial );
-  wall6.rotation.y = Math.PI / 2;
-  wall6.position.set(-100,10,-50);
-  scene.add(wall6);
-
-  var wall7 = new THREE.Mesh( new THREE.PlaneBufferGeometry(50, 30), wallMaterial );
-  wall7.position.set(-125,10,0);
-  scene.add(wall7);
-
-  var wall8 = new THREE.Mesh( new THREE.PlaneBufferGeometry(50, 30), wallMaterial );
-  wall8.rotation.y = Math.PI / 2;
-  wall8.position.set(50,10,-25);
-  scene.add(wall8);
-
-  var wall9 = new THREE.Mesh( new THREE.PlaneBufferGeometry(50, 30), wallMaterial );
-  wall9.rotation.y = Math.PI / 2;
-  wall9.position.set(-150,10, 25);
-  scene.add(wall9);
-
-  var wall10 = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 30), wallMaterial );
-  wall10.position.set(-75,10,50);
-  scene.add(wall10);
+  createWalls();
 
 
+  renderer = new THREE.WebGLRenderer({ antialias: true} );
+  renderer.context.canvas = WebGLDebugUtils.makeLostContextSimulatingCanvas(renderer.context.canvas);
+  renderer.context.canvas.addEventListener("webglcontextlost", function(event) {
+      event.preventDefault();
+      // animationID would have been set by your call to requestAnimationFrame
+      cancelAnimationFrame(animationID);
+      console.log('animation cancelled due to lost webGL context')
+  }, false);
+  //renderer.setClearColor( scene.fog.color );
+  //renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+  //container.appendChild( renderer.domElement );
 
+  renderer.autoClear = false;
 
-  renderer = new THREE.WebGLRenderer({ antialias: true } );
-  renderer.shadowMapEnabled = true;
-  renderer.shadowMapSoft = true;
-  renderer.setClearColor( scene.fog.color, 1  );
-  renderer.setSize( window.innerWidth, window.innerHeight );
-
-
-  document.body.appendChild( renderer.domElement );
+  //
 
   window.addEventListener( 'resize', onWindowResize, false );
 
 
-  verticalMirror = new THREE.Mirror( renderer, camera, { clipBias: 0.003, textureWidth: 10, textureHeight: 10, color:0x889999 } );
+  verticalMirror = new THREE.Mirror( renderer, camera, { clipBias: 0.01, textureWidth: window.innerWidth, textureHeight: window.innerHeight } );
 
-  var verticalMirrorMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 10, 10 ), verticalMirror.material );
+  var verticalMirrorMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 25 ), verticalMirror.material );
   verticalMirrorMesh.add( verticalMirror );
-  verticalMirrorMesh.position.y = 5;
-  verticalMirrorMesh.position.z = -45;
+  verticalMirrorMesh.position.y = 15;
+  verticalMirrorMesh.position.z = -47.49;
   scene.add( verticalMirrorMesh );
+
+  document.body.appendChild( renderer.domElement );
 }
 
 function onWindowResize() {
 
-  camera.aspect = window.innerWidth / window.innerHeight;
+  SCREEN_WIDTH = window.innerWidth;
+  SCREEN_HEIGHT = window.innerHeight;
+
+  camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
   camera.updateProjectionMatrix();
 
-  renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
+
 
 function animate() {
 
@@ -308,8 +318,9 @@ function animate() {
 
   controls.update();
 
-  verticalMirror.render()
+  verticalMirror.render();
 
   renderer.render( scene, camera );
+
 
 }

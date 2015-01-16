@@ -1,5 +1,5 @@
 var socketInterval = 100;
-var lastRecordedPlayerTranslations;
+var lastRecordedPlayerTranslations = {};
 var yourPlayerTranslation;
 
 $(document).ready(function() {
@@ -41,6 +41,7 @@ $(document).ready(function() {
     lastRecordedPlayerTranslations = clientTranslations;
     for (var id in clientTranslations){
       if (clientTranslations.hasOwnProperty(id) && clientTranslations[id] && id !== yourID){
+
         console.log('drawing new client: '+id);
         console.log('your client id is: '+yourID);
         playerEvents.emit('new_player', id, clientTranslations[id]);
