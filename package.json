@@ -3,7 +3,7 @@
   "description": "A 3D webGL videoconferencing tool using webRTC.",
   "author": "Rory Campbell <roryc89@gmail.com>",
   "contributors" : ["Dave Mun <mun.dave@gmail.com>"],
-  "version": "1.0",
+  "version": "1.0.0",
   "dependencies": {
     "connect": "1.8.5",
     "express": "2.5.2",
