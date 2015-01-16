@@ -4,7 +4,7 @@
 
 realTalk
 
-## Team
+# Team
 
   - __Product Owner__: Rory Campbell
   - __Scrum Master__: Dave Mun
@@ -12,42 +12,47 @@ realTalk
 
 ## Table of Contents
 
-1. [Usage]
-1. [Requirements]
+1. [Usage](#usage)
+1. [Requirements](#requirements)
 1. [Development]
-    1. [Installing Dependencies]
+    1. [Installing Dependencies](#installing-dependencies)
     1. [Tasks]
-1. [Team]
-1. [Contributing]
+1. [Team](#team)
+1. [Roadmap](#roadmap)
+1. [Contributing](#contributing)
 
-## Requirements
+
+# Usage
+
+- Join the deployment at http://realfaces.org, click "Allow" on the webcam access prompt, type in your desired username, and have fun! Use WASD to walk around, press ESC to pause the client. Further detailed controls in the header.
+
+
+# Requirements
 
 - Node 0.10.x
-- Body-Parser
-- Cookie-Parser
-- Debug
-- EJS
-- Express
 - Socket.io
-- Jade
-- Morgan
-- Request
-- Serve-Favicon
+- THREE.js/WebGL
+- WebRTC
 
 
-### Installing Dependencies
+# Installing Dependencies
 
 From within the root directory:
-
+```
 npm install
 bower install 
+```
+
+Start the server
+```
+npm start
+```
+
+# Roadmap
+
+View the [project roadmap](https://github.com/realTalkTeam/realTalk/issues).
 
 
-### Roadmap
-
-View the project roadmap http://realtalkclient.herokuapp.com/
-
-
-## Contributing
+# Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
