@@ -1,44 +1,26 @@
-var socketInterval = 200;
-var lastRecordedPlayerTranslations;
-var yourPlayerTranslation;
-
-$(document).ready(function() {
-
-  var socket = io.connect('/translations');
-
-  //PLAYER CONNECTED TO SERVER, TELL SERVER TO SEND BACK SELF DATA
-  socket.emit('player_join');
-
+var RealSocket = function () {
+  this.socketInterval = 200;
+  // this.lastRecordedPlayerTranslations;
+  this.yourPlayerTranslation;
 
   //YOUR PLAYER UPDATES TO SERVER
-  yourPlayerTranslation = {
+  this.yourPlayerTranslation = {
     position: {x:0, y:10, z:0},
     rotation: {x:0, y:0}
-  };
+  }
 
-  var translated = false;
+  this.translated = false;
 
-  var storePlayerTranslation = function(translation){
-    //console.log('translation', translation);
-    yourPlayerTranslation = translation;
-    translated = true;
-  };
+  //connect to server namespace
+  this.socketio = io.connect('/translations');
 
-  playerEvents.addListener('player_movement', storePlayerTranslation);
-
-  setInterval(function(){
-    if (translated){
-      socket.emit('translate', yourPlayerTranslation);
-      translated = false;
-    }
-    //socket.emit('heartbeat')
-  }, socketInterval);
-
-
+  //set up event listeners from socket
   //OTHER PLAYER UPDATES FROM SERVER
-  socket.on('preexisting_clients', function(clientTranslations, yourID){
+  this.socketio.on('preexisting_clients', function(clientTranslations, yourID){
+    //save your socketio ID
+    this.yourID = yourID;
     //draw pre-existing clients when you login
-    lastRecordedPlayerTranslations = clientTranslations;
+    this.lastRecordedPlayerTranslations = clientTranslations;
     for (var id in clientTranslations){
       if (clientTranslations.hasOwnProperty(id) && clientTranslations[id] && id !== yourID){
         console.log('drawing new client: '+id);
@@ -48,26 +30,39 @@ $(document).ready(function() {
       }
     }
     //initialize webRTC connection after drawing other clients
-    console.log('starting webrtc from socketMain.js');
     playerEvents.emit('start_webRTC', yourID);
   });
 
-  socket.on('new_client', function(clientID){
-    lastRecordedPlayerTranslations[clientID] = {position:{x:0, y:10, z:10}, rotation:{x:0,y:0}};
+  this.socketio.on('new_client', function(clientID){
+    this.lastRecordedPlayerTranslations[clientID] = {position:{x:0, y:10, z:10}, rotation:{x:0,y:0}};
     //otherPlayerUpdates will hear this and create a new player
     playerEvents.emit('new_player', [clientID]);
   });
 
-  socket.on('client_disconnected', function(clientID){
-    delete lastRecordedPlayerTranslations[clientID]
+  this.socketio.on('client_disconnected', function(clientID){
+    delete this.lastRecordedPlayerTranslations[clientID]
     console.log('server removing player: '+clientID);
     playerEvents.emit('remove_player', [clientID]);
   });
 
-  socket.on('move_other_player', function(data){
-    lastRecordedPlayerTranslations[data.clientID] = data.translation;
+  this.socketio.on('move_other_player', function(data){
+    this.lastRecordedPlayerTranslations[data.clientID] = data.translation;
     //otherPlayerUpdates will hear this and move the respective player
     playerEvents.emit('move_other_player', data.clientID, data.translation);
   });
 
-});
+  //check for movement to broadcast to server at regular intervals
+  var thisPointer = this;
+  setInterval(function(){
+    if (realFaces.socket.translated){
+      realFaces.socket.socketio.emit('translate', realFaces.socket.yourPlayerTranslation);
+      realFaces.socket.translated = false;
+    }
+  }, this.socketInterval);
+};
+
+RealSocket.prototype.storePlayerTranslation = function(translation){
+  this.yourPlayerTranslation = translation;
+  translated = true;
+};
+

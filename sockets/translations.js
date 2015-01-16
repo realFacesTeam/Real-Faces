@@ -8,10 +8,10 @@ module.exports = function(io){
     client.on('player_join', function(){
       console.log('Client Connected', client.id);
 
-      // clientTranslations[client.id] = {
-      //   position: {x:0, y:15, z:0},
-      //   rotation: {x:0, y:0}
-      // };
+      clientTranslations[client.id] = {
+        position: {x:0, y:15, z:0},
+        rotation: {x:0, y:0}
+      };
 
       //tells new clients about pre-existing clients
       client.emit('preexisting_clients', clientTranslations, client.id);

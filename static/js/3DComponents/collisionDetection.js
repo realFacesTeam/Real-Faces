@@ -34,12 +34,12 @@
 //   }
 // }
 
-var findOtherPlayerCollision = function(positionX, positionZ){
+RealTHREE.prototype.findOtherPlayerCollision = function(positionX, positionZ){
   var playerSpacing = 9;
 
-  for (var ID in lastRecordedPlayerTranslations){
-    if (lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== yourID){
-      var otherPlayerPosition = lastRecordedPlayerTranslations[ID].position;
+  for (var ID in realFaces.socket.socketio.lastRecordedPlayerTranslations){
+    if (realFaces.socket.socketio.lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== realFaces.socket.socketio.yourID){
+      var otherPlayerPosition = realFaces.socket.socketio.lastRecordedPlayerTranslations[ID].position;
       // console.log(lastRecordedPlayerTranslations)
       // console.log(lastRecordedPlayerTranslations[ID], ID);
       // console.log(otherPlayerPosition)
@@ -62,10 +62,24 @@ var findOtherPlayerCollision = function(positionX, positionZ){
   return false;
 };
 
-var findCollisionZoneEdge = function(otherPlayer, yourPlayer, playerSpacing){
+RealTHREE.prototype.findCollisionZoneEdge = function(otherPlayer, yourPlayer, playerSpacing){
 
   var playerSpacing = playerSpacing || 9;
   var radius = playerSpacing * 1.05;
+  
+  //if you are exactly on top of the other player, get a bump in a random direction
+  //so collision detection doesnt divide by zero (the diff in coords)
+  //else, do normal collision bouncing
+  if(otherPlayer.x === yourPlayer.x && otherPlayer.z === yourPlayer.z){
+    //basically flip a coin with 0 or 1
+      //and then add a flat value to a random axis
+    if( Math.floor(Math.random()*2) === 0){
+      yourPlayer.x += 1;
+    }else{
+      yourPlayer.z += 1;
+    }
+  }
+
   var denominator = Math.sqrt(Math.pow((yourPlayer.x - otherPlayer.x), 2) + Math.pow((yourPlayer.z - otherPlayer.z), 2));
 
   var edgeX = otherPlayer.x + (radius * ((yourPlayer.x - otherPlayer.x)/denominator));
