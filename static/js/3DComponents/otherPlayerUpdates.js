@@ -90,8 +90,8 @@ RealSocket.prototype.movePlayer = function(ID, newTranslation){
     };
   }
 
-  player.positionTween = new TWEEN.Tween(player.tweenedPosition).to(newTranslation.position, realFaces.THREE.socket.socketInterval);
-  player.rotationTween = new TWEEN.Tween(player.tweenedRotation).to(newTranslation.rotation, realFaces.THREE.socket.socketInterval);
+  player.positionTween = new TWEEN.Tween(player.tweenedPosition).to(newTranslation.position, realFaces.socket.socketInterval);
+  player.rotationTween = new TWEEN.Tween(player.tweenedRotation).to(newTranslation.rotation, realFaces.socket.socketInterval);
 
   player.positionTween.onUpdate(function(){
     player.position.x = player.tweenedPosition.x;
