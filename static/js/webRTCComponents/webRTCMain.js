@@ -91,7 +91,7 @@ var videoAdd = function (video, peer, clientID) {
   // Now send my name to all the peers
   // Add a small timeout so dataChannel has time to be ready
   setTimeout(function(){
-    realFaces.webrtc.webrtc.webrtc.sendDirectlyToAll('realTalkClient','setClientID', realFaces.webrtc.yourID);
+    realFaces.webrtc.webrtc.webrtc.sendDirectlyToAll('realTalkClient','setClientID', realFaces.socket.socketio.yourID);
   }, 3000);
 };
 

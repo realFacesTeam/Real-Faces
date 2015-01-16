@@ -233,8 +233,6 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
 
     if (overlappedPlayerPosition){
 
-      console.log('overlap', overlappedPlayerPosition);
-
       var xzTuple = realFaces.THREE.findCollisionZoneEdge(overlappedPlayerPosition, yawObject.position);
 
       yawObject.position.setX(xzTuple[0]);
@@ -253,7 +251,6 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
     var collidedPlayerPosition = realFaces.THREE.findOtherPlayerCollision(futurePositionXSmall, futurePositionZSmall) || realFaces.THREE.findOtherPlayerCollision(futurePositionX, futurePositionZ);
 
     if(collidedPlayerPosition){
-      console.log('collision', collidedPlayerPosition);
       velocity.x = 0;
       velocity.z = 0;
     }

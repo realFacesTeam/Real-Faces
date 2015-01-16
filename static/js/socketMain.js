@@ -17,6 +17,8 @@ var RealSocket = function () {
   //set up event listeners from socket
   //OTHER PLAYER UPDATES FROM SERVER
   this.socketio.on('preexisting_clients', function(clientTranslations, yourID){
+    //save your socketio ID
+    this.yourID = yourID;
     //draw pre-existing clients when you login
     this.lastRecordedPlayerTranslations = clientTranslations;
     for (var id in clientTranslations){

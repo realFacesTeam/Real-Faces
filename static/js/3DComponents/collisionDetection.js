@@ -38,7 +38,7 @@ RealTHREE.prototype.findOtherPlayerCollision = function(positionX, positionZ){
   var playerSpacing = 9;
 
   for (var ID in realFaces.socket.socketio.lastRecordedPlayerTranslations){
-    if (realFaces.socket.socketio.lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== realFaces.webrtc.yourID){
+    if (realFaces.socket.socketio.lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== realFaces.socket.socketio.yourID){
       var otherPlayerPosition = realFaces.socket.socketio.lastRecordedPlayerTranslations[ID].position;
       // console.log(lastRecordedPlayerTranslations)
       // console.log(lastRecordedPlayerTranslations[ID], ID);
