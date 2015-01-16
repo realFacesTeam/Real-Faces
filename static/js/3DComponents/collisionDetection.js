@@ -66,6 +66,20 @@ RealTHREE.prototype.findCollisionZoneEdge = function(otherPlayer, yourPlayer, pl
 
   var playerSpacing = playerSpacing || 9;
   var radius = playerSpacing * 1.05;
+  
+  //if you are exactly on top of the other player, get a bump in a random direction
+  //so collision detection doesnt divide by zero (the diff in coords)
+  //else, do normal collision bouncing
+  if(otherPlayer.x === yourPlayer.x && otherPlayer.z === yourPlayer.z){
+    //basically flip a coin with 0 or 1
+      //and then add a flat value to a random axis
+    if( Math.floor(Math.random()*2) === 0){
+      yourPlayer.x += 1;
+    }else{
+      yourPlayer.z += 1;
+    }
+  }
+
   var denominator = Math.sqrt(Math.pow((yourPlayer.x - otherPlayer.x), 2) + Math.pow((yourPlayer.z - otherPlayer.z), 2));
 
   var edgeX = otherPlayer.x + (radius * ((yourPlayer.x - otherPlayer.x)/denominator));
