@@ -31,6 +31,6 @@ var createCeiling = function (options){
   var result = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({ color:'white' }) );
   result.geometry.computeVertexNormals();
 
-  scene.add( result );
+  realFaces.THREE.scene.add( result );
 
 }

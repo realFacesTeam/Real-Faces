@@ -20,7 +20,7 @@ var createWall = function (options){
     }
     wall.castShadow = castShadow;
     wall.receiveShadow = receiveShadow;
-    scene.add(wall);
+    realFaces.THREE.scene.add(wall);
   }else{
     var cube_geometry = new THREE.BoxGeometry( length, height, width );
     var cube_mesh = new THREE.Mesh( cube_geometry );
@@ -41,7 +41,7 @@ var createWall = function (options){
     if (rotated){
       result.rotation.y = Math.PI / 2;
     }
-    scene.add( result );
+    realFaces.THREE.scene.add( result );
 
   }
 
@@ -82,8 +82,7 @@ var createWindowFrame = function (options){
   if (rotated){
     result.rotation.y = Math.PI / 2;
   }
-  scene.add( result );
-  //console.log( 'Example 1: ' + ((new Date()).getTime() - start_time) + 'ms' );
+  realFaces.THREE.scene.add( result );
 }
 
 var createWalls = function(){
