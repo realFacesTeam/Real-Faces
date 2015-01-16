@@ -154,6 +154,7 @@ Avatar.prototype.render = function(){
       this.walkSpeed = -1 / this.acceleration * (time - this.stoppedWalking) + 1
     else if(this.walkSpeed > 0.02)
       this.walkSpeed *= 0.95;
+    else { this.walkSpeed = 0; }
     //console.log('not walking', this.walkSpeed)
 
   }
@@ -195,9 +196,9 @@ Avatar.prototype.stopWalking = function() {
 }
 
 Avatar.prototype.isWalking = function(){
-  return this.walking
+  return this.walking;
 }
 
 Avatar.prototype.setAcceleration = function(newA){
-  this.acceleration = newA
+  this.acceleration = newA;
 }
