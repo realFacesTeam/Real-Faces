@@ -16,10 +16,6 @@ var RealTHREE = function (sceneName) {
   this.scene = new THREE.Scene();
   this.scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
 
-  var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
-  light.position.set( 0.5, 1, 0.75 );
-  this.scene.add( light );
-
   var negativeBoundary = -this.sceneVars.sceneSize/2, positiveBoundary = this.sceneVars.sceneSize/2;
   this.controls = new THREE.PointerLockControls( this.camera, this.sceneVars, positiveBoundary, negativeBoundary );
   this.scene.add( this.controls.getObject() );
@@ -53,6 +49,10 @@ RealTHREE.prototype.createSceneOutdoor = function () {
   floor.position.y = -0.5;
   floor.rotation.x = Math.PI / 2;
   this.scene.add(floor);
+
+  var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
+  light.position.set( 0.5, 1, 0.75 );
+  this.scene.add( light );
 
   //////////////////////
   // END CREATE FLOOR //
@@ -194,6 +194,11 @@ RealTHREE.prototype.createSceneUnionSquare  = function () {
   //////////////////////
   // END CREATE FLOOR //
   //////////////////////
+
+  var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
+  light.position.set( 0.5, 1, 0.75 );
+  this.scene.add( light );
+
 
   //////////////////////
   // CREATE SKYBOX   ///
