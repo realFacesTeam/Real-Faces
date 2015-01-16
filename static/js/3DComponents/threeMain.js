@@ -148,9 +148,7 @@ function init() {
   light.position.set( 0, 1500, 1000 );
   light.target.position.set( 0, 0, 0 );
 
-
   scene.add( light );
-
 
   controls = new THREE.PointerLockControls( camera );
   scene.add( controls.getObject() );
@@ -183,14 +181,22 @@ function init() {
 
   var floorTexture = new THREE.ImageUtils.loadTexture( 'images/grid.png' );
   floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-  floorTexture.repeat.set( 75, 75 );
-  geometry = new THREE.PlaneBufferGeometry( 300, 300, 5, 5 );
+  floorTexture.repeat.set( 50, 30 );
+  geometry = new THREE.PlaneBufferGeometry( 250, 150, 5, 5 );
   geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
   material = new THREE.MeshLambertMaterial( { map: floorTexture} );
   floor = new THREE.Mesh( geometry, material );
+  floor.position.z = -25;
+  floor.position.x = -25;
+
   floor.castShadow = false;
   floor.receiveShadow = false;
   scene.add( floor );
+
+
+  createWalls();
+
+  createCeiling();
 
   //////////////////////
   // CREATE SKYBOX   ///
@@ -235,7 +241,6 @@ function init() {
   // FURNITURE //
   ///////////////
 
-  createWalls();
 
 
   renderer = new THREE.WebGLRenderer({ antialias: true} );
