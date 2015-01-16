@@ -1,6 +1,5 @@
-realFaces.socket = realFaces.socket || {};
 
-realFaces.socket.createPlayerScreen = function(ID, createTranslation){
+RealSocket.prototype.createPlayerScreen = function(ID, createTranslation){
   console.log('created player cube: '+ID);
   var geometry = new THREE.BoxGeometry( 9, 9, 1 );
 
@@ -22,7 +21,7 @@ realFaces.socket.createPlayerScreen = function(ID, createTranslation){
 
   body = new Avatar(THREE);
 
-  body.mesh.position.y = -realFaces.sceneVars.playerStartHeight;
+  body.mesh.position.y = -realFaces.THREE.sceneVars.playerStartHeight;
 
   body.stopWalking();
 
@@ -39,7 +38,7 @@ realFaces.socket.createPlayerScreen = function(ID, createTranslation){
 };
 
 
-realFaces.socket.removePlayer = function(ID){
+RealSocket.prototype.removePlayer = function(ID){
   var player = realFaces.THREE.scene.getObjectByName('player-'+ID);
   realFaces.THREE.scene.remove(player);
   var remotesContainer = document.getElementById('remotesVideos');
@@ -48,7 +47,7 @@ realFaces.socket.removePlayer = function(ID){
     remotesContainer.removeChild(remoteVideo);
 };
 
-realFaces.socket.teleportPlayer = function(ID, translation){
+RealSocket.prototype.teleportPlayer = function(ID, translation){
   if(ID === realFaces.yourID){
     return;
   }
@@ -66,7 +65,7 @@ realFaces.socket.teleportPlayer = function(ID, translation){
 
 };
 
-realFaces.socket.movePlayer = function(ID, newTranslation){
+RealSocket.prototype.movePlayer = function(ID, newTranslation){
 
   var player = realFaces.THREE.scene.getObjectByName('player-'+ID);
   var body = realFaces.THREE.duckWalkers[ID];
@@ -110,13 +109,5 @@ realFaces.socket.movePlayer = function(ID, newTranslation){
   player.positionTween.start();
   player.rotationTween.start();
 };
-
-playerEvents.addListener('new_player', realFaces.socket.createPlayerScreen);
-
-playerEvents.addListener('remove_player', realFaces.socket.removePlayer);
-
-playerEvents.addListener('teleport_other_player', realFaces.socket.teleportPlayer);
-
-playerEvents.addListener('move_other_player', realFaces.socket.movePlayer);
 
 

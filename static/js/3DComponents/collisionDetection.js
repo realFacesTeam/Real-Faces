@@ -34,12 +34,12 @@
 //   }
 // }
 
-realFaces.findOtherPlayerCollision = function(positionX, positionZ){
+RealTHREE.prototype.findOtherPlayerCollision = function(positionX, positionZ){
   var playerSpacing = 9;
 
-  for (var ID in lastRecordedPlayerTranslations){
-    if (lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== realFaces.yourID){
-      var otherPlayerPosition = lastRecordedPlayerTranslations[ID].position;
+  for (var ID in realFaces.socket.socketio.lastRecordedPlayerTranslations){
+    if (realFaces.socket.socketio.lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== realFaces.webrtc.yourID){
+      var otherPlayerPosition = realFaces.socket.socketio.lastRecordedPlayerTranslations[ID].position;
       // console.log(lastRecordedPlayerTranslations)
       // console.log(lastRecordedPlayerTranslations[ID], ID);
       // console.log(otherPlayerPosition)
@@ -62,7 +62,7 @@ realFaces.findOtherPlayerCollision = function(positionX, positionZ){
   return false;
 };
 
-realFaces.findCollisionZoneEdge = function(otherPlayer, yourPlayer, playerSpacing){
+RealTHREE.prototype.findCollisionZoneEdge = function(otherPlayer, yourPlayer, playerSpacing){
 
   var playerSpacing = playerSpacing || 9;
   var radius = playerSpacing * 1.05;

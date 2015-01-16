@@ -19,7 +19,7 @@ SimpleWebRTC.prototype.setVolumeForAll = function (harkVolume) {
       volume = 0.25;
     }
 
-    realFaces.webrtc.webrtc.peers.forEach(function (peer) {
+    realFaces.webrtc.webrtc.webrtc.peers.forEach(function (peer) {
         if (peer.socketID){
           var vdm = volumeDistanceModifier(peer.socketID);
           console.log('vdm', vdm);

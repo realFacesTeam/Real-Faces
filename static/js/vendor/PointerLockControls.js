@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.PointerLockControls = function ( camera ) {
+THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, negativeBoundary ) {
 
   var scope = this;
 
@@ -12,7 +12,7 @@ THREE.PointerLockControls = function ( camera ) {
   pitchObject.add( camera );
 
   var yawObject = new THREE.Object3D();
-  yawObject.position.y = realFaces.sceneVars.playerStartHeight;
+  yawObject.position.y = sceneVars.playerStartHeight;
   yawObject.add( pitchObject );
 
 
@@ -98,7 +98,7 @@ THREE.PointerLockControls = function ( camera ) {
 
       //press p to re-request webcam
       case 80: // p
-        webrtc.startLocalVideo();
+        realFaces.webrtc.webrtc.startLocalVideo();
         break;
     }
 
@@ -207,7 +207,7 @@ THREE.PointerLockControls = function ( camera ) {
     }
 
     //default is 400
-    var speed = realFaces.sceneVars.playerSpeed;
+    var speed = sceneVars.playerSpeed;
     //add velocity to your character if key is pressed
     if ( moveForward ) velocity.z -= speed * delta;
     if ( moveBackward ) velocity.z += speed * delta;
@@ -229,13 +229,13 @@ THREE.PointerLockControls = function ( camera ) {
     }
 
     //check for current overlap (due to asyncronous client updates) and move player away if true
-    var overlappedPlayerPosition = realFaces.findOtherPlayerCollision(yawObject.position.x, yawObject.position.z);
+    var overlappedPlayerPosition = realFaces.THREE.findOtherPlayerCollision(yawObject.position.x, yawObject.position.z);
 
     if (overlappedPlayerPosition){
 
       console.log('overlap', overlappedPlayerPosition);
 
-      var xzTuple = realFaces.findCollisionZoneEdge(overlappedPlayerPosition, yawObject.position);
+      var xzTuple = realFaces.THREE.findCollisionZoneEdge(overlappedPlayerPosition, yawObject.position);
 
       yawObject.position.setX(xzTuple[0]);
       yawObject.position.setZ(xzTuple[1]);
@@ -250,7 +250,7 @@ THREE.PointerLockControls = function ( camera ) {
     var futurePositionZSmall = yawObject.position.z + (velocity.z * delta * 0.1);
 
     //check for future collision and remove velocity if true
-    var collidedPlayerPosition = realFaces.findOtherPlayerCollision(futurePositionXSmall, futurePositionZSmall) || realFaces.findOtherPlayerCollision(futurePositionX, futurePositionZ);
+    var collidedPlayerPosition = realFaces.THREE.findOtherPlayerCollision(futurePositionXSmall, futurePositionZSmall) || realFaces.THREE.findOtherPlayerCollision(futurePositionX, futurePositionZ);
 
     if(collidedPlayerPosition){
       console.log('collision', collidedPlayerPosition);
@@ -262,10 +262,10 @@ THREE.PointerLockControls = function ( camera ) {
     yawObject.translateY( velocity.y * delta );
     yawObject.translateZ( velocity.z * delta );
 
-    if ( yawObject.position.y < realFaces.sceneVars.playerStartHeight ) {
+    if ( yawObject.position.y < sceneVars.playerStartHeight ) {
 
       velocity.y = 0;
-      yawObject.position.y = realFaces.sceneVars.playerStartHeight;
+      yawObject.position.y = sceneVars.playerStartHeight;
 
       if (!canJump)
         jumped = true;
