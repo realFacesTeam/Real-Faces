@@ -45,7 +45,61 @@ RealTHREE.prototype.findCollisionZoneEdge = function(otherPlayer, yourPlayer, pl
   return [edgeX, edgeZ];
 };
 
-RealTHREE.prototype.checkWallCollision = function(){
+RealTHREE.prototype.isWallCollision = function(x,z){
 
+  var walls = realFaces.THREE.wallList;
 
-}
+  for (var i = 0, len = walls.length; i < len; i++){
+
+    var wall = walls[i];
+
+    if(!wall.rotated){
+      if (wall.position.x - (wall.length/2) -1 < x && x < wall.position.x + (wall.length/2) + 1){
+        if (wall.position.z - 5 < z && z <= wall.position.z){
+
+          return [x, wall.position.z - 5.01];
+        }else if(wall.position.z <= z && z < wall.position.z + 5){
+          return [x, wall.position.z + 5.01];
+        }
+      }
+    }else{
+      if (wall.position.z - (wall.length/2) - 1 < z && z < wall.position.z + (wall.length/2) + 1){
+        if (wall.position.x - 5 < x && x <= wall.position.x){
+          return [wall.position.x - 5.01, z];
+        }else if(wall.position.x <= x && x < wall.position.x + 5){
+          return [wall.position.x + 5.01, z];
+        }
+      }
+    }
+  }
+
+  return false;
+
+};
+
+RealTHREE.prototype.isOutsideBoundary = function(x,z){
+  var outsideBoundary = false, newX = x, newZ = z;
+
+  if (x > 99){
+    outsideBoundary = true;
+    newX = 98;
+  }else if (x < -149){
+    outsideBoundary = true;
+    newX = -148;
+  }
+
+  if (z > 49){
+    outsideBoundary = true;
+    newZ = 48;
+  }else if (z < -99){
+    outsideBoundary = true;
+    newZ = -98;
+  }
+
+  if (!outsideBoundary){
+    return false;
+  }else{
+    return [newX, newZ];
+  }
+
+};

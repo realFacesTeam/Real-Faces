@@ -17,6 +17,7 @@ var createWall = function (options){
     wall.position.set(x, y, z);
     if (rotated){
       wall.rotation.y = Math.PI / 2;
+      wall.rotated = true;
     }
     wall.castShadow = castShadow;
     wall.receiveShadow = receiveShadow;
@@ -39,9 +40,17 @@ var createWall = function (options){
     wall.geometry.computeVertexNormals();
     if (rotated){
       wall.rotation.y = Math.PI / 2;
+      wall.rotated = true;
     }
-
   }
+
+  wall.length = length;
+
+  wall.matrixAutoUpdate = false;
+  wall.updateMatrix();
+
+  realFaces.THREE.wallList.push(wall);
+
   realFaces.THREE.scene.add( wall );
 
 };

@@ -39,9 +39,11 @@ var createCeiling = function (options){
 
 
   var subtract_bsp = cube_bsp.subtract( glass_bsp1 ).subtract( glass_bsp2 );
-  var result = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({ color:'white' }) );
-  result.geometry.computeVertexNormals();
+  var ceiling = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({ color:'white' }) );
+  ceiling.geometry.computeVertexNormals();
 
-  realFaces.THREE.scene.add( result );
+  ceiling.matrixAutoUpdate = false;
+  ceiling.updateMatrix();
+  realFaces.THREE.scene.add( ceiling );
 
 }

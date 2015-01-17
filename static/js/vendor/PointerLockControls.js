@@ -229,10 +229,15 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
 
     }
 
+    var originalX = yawObject.position.x;
+    var originalZ = yawObject.position.z;
+
 
     yawObject.translateX( velocity.x * delta );
     yawObject.translateY( velocity.y * delta );
     yawObject.translateZ( velocity.z * delta );
+
+
 
     var overlappedPlayerPosition = realFaces.THREE.findOtherPlayerCollision(yawObject.position.x, yawObject.position.z);
 
@@ -247,7 +252,35 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
 
     }
 
-    if (checkWallCollision)
+    var wallCollisionPoint = realFaces.THREE.isWallCollision(yawObject.position.x, yawObject.position.z);
+
+    if (wallCollisionPoint){
+
+      //console.log('mesh collision found')
+      yawObject.position.setX(wallCollisionPoint[0]);
+      yawObject.position.setZ(wallCollisionPoint[1]);
+
+    }
+
+    wallCollisionPoint = realFaces.THREE.isWallCollision(yawObject.position.x, yawObject.position.z);
+
+    if (wallCollisionPoint){
+
+      yawObject.position.setX(wallCollisionPoint[0]);
+      yawObject.position.setZ(wallCollisionPoint[1]);
+
+    }
+
+    var crossedOuterBoundary = realFaces.THREE.isOutsideBoundary(yawObject.position.x, yawObject.position.z);
+
+    if (crossedOuterBoundary){
+
+      console.log('out of boundary')
+
+      yawObject.position.setX(crossedOuterBoundary[0]);
+      yawObject.position.setZ(crossedOuterBoundary[1]);
+
+    }
 
     if ( yawObject.position.y < realFaces.THREE.sceneVars.playerStartHeight ) {
 

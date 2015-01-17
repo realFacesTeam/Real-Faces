@@ -1,5 +1,6 @@
 var RealTHREE = function (sceneName) {
   this.collidableMeshList = [];
+  this.wallList = [];
   this.objects = [];
   this.duckWalkers = [];
   this.sceneVars = {
@@ -158,7 +159,7 @@ RealTHREE.prototype.createSceneArtGallery = function () {
   renderer.setSize( window.innerWidth, window.innerHeight );
   //container.appendChild( renderer.domElement );
 
-  renderer.autoClear = false;
+  //renderer.autoClear = false;
 
 
   this.verticalMirror = new THREE.Mirror( this.renderer, this.camera, { clipBias: 0.01, textureWidth: window.innerWidth, textureHeight: window.innerHeight } );
@@ -189,6 +190,8 @@ RealTHREE.prototype.createSceneUnionSquare  = function () {
   var floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.position.y = -0.5;
   floor.rotation.x = Math.PI / 2;
+  floor.matrixAutoUpdate = false;
+  floor.updateMatrix();
   this.scene.add(floor);
 
   //////////////////////
