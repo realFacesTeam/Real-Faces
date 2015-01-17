@@ -44,3 +44,8 @@ RealTHREE.prototype.findCollisionZoneEdge = function(otherPlayer, yourPlayer, pl
 
   return [edgeX, edgeZ];
 };
+
+RealTHREE.prototype.checkWallCollision = function(){
+
+
+}

@@ -20,7 +20,6 @@ var createWall = function (options){
     }
     wall.castShadow = castShadow;
     wall.receiveShadow = receiveShadow;
-    realFaces.THREE.scene.add(wall);
   }else{
     var cube_geometry = new THREE.BoxGeometry( length, height, width );
     var cube_mesh = new THREE.Mesh( cube_geometry );
@@ -36,14 +35,14 @@ var createWall = function (options){
     var glass_bsp = new ThreeBSP( glass_mesh );
 
     var subtract_bsp = cube_bsp.subtract( glass_bsp );
-    var result = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({ map:texture }) );
-    result.geometry.computeVertexNormals();
+    var wall = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({ map:texture }) );
+    wall.geometry.computeVertexNormals();
     if (rotated){
-      result.rotation.y = Math.PI / 2;
+      wall.rotation.y = Math.PI / 2;
     }
-    realFaces.THREE.scene.add( result );
 
   }
+  realFaces.THREE.scene.add( wall );
 
 };
 
@@ -83,6 +82,7 @@ var createWindowFrame = function (options){
     result.rotation.y = Math.PI / 2;
   }
   realFaces.THREE.scene.add( result );
+  //console.log( 'Example 1: ' + ((new Date()).getTime() - start_time) + 'ms' );
 }
 
 var createWalls = function(){
@@ -93,12 +93,14 @@ var createWalls = function(){
   createWall({length:100, x:0, z:-50});
   createWall({length:150, x:100, z:-25, rotated:true, window:true});
   createWindowFrame({length:150, x:100, z:-25, rotated:true});
-  createWall({length:200, x:0, z:-100, window:true});
-  createWindowFrame({length:200, x:0, z:-100});
-  createWall({length:100, x:-100, z:-50, rotated:true});
-  createWall({length:50, x:-125, z:0});
-  createWall({length:50, x:-150, z:-25, rotated:true});
-  createWall({length:50, x:-150, z:25, rotated:true});
-  createWall({length:100, x:-100, z:50});
+  createWall({length:250, x:-25, z:-100, window:true});
+  createWindowFrame({length:250, x:-25, z:-100});
+  //createWall({length:100, x:-100, z:-50, rotated:true});
+  //createWall({length:50, x:-125, z:-100});
+  createWall({length:150, x:-150, z:-25, rotated:true, window:true});
+  createWindowFrame({length:150, x:-150, z:-25, rotated:true});
+  // createWall({length:50, x:-150, z:25, rotated:true});
+  createWall({length:100, x:-100, z:50, window:true});
+  createWindowFrame({length:100, x:-100, z:50});
 
 };
