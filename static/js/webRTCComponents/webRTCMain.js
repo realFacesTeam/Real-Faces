@@ -1,5 +1,4 @@
 var RealWebRTC =  function (clientID) {
-
   //create webRTC obj from library
   this.webrtc = new SimpleWebRTC({
     // the signalmaster URL to implement handshakes
@@ -56,9 +55,11 @@ var RealWebRTC =  function (clientID) {
   // };
   
   //set volume for all peers to 0
+
+  window.webRTCMain = this;
   setInterval(function(){
-    realFaces.webrtc.webrtc.setVolumeForAll(0);
-  },1000);
+    window.webRTCMain.webrtc.setVolumeForAll(0);
+  },1000); 
 };
 
 var updateCubeWithVideo = function (divID, clientID) {

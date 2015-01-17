@@ -1,0 +1,60 @@
+!!! 5
+//if lt IE 7
+  html.no-js.ie6.oldie(lang='en')
+//if IE 7
+  html.no-js.ie7.oldie(lang='en')
+//if IE 8
+  html.no-js.ie8.oldie(lang='en')
+//[if gt IE 8]><!
+html.no-js(lang='en')
+  //<![end if]
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title=title
+    meta(name="description", content=description)
+    meta(name="author", content=author)
+    meta(name="viewport", content='width=device-width, initial-scale=1')
+    link(href='http://fonts.googleapis.com/css?family=Lato',rel='stylesheet',type='text/css')
+    link(rel='stylesheet', href='/css/style.css')
+    //-script(src='js/libs/modernizr-2.0.6.min.js')
+  body
+    block header
+
+    block content
+
+    block footer
+      footer
+        script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.js')
+        script
+          window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\\/script>')
+        //-script(defer, src='js/plugins.js')
+        script(defer, src='/js/vendor/EventEmitter.js')
+        script(defer, src='/js/vendor/tween.min.js')
+        script(defer, src='/js/vendor/stats.js')
+        script(defer, src='/js/vendor/Mirror.js')
+        script(defer, src='/js/vendor/ThreeCSG.js')
+        script(defer, src='/js/vendor/webGLDebug.js')
+        script(defer, src='/js/3DComponents/avatars.js')
+        script(defer, src='/js/3DComponents/threeMain.js')
+        script(defer, src='/js/3DComponents/skyboxes.js')
+        script(defer, src='/js/3DComponents/walls.js')
+        script(defer, src='/js/3DComponents/ceiling.js')
+        script(defer, src='/js/3DComponents/collisionDetection.js')
+        script(defer, src='/js/vendor/PointerLockControls.js')
+        script(defer, src='/socket.io/socket.io.js')
+        script(defer, src='/js/audioHelpers/audioInit.js')
+        script(defer, src='/js/audioHelpers/volumeDistanceModifier.js')
+        script(defer, src='//simplewebrtc.com/latest.js')
+        script(defer, src='/js/webRTCComponents/simpleWebRTCOverwrites.js')
+        script(defer, src='/js/webRTCComponents/webRTCMain.js')
+        script(defer, src='/js/webRTCComponents/chatMain.js')
+        script(defer, src='/js/socketMain.js')
+        script(defer, src='/js/3DComponents/otherPlayerUpdates.js')
+        script(defer, src='/js/main.js')
+        script(defer, src='/js/bootloaderUnionSquare.js')
+        //if lt IE 7
+          script(defer, src='//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js')
+          script(defer)
+            window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})
