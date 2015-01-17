@@ -80,7 +80,6 @@ RealTHREE.prototype.isWallCollision = function(x,z, wallList){
 RealTHREE.prototype.isOutsideBoundary = function(x,z, xMax, xMin, zMax, zMin){
   var outsideBoundary = false, newX = x, newZ = z;
 
-  console.log(x,z, xMin, xMax, zMin, zMax)
   var zMin = zMin || xMin;
   var zMax = zMax || xMax;
 
@@ -104,7 +103,6 @@ RealTHREE.prototype.isOutsideBoundary = function(x,z, xMax, xMin, zMax, zMin){
   if (!outsideBoundary){
     return false;
   }else{
-    console.log('out of boundary')
     return [newX, newZ];
   }
 

@@ -275,8 +275,6 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, neg
 
     if (crossedOuterBoundary){
 
-      console.log('out of boundary')
-
       yawObject.position.setX(crossedOuterBoundary[0]);
       yawObject.position.setZ(crossedOuterBoundary[1]);
 
