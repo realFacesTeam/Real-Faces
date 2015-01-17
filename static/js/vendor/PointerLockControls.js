@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.PointerLockControls = function ( camera ) {
+THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, negativeBoundary ) {
 
   var scope = this;
 
@@ -99,7 +99,7 @@ THREE.PointerLockControls = function ( camera ) {
 
       //press p to re-request webcam
       case 80: // p
-        webrtc.startLocalVideo();
+        realFaces.webrtc.webrtc.startLocalVideo();
         break;
     }
 
@@ -229,55 +229,63 @@ THREE.PointerLockControls = function ( camera ) {
 
     }
 
-    //check for current overlap (due to asyncronous client updates) and move player away if true
+    var originalX = yawObject.position.x;
+    var originalZ = yawObject.position.z;
 
-
-    // var futurePositionX = yawObject.position.x + (velocity.x * delta);
-    // var futurePositionZ = yawObject.position.z + (velocity.z * delta);
-
-    // // small is included to prevent a large delta from allowing a player to "jump" through another player
-    // var futurePositionXSmall = yawObject.position.x + (velocity.x * delta * 0.1);
-    // var futurePositionZSmall = yawObject.position.z + (velocity.z * delta * 0.1);
-
-    // var futurePositionXMed = yawObject.position.x + (velocity.x * delta * 0.4);
-    // var futurePositionZMed = yawObject.position.z + (velocity.z * delta * 0.4);
-
-    // //check for future collision
-    // var collisionBuffer = 1.3;
-    // var collidedPlayerPosition = findOtherPlayerCollision(futurePositionXSmall, futurePositionZSmall, collisionBuffer) || findOtherPlayerCollision(futurePositionXMed, futurePositionZMed, collisionBuffer) || findOtherPlayerCollision(futurePositionX, futurePositionZ, collisionBuffer);
-
-    // if(collidedPlayerPosition){
-    //   console.log('inside collision zone')
-    //   if(isFuturePositionCloser(yawObject.position.x, yawObject.position.z, futurePositionX, futurePositionZ, collidedPlayerPosition.x, collidedPlayerPosition.z)){
-    //     //console.log('collision', collidedPlayerPosition);
-    //     velocity.x = 0;
-    //     velocity.z = 0;
-    //   }
-    // }
 
     yawObject.translateX( velocity.x * delta );
     yawObject.translateY( velocity.y * delta );
     yawObject.translateZ( velocity.z * delta );
 
-    var overlappedPlayerPosition = findOtherPlayerCollision(yawObject.position.x, yawObject.position.z);
+
+
+    var overlappedPlayerPosition = realFaces.THREE.findOtherPlayerCollision(yawObject.position.x, yawObject.position.z);
 
     if (overlappedPlayerPosition){
 
       //console.log('overlap', overlappedPlayerPosition);
 
-      var xzTuple = findCollisionZoneEdge(overlappedPlayerPosition, yawObject.position);
+      var xzTuple = realFaces.THREE.findCollisionZoneEdge(overlappedPlayerPosition, yawObject.position);
 
       yawObject.position.setX(xzTuple[0]);
       yawObject.position.setZ(xzTuple[1]);
 
     }
 
-    if(yawObject)
+    var wallCollisionPoint = realFaces.THREE.isWallCollision(yawObject.position.x, yawObject.position.z);
 
-    if ( yawObject.position.y < sceneVars.playerStartHeight ) {
+    if (wallCollisionPoint){
+
+      //console.log('mesh collision found')
+      yawObject.position.setX(wallCollisionPoint[0]);
+      yawObject.position.setZ(wallCollisionPoint[1]);
+
+    }
+
+    wallCollisionPoint = realFaces.THREE.isWallCollision(yawObject.position.x, yawObject.position.z);
+
+    if (wallCollisionPoint){
+
+      yawObject.position.setX(wallCollisionPoint[0]);
+      yawObject.position.setZ(wallCollisionPoint[1]);
+
+    }
+
+    var crossedOuterBoundary = realFaces.THREE.isOutsideBoundary(yawObject.position.x, yawObject.position.z);
+
+    if (crossedOuterBoundary){
+
+      console.log('out of boundary')
+
+      yawObject.position.setX(crossedOuterBoundary[0]);
+      yawObject.position.setZ(crossedOuterBoundary[1]);
+
+    }
+
+    if ( yawObject.position.y < realFaces.THREE.sceneVars.playerStartHeight ) {
 
       velocity.y = 0;
-      yawObject.position.y = sceneVars.playerStartHeight;
+      yawObject.position.y = realFaces.THREE.sceneVars.playerStartHeight;
 
       if (!canJump)
         jumped = true;

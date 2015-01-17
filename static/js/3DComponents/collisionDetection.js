@@ -1,57 +1,17 @@
-// function detectCollision(moveDirection, globalDirection)
-// {
-//   //collision distance
-//   var distance = 15;
-//   //detect local coordinate system vector
-//   var matrix = new THREE.Matrix4();
-//   matrix.extractRotation( controls.getObject().matrix );
-//   //generate local vector from direction cube is sliding
-//   //get a vector3 of where cube is facing globally
-//   if(moveDirection === "forward"){
-//     var direction = new THREE.Vector3( 0, 0, -1 );
-//   }else if(moveDirection === "left"){
-//     var direction = new THREE.Vector3( -1, 0, 0 );
-//   }else if(moveDirection === "backward"){
-//     var direction = new THREE.Vector3( 0, 0, 1 );
-//   }else if(moveDirection === "right"){
-//     var direction = new THREE.Vector3( 1, 0, 0 );
-//   }
-//   //if we need local to global conversion, convert
-//     //don't expect this to be used, but the functionality is preserved
-//   if(!globalDirection){
-//     direction = direction.applyProjection(matrix);
-//   }
-//   //create raycaster and link it in cube's direction
-//   var caster = new THREE.Raycaster(), collisions;
-//   caster.set(controls.getObject().position, direction);
-//   //get objects cube can run into
-//   collisions = caster.intersectObjects(collidableMeshList);
-//   //if possible collision is within distance, return true
-//   if (collisions.length > 0 && collisions[0].distance <= distance) {
-//     return true;
-//   }else{
-//     return false;
-//   }
-// }
-
-var findOtherPlayerCollision = function(positionX, positionZ, buffer){
+RealTHREE.prototype.findOtherPlayerCollision = function(positionX, positionZ, buffer){
   var buffer = buffer || 1;
   var playerSpacing = 9 * buffer;
 
-  for (var ID in lastRecordedPlayerTranslations){
-    if (lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== yourID){
-      var otherPlayerPosition = lastRecordedPlayerTranslations[ID].position;
+  for (var ID in realFaces.socket.socketio.lastRecordedPlayerTranslations){
+    if (realFaces.socket.socketio.lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== realFaces.socket.socketio.yourID){
+      var otherPlayerPosition = realFaces.socket.socketio.lastRecordedPlayerTranslations[ID].position;
 
       var distanceX = Math.abs(positionX - otherPlayerPosition.x);
       var distanceZ = Math.abs(positionZ - otherPlayerPosition.z);
 
-      //console.log('distances', distanceX, distanceZ);
-
       //calculate if other player is within spacing
       if (Math.sqrt((distanceX * distanceX) + (distanceZ * distanceZ)) < playerSpacing){
-
         return {x : otherPlayerPosition.x, z:otherPlayerPosition.z};
-
       }
     }
   }
@@ -59,10 +19,24 @@ var findOtherPlayerCollision = function(positionX, positionZ, buffer){
   return false;
 };
 
-var findCollisionZoneEdge = function(otherPlayer, yourPlayer, playerSpacing){
+RealTHREE.prototype.findCollisionZoneEdge = function(otherPlayer, yourPlayer, playerSpacing){
   var buffer = 1.01;
   var playerSpacing = playerSpacing || 9;
   var radius = playerSpacing * buffer;
+
+  //if you are exactly on top of the other player, get a bump in a random direction
+  //so collision detection doesnt divide by zero (the diff in coords)
+  //else, do normal collision bouncing
+  if(otherPlayer.x === yourPlayer.x && otherPlayer.z === yourPlayer.z){
+    //basically flip a coin with 0 or 1
+      //and then add a flat value to a random axis
+    if( Math.floor(Math.random()*2) === 0){
+      yourPlayer.x += 1;
+    }else{
+      yourPlayer.z += 1;
+    }
+  }
+
   var denominator = Math.sqrt(Math.pow((yourPlayer.x - otherPlayer.x), 2) + Math.pow((yourPlayer.z - otherPlayer.z), 2));
 
   var edgeX = otherPlayer.x + (radius * ((yourPlayer.x - otherPlayer.x)/denominator));
@@ -71,24 +45,61 @@ var findCollisionZoneEdge = function(otherPlayer, yourPlayer, playerSpacing){
   return [edgeX, edgeZ];
 };
 
-// var isFuturePositionCloser = function(currentX, currentZ, futureX, futureZ, otherX, otherZ){
+RealTHREE.prototype.isWallCollision = function(x,z){
 
-//   var currentDistanceX = Math.abs(currentX - otherX);
-//   var currentDistanceZ = Math.abs(currentZ - otherZ);
+  var walls = realFaces.THREE.wallList;
 
-//   var currentDistance = Math.sqrt((currentDistanceX * currentDistanceX) + (currentDistanceZ * currentDistanceZ));
+  for (var i = 0, len = walls.length; i < len; i++){
 
-//   var futureDistanceX = Math.abs(futureX - otherX);
-//   var futureDistanceZ = Math.abs(futureZ - otherZ);
+    var wall = walls[i];
 
-//   var futureDistance = Math.sqrt((futureDistanceX * futureDistanceX) + (futureDistanceZ * futureDistanceZ));
+    if(!wall.rotated){
+      if (wall.position.x - (wall.length/2) -1 < x && x < wall.position.x + (wall.length/2) + 1){
+        if (wall.position.z - 5 < z && z <= wall.position.z){
 
-//   console.log('current distances', currentDistanceX, currentDistanceZ);
-//   console.log('all coords', currentX, currentZ, futureX, futureZ, otherX, otherZ);
-//   if (futureDistance < currentDistance){
-//     console.log('smaller future distance', currentDistance, futureDistance);
-//     return true;
-//   }
-//   console.log('larger future distance', currentDistance, futureDistance);
-//   return false;
-// }
+          return [x, wall.position.z - 5.01];
+        }else if(wall.position.z <= z && z < wall.position.z + 5){
+          return [x, wall.position.z + 5.01];
+        }
+      }
+    }else{
+      if (wall.position.z - (wall.length/2) - 1 < z && z < wall.position.z + (wall.length/2) + 1){
+        if (wall.position.x - 5 < x && x <= wall.position.x){
+          return [wall.position.x - 5.01, z];
+        }else if(wall.position.x <= x && x < wall.position.x + 5){
+          return [wall.position.x + 5.01, z];
+        }
+      }
+    }
+  }
+
+  return false;
+
+};
+
+RealTHREE.prototype.isOutsideBoundary = function(x,z){
+  var outsideBoundary = false, newX = x, newZ = z;
+
+  if (x > 99){
+    outsideBoundary = true;
+    newX = 98;
+  }else if (x < -149){
+    outsideBoundary = true;
+    newX = -148;
+  }
+
+  if (z > 49){
+    outsideBoundary = true;
+    newZ = 48;
+  }else if (z < -99){
+    outsideBoundary = true;
+    newZ = -98;
+  }
+
+  if (!outsideBoundary){
+    return false;
+  }else{
+    return [newX, newZ];
+  }
+
+};

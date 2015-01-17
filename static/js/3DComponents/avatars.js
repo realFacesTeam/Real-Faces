@@ -49,37 +49,35 @@ Avatar.prototype.createPlayerObject = function(scene) {
   var armMatFull = new THREE.MeshFaceMaterial([armMaterial, armMaterial, shoulderMaterial, handMaterial, armMaterial,armMaterial])
   var bodyMatFull = new THREE.MeshFaceMaterial([bodyMaterial, bodyMaterial, bottomMaterial, bottomMaterial, sideMaterial,sideMaterial])
   var legMatFull = new THREE.MeshFaceMaterial([legMaterial, legMaterial, shoeMaterial, shoeMaterial, legMaterial,legMaterial])
-
   // Left leg
-  var leftleggeo = new THREE.CubeGeometry(4, 12, 4);
+  var leftleggeo = new THREE.BoxGeometry(4, 12, 4);
   for(var i=0; i < 8; i+=1) {
     leftleggeo.vertices[i].y -= 6;
   }
+
+
   var leftleg = this.leftLeg = new THREE.Mesh(leftleggeo, legMatFull);
   leftleg.position.z = -2;
   leftleg.position.y = -6;
-  leftleg.castShadow = true;
 
   // Right leg
-  var rightleggeo = new THREE.CubeGeometry(4, 12, 4);
+  var rightleggeo = new THREE.BoxGeometry(4, 12, 4);
   for(var i=0; i < 8; i+=1) {
     rightleggeo.vertices[i].y -= 6;
   }
   var rightleg = this.rightLeg =new THREE.Mesh(rightleggeo, legMatFull);
   rightleg.position.z = 2;
   rightleg.position.y = -6;
-  rightleg.castShadow = true;
 
 
   // Body
-  var bodygeo = new THREE.CubeGeometry(4, 12, 8);
+  var bodygeo = new THREE.BoxGeometry(4, 12, 8);
   var bodymesh = this.body = new THREE.Mesh(bodygeo, bodyMatFull);
-  bodymesh.castShadow = true;
   upperbody.add(bodymesh);
 
 
   // Left arm
-  var leftarmgeo = new THREE.CubeGeometry(4, 12, 4);
+  var leftarmgeo = new THREE.BoxGeometry(4, 12, 4);
   for(var i=0; i < 8; i+=1) {
     leftarmgeo.vertices[i].y -= 4;
   }
@@ -87,11 +85,10 @@ Avatar.prototype.createPlayerObject = function(scene) {
   leftarm.position.z = -6;
   leftarm.position.y = 4;
   leftarm.rotation.x = Math.PI/32;
-  leftarm.castShadow = true;
   upperbody.add(leftarm);
 
   // Right arm
-  var rightarmgeo = new THREE.CubeGeometry(4, 12, 4);
+  var rightarmgeo = new THREE.BoxGeometry(4, 12, 4);
   for(var i=0; i < 8; i+=1) {
     rightarmgeo.vertices[i].y -= 4;
   }
@@ -99,11 +96,11 @@ Avatar.prototype.createPlayerObject = function(scene) {
   rightarm.position.z = 6;
   rightarm.position.y = 4;
   rightarm.rotation.x = -Math.PI/32;
-  rightarm.castShadow = true;
+
   upperbody.add(rightarm);
 
   //Head
-  // var headgeo = new THREE.CubeGeometry(0.1, 0.1, 0.1);
+  // var headgeo = new THREE.BoxGeometry(0.1, 0.1, 0.1);
   // var headmesh = this.head = new THREE.Mesh(headgeo, plainMaterial);
   // headmesh.position.y = 2;
 
@@ -157,6 +154,7 @@ Avatar.prototype.render = function(){
       this.walkSpeed = -1 / this.acceleration * (time - this.stoppedWalking) + 1
     else if(this.walkSpeed > 0.02)
       this.walkSpeed *= 0.95;
+    else { this.walkSpeed = 0; }
     //console.log('not walking', this.walkSpeed)
 
   }
@@ -198,9 +196,9 @@ Avatar.prototype.stopWalking = function() {
 }
 
 Avatar.prototype.isWalking = function(){
-  return this.walking
+  return this.walking;
 }
 
 Avatar.prototype.setAcceleration = function(newA){
-  this.acceleration = newA
+  this.acceleration = newA;
 }

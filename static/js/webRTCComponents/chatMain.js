@@ -16,7 +16,7 @@ function chatInit(){
 
 function parseChatInput (){
   //create a copy of chat message
-  var message = $('#chatInput').val().slice(0);
+  var message = $('#chatInput').val();
   //before we delete it
   $('#chatInput').val("");
   //and then emit event that webRTCMain will use to send data message
@@ -32,7 +32,8 @@ function startChatTyping () {
 
 //send a chat message
 function sendChatMessage (message){
-  webrtc.sendDirectlyToAll('realTalkClient','chatMessage', {message:message, username:username});
+  var webrtc = realFaces.webrtc.webrtc;
+  webrtc.sendDirectlyToAll('realTalkClient','chatMessage', {message:message, username:webrtc.username});
   addChatMessage(null, message, 'You');
 };
 

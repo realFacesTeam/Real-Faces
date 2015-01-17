@@ -1,5 +1,5 @@
-var createPlayerScreen = function(ID, createTranslation){
-  console.log('created player cube: '+ID);
+
+RealSocket.prototype.createPlayerScreen = function(ID, createTranslation){
   var geometry = new THREE.BoxGeometry( 9, 9, 1 );
 
   var plainMaterial = new THREE.MeshBasicMaterial( {color: 'lightgrey'} );
@@ -21,39 +21,39 @@ var createPlayerScreen = function(ID, createTranslation){
 
   body = new Avatar(THREE);
 
-  body.mesh.position.y = -sceneVars.playerStartHeight;
+  body.mesh.position.y = -realFaces.THREE.sceneVars.playerStartHeight;
 
 
   body.stopWalking();
 
-  duckWalkers[ID] = body;
+  realFaces.THREE.duckWalkers[ID] = body;
 
   playerScreen.add(body.mesh);
   playerScreen.position.y += 10;
 
 
-  objects.push( playerScreen );
-  scene.add( playerScreen );
-  collidableMeshList.push(playerScreen);
+  realFaces.THREE.objects.push( playerScreen );
+  realFaces.THREE.scene.add( playerScreen );
+  realFaces.THREE.collidableMeshList.push(playerScreen);
 
 };
 
 
-var removePlayer = function(ID){
-  var player = scene.getObjectByName('player-'+ID);
-  scene.remove(player);
+RealSocket.prototype.removePlayer = function(ID){
+  var player = realFaces.THREE.scene.getObjectByName('player-'+ID);
+  realFaces.THREE.scene.remove(player);
   var remotesContainer = document.getElementById('remotesVideos');
   var remoteVideo = document.getElementById(ID);
   if (remoteVideo)
     remotesContainer.removeChild(remoteVideo);
 };
 
-var teleportPlayer = function(ID, translation){
-  if(ID === yourID){
+RealSocket.prototype.teleportPlayer = function(ID, translation){
+  if(ID === realFaces.yourID){
     return;
   }
 
-  var player = scene.getObjectByName('player-'+ID);
+  var player = realFaces.THREE.scene.getObjectByName('player-'+ID);
 
   player.position.x = translation.position.x;
   player.position.y = translation.position.y;
@@ -66,24 +66,15 @@ var teleportPlayer = function(ID, translation){
 
 };
 
-var movePlayer = function(ID, newTranslation){
+RealSocket.prototype.movePlayer = function(ID, newTranslation){
+  var player = realFaces.THREE.scene.getObjectByName('player-'+ID);
+  var body = realFaces.THREE.duckWalkers[ID];
 
-  //socketInterval= tweenTime || socketInterval;
-
-  var player = scene.getObjectByName('player-'+ID);
-  var body = duckWalkers[ID];
-
-  //console.log('translationChanges', player.position.x - newTranslation.position.x, player.position.y - newTranslation.position.y, player.position.z - newTranslation.position.z)
-
-  // //console.log(body)
   if (body.isWalking() && Math.abs(player.position.x - newTranslation.position.x) < 1 && Math.abs(player.position.y - newTranslation.position.y) < 1 && Math.abs(player.position.z - newTranslation.position.z) < 1){
-    //console.log('stop moving')
     body.stopWalking();
   }else if(!body.walking && ( Math.abs(player.position.x - newTranslation.position.x) > 1|| Math.abs(player.position.y - newTranslation.position.y) > 1 || Math.abs(player.position.z - newTranslation.position.z) > 1 ) ){
-     //console.log('not moving so start, body.walking=', body.walking)
      body.startWalking();
    }
-
 
   if(!player.tweenedPosition){
     player.tweenedPosition = {
@@ -96,8 +87,8 @@ var movePlayer = function(ID, newTranslation){
     };
   }
 
-  player.positionTween = new TWEEN.Tween(player.tweenedPosition).to(newTranslation.position, socketInterval);
-  player.rotationTween = new TWEEN.Tween(player.tweenedRotation).to(newTranslation.rotation, socketInterval);
+  player.positionTween = new TWEEN.Tween(player.tweenedPosition).to(newTranslation.position, realFaces.socket.socketInterval);
+  player.rotationTween = new TWEEN.Tween(player.tweenedRotation).to(newTranslation.rotation, realFaces.socket.socketInterval);
 
   player.positionTween.onUpdate(function(){
     player.position.x = player.tweenedPosition.x;
@@ -112,13 +103,5 @@ var movePlayer = function(ID, newTranslation){
   player.positionTween.start();
   player.rotationTween.start();
 };
-
-playerEvents.addListener('new_player', createPlayerScreen);
-
-playerEvents.addListener('remove_player', removePlayer);
-
-playerEvents.addListener('teleport_other_player', teleportPlayer);
-
-playerEvents.addListener('move_other_player', movePlayer);
 
 
