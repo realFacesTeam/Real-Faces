@@ -18,7 +18,7 @@ var RealTHREE = function () {
   this.scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
 
   var negativeBoundary = -this.sceneVars.sceneSize/2, positiveBoundary = this.sceneVars.sceneSize/2;
-  this.controls = new THREE.PointerLockControls( this.camera, this.sceneVars, positiveBoundary, negativeBoundary );
+  this.controls = new THREE.PointerLockControls( this.camera, this.sceneVars, positiveBoundary, negativeBoundary, this.wallList );
   this.scene.add( this.controls.getObject() );
 
   this.raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
@@ -62,7 +62,7 @@ RealTHREE.prototype.createSceneOutdoors = function () {
   //////////////////////
   // CREATE SKYBOX   ///
   //////////////////////
-  var context = this.scene;
+  var context = this;
   createSkybox('Tantolunden', this.sceneVars.skySize, context);
 
   ////////////////////////
@@ -134,7 +134,7 @@ RealTHREE.prototype.createSceneArtGallery = function () {
   floor.receiveShadow = false;
   this.scene.add( floor );
 
-  var context = this.scene;
+  var context = this;
   createWalls(context);
       //fix this function call
   createCeiling(null, context);

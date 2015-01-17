@@ -3,7 +3,7 @@
 var realFaces = function(sceneName){
   //will load webRTC deps on event, set to be called when THREE.js scene is done rendering
   playerEvents.addListener('start_webRTC', this.initWebRTC);
-  
+
   //construct THREE.js renderer
   this.THREE = new RealTHREE();
 
@@ -17,7 +17,7 @@ var realFaces = function(sceneName){
   //realFaces.THREE.createSceneUnionSquare();
 
   //start animations
-  this.THREE.animate(this.THREE);  
+  this.THREE.animate(this.THREE);
 
   this.socket = new RealSocket(this);
 
@@ -39,10 +39,10 @@ realFaces.prototype.initWebRTC = function(clientID, context){
   context.webrtc = new RealWebRTC(clientID);
 };
 
-// var realFaces = { 
+// var realFaces = {
 //   'initWebRTC': function(clientID) {
 //     realFaces.webrtc = new RealWebRTC(clientID)
-//   } 
+//   }
 // };
 
 // //will load webRTC deps on event, set to be called when THREE.js scene is done rendering

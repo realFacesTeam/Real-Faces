@@ -20,7 +20,7 @@ var createCeiling = function (options, context){
   cube_mesh.position.y = y;
   cube_mesh.position.z = z;
   var cube_bsp = new ThreeBSP( cube_mesh );
-<<<<<<< HEAD
+
   var glass_geometry = new THREE.BoxGeometry( 50, 3, 50 );
   var glass_mesh1 = new THREE.Mesh( glass_geometry );
 
@@ -29,8 +29,6 @@ var createCeiling = function (options, context){
   glass_mesh1.position.z = z + 25;
   var glass_bsp1 = new ThreeBSP( glass_mesh1 );
 
-
-  var glass_geometry = new THREE.BoxGeometry( 50, 3, 50 );
   var glass_mesh2 = new THREE.Mesh( glass_geometry );
 
   glass_mesh2.position.x = x - 70;
@@ -45,20 +43,18 @@ var createCeiling = function (options, context){
 
   ceiling.matrixAutoUpdate = false;
   ceiling.updateMatrix();
-  realFaces.THREE.scene.add( ceiling );
-=======
-  var glass_geometry = new THREE.BoxGeometry( 5, 3, 5 );
-  var glass_mesh = new THREE.Mesh( glass_geometry );
-  glass_mesh.position.x = x;
-  glass_mesh.position.y = y;
-  glass_mesh.position.z = z;
-  var glass_bsp = new ThreeBSP( glass_mesh );
 
-  var subtract_bsp = cube_bsp.subtract( glass_bsp );
-  var result = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({ color:'white' }) );
-  result.geometry.computeVertexNormals();
+  // var glass_geometry = new THREE.BoxGeometry( 5, 3, 5 );
+  // var glass_mesh = new THREE.Mesh( glass_geometry );
+  // glass_mesh.position.x = x;
+  // glass_mesh.position.y = y;
+  // glass_mesh.position.z = z;
+  // var glass_bsp = new ThreeBSP( glass_mesh );
 
-  context.add( result );
->>>>>>> 99e33f7a9a2300217d714846298b2dfc1b034f2a
+  // var subtract_bsp = cube_bsp.subtract( glass_bsp );
+  // var result = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({ color:'white' }) );
+  // result.geometry.computeVertexNormals();
+
+  context.scene.add( ceiling );
 
 }

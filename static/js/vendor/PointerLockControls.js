@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, negativeBoundary ) {
+THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, negativeBoundary, wallList) {
 
   var scope = this;
 
@@ -252,7 +252,7 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
 
     }
 
-    var wallCollisionPoint = realFaces.THREE.isWallCollision(yawObject.position.x, yawObject.position.z);
+    var wallCollisionPoint = realFaces.THREE.isWallCollision(yawObject.position.x, yawObject.position.z, wallList);
 
     if (wallCollisionPoint){
 
@@ -262,7 +262,7 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
 
     }
 
-    wallCollisionPoint = realFaces.THREE.isWallCollision(yawObject.position.x, yawObject.position.z);
+    wallCollisionPoint = realFaces.THREE.isWallCollision(yawObject.position.x, yawObject.position.z, wallList);
 
     if (wallCollisionPoint){
 

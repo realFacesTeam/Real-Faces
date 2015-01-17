@@ -28,5 +28,5 @@ var createSkybox = function(sceneName, size, context){
 
   skyBox = new THREE.Mesh( new THREE.BoxGeometry( size, size, size ), material );
   skyBox.position.set(0, size * 0.4, 0);
-  context.add( skyBox );
+  context.scene.add( skyBox );
 }
