@@ -1,11 +1,15 @@
 //construct main app object
 //can load its own webRTC dependency
-var realFaces = function(sceneName){
+var RealFaces = function(sceneName){
   //will load webRTC deps on event, set to be called when THREE.js scene is done rendering
   playerEvents.addListener('start_webRTC', this.initWebRTC);
 
   //construct THREE.js renderer
-  this.THREE = new RealTHREE();
+  if(sceneName === 'ArtGallery'){
+    this.THREE = new RealTHREE(-150, 100, -100, 50);
+  }else{
+    this.THREE = new RealTHREE();
+  }
 
   //activate pointer lock
   this.THREE.pointerLock();
@@ -35,7 +39,7 @@ var realFaces = function(sceneName){
   this.socket.socketio.emit('player_join');
 };
 
-realFaces.prototype.initWebRTC = function(clientID, context){
+RealFaces.prototype.initWebRTC = function(clientID, context){
   context.webrtc = new RealWebRTC(clientID);
 };
 

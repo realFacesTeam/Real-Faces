@@ -1,1 +1,1 @@
-var realFaces = new realFaces("ArtGallery");
+var realFaces = new RealFaces("ArtGallery");

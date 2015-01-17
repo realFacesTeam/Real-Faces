@@ -1,1 +1,1 @@
-var realFaces = new realFaces("Outdoors");
+var realFaces = new RealFaces("Outdoors");

@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, negativeBoundary, wallList) {
+THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, negativeBoundaryX, positiveBoundaryZ, negativeBoundaryZ, wallList) {
 
   var scope = this;
 
@@ -197,15 +197,15 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
     velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
     //make sure character position is within boundary, reset it to outer edge if it is not
-    if ( yawObject.position.z > positiveBoundary){
-      yawObject.position.z  = positiveBoundary;
-    } else if (yawObject.position.z < negativeBoundary ){
-      yawObject.position.z  = negativeBoundary;
-    } else if ( yawObject.position.x > positiveBoundary){
-      yawObject.position.x  = positiveBoundary;
-    } else if (yawObject.position.x < negativeBoundary ){
-      yawObject.position.x  = negativeBoundary;
-    }
+    // if ( yawObject.position.z > positiveBoundary){
+    //   yawObject.position.z  = positiveBoundary;
+    // } else if (yawObject.position.z < negativeBoundary ){
+    //   yawObject.position.z  = negativeBoundary;
+    // } else if ( yawObject.position.x > positiveBoundary){
+    //   yawObject.position.x  = positiveBoundary;
+    // } else if (yawObject.position.x < negativeBoundary ){
+    //   yawObject.position.x  = negativeBoundary;
+    // }
 
     //default is 400
     var speed = sceneVars.playerSpeed;
@@ -271,7 +271,7 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundary, nega
 
     }
 
-    var crossedOuterBoundary = realFaces.THREE.isOutsideBoundary(yawObject.position.x, yawObject.position.z);
+    var crossedOuterBoundary = realFaces.THREE.isOutsideBoundary(yawObject.position.x, yawObject.position.z, positiveBoundaryX, negativeBoundaryX, positiveBoundaryZ, negativeBoundaryZ);
 
     if (crossedOuterBoundary){
 
