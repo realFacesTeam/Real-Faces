@@ -1,4 +1,4 @@
-var createCeiling = function (options){
+var createCeiling = function (options, context){
 
   var options = options || {};
 
@@ -20,6 +20,7 @@ var createCeiling = function (options){
   cube_mesh.position.y = y;
   cube_mesh.position.z = z;
   var cube_bsp = new ThreeBSP( cube_mesh );
+<<<<<<< HEAD
   var glass_geometry = new THREE.BoxGeometry( 50, 3, 50 );
   var glass_mesh1 = new THREE.Mesh( glass_geometry );
 
@@ -45,5 +46,19 @@ var createCeiling = function (options){
   ceiling.matrixAutoUpdate = false;
   ceiling.updateMatrix();
   realFaces.THREE.scene.add( ceiling );
+=======
+  var glass_geometry = new THREE.BoxGeometry( 5, 3, 5 );
+  var glass_mesh = new THREE.Mesh( glass_geometry );
+  glass_mesh.position.x = x;
+  glass_mesh.position.y = y;
+  glass_mesh.position.z = z;
+  var glass_bsp = new ThreeBSP( glass_mesh );
+
+  var subtract_bsp = cube_bsp.subtract( glass_bsp );
+  var result = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({ color:'white' }) );
+  result.geometry.computeVertexNormals();
+
+  context.add( result );
+>>>>>>> 99e33f7a9a2300217d714846298b2dfc1b034f2a
 
 }

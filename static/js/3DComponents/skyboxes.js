@@ -1,4 +1,4 @@
-var createSkybox = function(sceneName, size){
+var createSkybox = function(sceneName, size, context){
 
   var skyBoxDir = sceneName;
 
@@ -28,5 +28,5 @@ var createSkybox = function(sceneName, size){
 
   skyBox = new THREE.Mesh( new THREE.BoxGeometry( size, size, size ), material );
   skyBox.position.set(0, size * 0.4, 0);
-  realFaces.THREE.scene.add( skyBox );
+  context.add( skyBox );
 }

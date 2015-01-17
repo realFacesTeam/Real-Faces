@@ -1,4 +1,4 @@
-var RealTHREE = function (sceneName) {
+var RealTHREE = function () {
   this.collidableMeshList = [];
   this.wallList = [];
   this.objects = [];
@@ -33,7 +33,7 @@ var RealTHREE = function (sceneName) {
 
 };
 
-RealTHREE.prototype.createSceneOutdoor = function () {
+RealTHREE.prototype.createSceneOutdoors = function () {
   ////////////////////
   // CREATE FLOOR ///
   ///////////////////
@@ -62,8 +62,8 @@ RealTHREE.prototype.createSceneOutdoor = function () {
   //////////////////////
   // CREATE SKYBOX   ///
   //////////////////////
-
-  createSkybox('UnionSquare', this.sceneVars.skySize);
+  var context = this.scene;
+  createSkybox('Tantolunden', this.sceneVars.skySize, context);
 
   ////////////////////////
   // END CREATE SKYBOX ///
@@ -109,8 +109,6 @@ RealTHREE.prototype.createSceneOutdoor = function () {
 
 
 RealTHREE.prototype.createSceneArtGallery = function () {
-
-
   var ambient = new THREE.AmbientLight( 0x444444 );
   this.scene.add( ambient );
 
@@ -136,11 +134,12 @@ RealTHREE.prototype.createSceneArtGallery = function () {
   floor.receiveShadow = false;
   this.scene.add( floor );
 
-  createWalls();
+  var context = this.scene;
+  createWalls(context);
       //fix this function call
-  createCeiling();
+  createCeiling(null, context);
 
-  createSkybox('Sorsele3', this.sceneVars.skySize);
+  createSkybox('Sorsele3', this.sceneVars.skySize, context);
 
   ///////////////
   // FURNITURE //
@@ -243,6 +242,16 @@ RealTHREE.prototype.createSceneUnionSquare  = function () {
 
 }
 
+RealTHREE.prototype.createScene = function (sceneName) {
+  if(sceneName === 'Outdoors'){
+    this.createSceneOutdoors();
+  }else if(sceneName === 'ArtGallery'){
+    this.createSceneArtGallery();
+  }else if(sceneName === 'UnionSquare'){
+    this.createSceneUnionSquare();
+  }
+}
+
 RealTHREE.prototype.onWindowResize = function() {
   realFaces.THREE.camera.aspect = window.innerWidth / window.innerHeight;
   realFaces.THREE.camera.updateProjectionMatrix();
@@ -250,36 +259,41 @@ RealTHREE.prototype.onWindowResize = function() {
   realFaces.THREE.renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-RealTHREE.prototype.animate = function () {
-  requestAnimationFrame( realFaces.THREE.animate );
+RealTHREE.prototype.animate = function (thisRef) {
+  window.animateContext = window.animateContext || thisRef;
+  var thisRef = window.animateContext;
 
-  realFaces.THREE.controls.isOnObject( false );
+  requestAnimationFrame( window.animateContext.animate );
 
-  realFaces.THREE.raycaster.ray.origin.copy( realFaces.THREE.controls.getObject().position );
-  realFaces.THREE.raycaster.ray.origin.y -= 10;
+  thisRef.controls.isOnObject( false );
 
-  var intersections = realFaces.THREE.raycaster.intersectObjects( realFaces.THREE.objects );
+  thisRef.raycaster.ray.origin.copy( thisRef.controls.getObject().position );
+  thisRef.raycaster.ray.origin.y -= 10;
+
+  var intersections = thisRef.raycaster.intersectObjects( thisRef.objects );
 
   if ( intersections.length > 0 ) {
-    realFaces.THREE.controls.isOnObject( true );
+    thisRef.controls.isOnObject( true );
   }
 
-  for(var i = 0, len = realFaces.THREE.objects.length; i < len; i++){
-    var object = realFaces.THREE.objects[i];
+  for(var i = 0, len = thisRef.objects.length; i < len; i++){
+    var object = thisRef.objects[i];
     if (typeof(object.update) === 'function')
       object.update();
   }
 
-  for(var ID in realFaces.THREE.duckWalkers){
-    realFaces.THREE.duckWalkers[ID].render();
+  for(var ID in thisRef.duckWalkers){
+    thisRef.duckWalkers[ID].render();
   }
 
   TWEEN.update();
-  realFaces.THREE.verticalMirror.render();
-  realFaces.THREE.controls.update();
-  realFaces.THREE.renderer.render( realFaces.THREE.scene, realFaces.THREE.camera );
+  //if this scene has mirrors, render them
+  if(thisRef.verticalMirror){
+    thisRef.verticalMirror.render();
+  }
+  thisRef.controls.update();
+  thisRef.renderer.render( thisRef.scene, thisRef.camera );
 }
-
 
 
 RealTHREE.prototype.pointerLock = function () {

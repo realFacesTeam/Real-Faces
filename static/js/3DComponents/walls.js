@@ -21,6 +21,7 @@ var createWall = function (options){
     }
     wall.castShadow = castShadow;
     wall.receiveShadow = receiveShadow;
+
   }else{
     var cube_geometry = new THREE.BoxGeometry( length, height, width );
     var cube_mesh = new THREE.Mesh( cube_geometry );
@@ -51,8 +52,7 @@ var createWall = function (options){
 
   realFaces.THREE.wallList.push(wall);
 
-  realFaces.THREE.scene.add( wall );
-
+  options.context.add(wall);
 };
 
 
@@ -90,26 +90,40 @@ var createWindowFrame = function (options){
   if (rotated){
     result.rotation.y = Math.PI / 2;
   }
-  realFaces.THREE.scene.add( result );
-  //console.log( 'Example 1: ' + ((new Date()).getTime() - start_time) + 'ms' );
+
+  options.context.add( result );
 }
 
-var createWalls = function(){
+var createWalls = function(context){
 
-  createWall({length:150, x:25, z:50, window:true});
-  createWindowFrame({length:150, x:25, z:50});
-  createWall({length:100, x:-50, z:0, rotated:true});
-  createWall({length:100, x:0, z:-50});
-  createWall({length:150, x:100, z:-25, rotated:true, window:true});
-  createWindowFrame({length:150, x:100, z:-25, rotated:true});
-  createWall({length:250, x:-25, z:-100, window:true});
-  createWindowFrame({length:250, x:-25, z:-100});
-  //createWall({length:100, x:-100, z:-50, rotated:true});
-  //createWall({length:50, x:-125, z:-100});
-  createWall({length:150, x:-150, z:-25, rotated:true, window:true});
-  createWindowFrame({length:150, x:-150, z:-25, rotated:true});
-  // createWall({length:50, x:-150, z:25, rotated:true});
-  createWall({length:100, x:-100, z:50, window:true});
-  createWindowFrame({length:100, x:-100, z:50});
+  // createWall({length:150, x:25, z:50, window:true});
+  // createWindowFrame({length:150, x:25, z:50});
+  // createWall({length:100, x:-50, z:0, rotated:true});
+  // createWall({length:100, x:0, z:-50});
+  // createWall({length:150, x:100, z:-25, rotated:true, window:true});
+  // createWindowFrame({length:150, x:100, z:-25, rotated:true});
+  // createWall({length:250, x:-25, z:-100, window:true});
+  // createWindowFrame({length:250, x:-25, z:-100});
+  // //createWall({length:100, x:-100, z:-50, rotated:true});
+  // //createWall({length:50, x:-125, z:-100});
+  // createWall({length:150, x:-150, z:-25, rotated:true, window:true});
+  // createWindowFrame({length:150, x:-150, z:-25, rotated:true});
+  // // createWall({length:50, x:-150, z:25, rotated:true});
+  // createWall({length:100, x:-100, z:50, window:true});
+  // createWindowFrame({length:100, x:-100, z:50});
+
+  createWall({length:150, x:25, z:50, window:true, context:context});
+  createWindowFrame({length:150, x:25, z:50, context:context});
+  createWall({length:100, x:-50, z:0, rotated:true, context:context});
+  createWall({length:100, x:0, z:-50, context:context});
+  createWall({length:150, x:100, z:-25, rotated:true, window:true, context:context});
+  createWindowFrame({length:150, x:100, z:-25, rotated:true, context:context});
+  createWall({length:200, x:0, z:-100, window:true, context:context});
+  createWindowFrame({length:200, x:0, z:-100, context:context});
+  createWall({length:100, x:-100, z:-50, rotated:true, context:context});
+  createWall({length:50, x:-125, z:0, context:context});
+  createWall({length:50, x:-150, z:-25, rotated:true, context:context});
+  createWall({length:50, x:-150, z:25, rotated:true, context:context});
+  createWall({length:100, x:-100, z:50, context:context});
 
 };

@@ -1,4 +1,4 @@
-var RealSocket = function () {
+var RealSocket = function (app) {
   this.socketInterval = 100;
   this.yourPlayerTranslation;
 
@@ -15,7 +15,7 @@ var RealSocket = function () {
 
   //set up event listeners from socket
   //OTHER PLAYER UPDATES FROM SERVER
-  this.socketio.on('preexisting_clients', function(clientTranslations, yourID){
+  this.socketio.on('preexisting_clients', function(clientTranslations, yourID, thisRef){
     //save your socketio ID
     this.yourID = yourID;
     //draw pre-existing clients when you login
@@ -27,7 +27,7 @@ var RealSocket = function () {
       }
     }
     //initialize webRTC connection after drawing other clients
-    playerEvents.emit('start_webRTC', yourID);
+    playerEvents.emit('start_webRTC', yourID, app);
   });
 
   this.socketio.on('new_client', function(clientID){

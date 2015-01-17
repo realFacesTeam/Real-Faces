@@ -1,44 +1,83 @@
 //construct main app object
 //can load its own webRTC dependency
-var realFaces = { 
-  'initWebRTC': function(clientID) {
-    realFaces.webrtc = new RealWebRTC(clientID)
-  } 
-};
+var realFaces = function(sceneName){
+  //will load webRTC deps on event, set to be called when THREE.js scene is done rendering
+  playerEvents.addListener('start_webRTC', this.initWebRTC);
+  
+  //construct THREE.js renderer
+  this.THREE = new RealTHREE();
 
-//will load webRTC deps on event, set to be called when THREE.js scene is done rendering
-playerEvents.addListener('start_webRTC', realFaces.initWebRTC);
+  //activate pointer lock
+  this.THREE.pointerLock();
 
-//construct THREE.js renderer
-realFaces.THREE = new RealTHREE();
+  //construct scene based on url
+  this.THREE.createScene(sceneName);
+  //e.g.
+  //realFaces.THREE.createSceneOutdoor();
+  //realFaces.THREE.createSceneUnionSquare();
 
-//activate pointer lock
-realFaces.THREE.pointerLock();
+  //start animations
+  this.THREE.animate(this.THREE);  
 
-//construct scene based on url
-//eg
-realFaces.THREE.createSceneArtGallery();
-//realFaces.THREE.createSceneOutdoor();
-//realFaces.THREE.createSceneUnionSquare();
+  this.socket = new RealSocket(this);
 
-//start animations
-realFaces.THREE.animate();
+  playerEvents.addListener('new_player', this.socket.createPlayerScreen);
 
-//on document ready, start listening for socket events
-$(document).ready(function() {
-  realFaces.socket = new RealSocket();
+  playerEvents.addListener('remove_player', this.socket.removePlayer);
 
-  playerEvents.addListener('new_player', realFaces.socket.createPlayerScreen);
+  playerEvents.addListener('teleport_other_player', this.socket.teleportPlayer);
 
-  playerEvents.addListener('remove_player', realFaces.socket.removePlayer);
+  playerEvents.addListener('move_other_player', this.socket.movePlayer);
 
-  playerEvents.addListener('teleport_other_player', realFaces.socket.teleportPlayer);
-
-  playerEvents.addListener('move_other_player', realFaces.socket.movePlayer);
-
-  playerEvents.addListener('player_movement', realFaces.socket.storePlayerTranslation);
+  playerEvents.addListener('player_movement', this.socket.storePlayerTranslation);
 
   //after event listeners are set, tell server to send back self data
-  realFaces.socket.socketio.emit('player_join');
-});
+  this.socket.socketio.emit('player_join');
+};
+
+realFaces.prototype.initWebRTC = function(clientID, context){
+  context.webrtc = new RealWebRTC(clientID);
+};
+
+// var realFaces = { 
+//   'initWebRTC': function(clientID) {
+//     realFaces.webrtc = new RealWebRTC(clientID)
+//   } 
+// };
+
+// //will load webRTC deps on event, set to be called when THREE.js scene is done rendering
+// playerEvents.addListener('start_webRTC', realFaces.initWebRTC);
+
+// //construct THREE.js renderer
+// realFaces.THREE = new RealTHREE();
+
+// //activate pointer lock
+// realFaces.THREE.pointerLock();
+
+// //construct scene based on url
+// //eg
+// realFaces.THREE.createSceneArtGallery();
+// //realFaces.THREE.createSceneOutdoor();
+// //realFaces.THREE.createSceneUnionSquare();
+
+// //start animations
+// realFaces.THREE.animate();
+
+//on document ready, start listening for socket events
+// $(document).ready(function() {
+//   realFaces.socket = new RealSocket();
+
+//   playerEvents.addListener('new_player', realFaces.socket.createPlayerScreen);
+
+//   playerEvents.addListener('remove_player', realFaces.socket.removePlayer);
+
+//   playerEvents.addListener('teleport_other_player', realFaces.socket.teleportPlayer);
+
+//   playerEvents.addListener('move_other_player', realFaces.socket.movePlayer);
+
+//   playerEvents.addListener('player_movement', realFaces.socket.storePlayerTranslation);
+
+//   //after event listeners are set, tell server to send back self data
+//   realFaces.socket.socketio.emit('player_join');
+// });
 
