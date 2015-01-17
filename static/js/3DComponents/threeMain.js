@@ -1,4 +1,4 @@
-var RealTHREE = function () {
+var RealTHREE = function (xMinBoundary, xMaxBoundary, zMinBoundary, zMaxBoundary) {
   this.collidableMeshList = [];
   this.wallList = [];
   this.objects = [];
@@ -11,14 +11,17 @@ var RealTHREE = function () {
     sceneSize: 500,
     skySize: 4000
   };
+  this.negativeBoundaryX = xMinBoundary || -this.sceneVars.sceneSize/2;
+  this.positiveBoundaryX = xMaxBoundary || this.sceneVars.sceneSize/2;
+  this.negativeBoundaryZ = zMinBoundary || -this.sceneVars.sceneSize/2;
+  this.positiveBoundaryZ = zMaxBoundary || this.sceneVars.sceneSize/2;
 
   this.camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 5000 );
 
   this.scene = new THREE.Scene();
   this.scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
 
-  var negativeBoundary = -this.sceneVars.sceneSize/2, positiveBoundary = this.sceneVars.sceneSize/2;
-  this.controls = new THREE.PointerLockControls( this.camera, this.sceneVars, positiveBoundary, negativeBoundary, this.wallList );
+  this.controls = new THREE.PointerLockControls( this.camera, this.sceneVars, this.positiveBoundaryX, this.negativeBoundaryX, this.positiveBoundaryZ, this.negativeBoundaryZ, this.wallList );
   this.scene.add( this.controls.getObject() );
 
   this.raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
@@ -109,6 +112,7 @@ RealTHREE.prototype.createSceneOutdoors = function () {
 
 
 RealTHREE.prototype.createSceneArtGallery = function () {
+
   var ambient = new THREE.AmbientLight( 0x444444 );
   this.scene.add( ambient );
 

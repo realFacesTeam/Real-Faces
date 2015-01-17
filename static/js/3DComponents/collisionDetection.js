@@ -77,23 +77,27 @@ RealTHREE.prototype.isWallCollision = function(x,z, wallList){
 
 };
 
-RealTHREE.prototype.isOutsideBoundary = function(x,z){
+RealTHREE.prototype.isOutsideBoundary = function(x,z, xMax, xMin, zMax, zMin){
   var outsideBoundary = false, newX = x, newZ = z;
 
-  if (x > 99){
+  var zMin = zMin || xMin;
+  var zMax = zMax || xMax;
+
+
+  if (x > xMax){
     outsideBoundary = true;
-    newX = 98;
-  }else if (x < -149){
+    newX = xMax * 0.9999;
+  }else if (x < xMin){
     outsideBoundary = true;
-    newX = -148;
+    newX = xMin * 1.0001;
   }
 
-  if (z > 49){
+  if (z > zMax){
     outsideBoundary = true;
-    newZ = 48;
-  }else if (z < -99){
+    newZ = zMax * 0.9999;
+  }else if (z < zMin){
     outsideBoundary = true;
-    newZ = -98;
+    newZ = zMin * 1.0001;
   }
 
   if (!outsideBoundary){
