@@ -58,7 +58,7 @@ var createWall = function (options){
 
 var createWindowFrame = function (options){
 
-  var height = options.height || 40;
+  var height = options.height || 25;
   var width = options.width || 2.5;
   var length = options.length;
   var x = options.x;
@@ -71,13 +71,13 @@ var createWindowFrame = function (options){
   //var material = options.material || new THREE.MeshLambertMaterial( {map:texture, side:THREE.DoubleSide} );
 
   //var start_time = (new Date()).getTime();
-  var cube_geometry = new THREE.BoxGeometry( 28, 28, 3 );
+  var cube_geometry = new THREE.BoxGeometry( height + 3, height + 3, 3 );
   var cube_mesh = new THREE.Mesh( cube_geometry );
   cube_mesh.position.x = x;
   cube_mesh.position.y = y;
   cube_mesh.position.z = z;
   var cube_bsp = new ThreeBSP( cube_mesh );
-  var glass_geometry = new THREE.BoxGeometry( 25, 25, 3.1 );
+  var glass_geometry = new THREE.BoxGeometry( height, height, 3.1 );
   var glass_mesh = new THREE.Mesh( glass_geometry );
   glass_mesh.position.x = x;
   glass_mesh.position.y = y;

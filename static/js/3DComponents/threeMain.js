@@ -143,6 +143,8 @@ RealTHREE.prototype.createSceneArtGallery = function () {
       //fix this function call
   createCeiling(null, context);
 
+  createGalleryPictures(context);
+
   createSkybox('Sorsele3', this.sceneVars.skySize, context);
 
   ///////////////
