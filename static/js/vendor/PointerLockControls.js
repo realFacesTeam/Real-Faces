@@ -234,7 +234,6 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, neg
       if (Math.abs(velocity.x) > 1 || Math.abs(velocity.y) > 100 || Math.abs(velocity.z) > 1){
 
         if (!walking){
-          console.log('start walking')
           you.startWalking()
           walking = true;
         }
@@ -242,7 +241,6 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, neg
       }else{
 
         if(walking){
-          console.log('stop walking')
           you.stopWalking();
           walking = false;
         }
