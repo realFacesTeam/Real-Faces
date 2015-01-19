@@ -43,9 +43,9 @@ RealTHREE.prototype.createSceneOutdoors = function () {
 
   // Tiled floor
   // note: 4x4 checkboard pattern scaled so that each square is 25 by 25 pixels.
-  var floorTexture = new THREE.ImageUtils.loadTexture( 'images/checkerboard.jpg' );
+  var floorTexture = new THREE.ImageUtils.loadTexture( 'images/grass2.jpg' );
   floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-  floorTexture.repeat.set( 10, 10 );
+  floorTexture.repeat.set( 1, 1 );
   // DoubleSide: render texture on both sides of mesh
   var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
   var floorGeometry = new THREE.PlaneBufferGeometry(this.sceneVars.sceneSize, this.sceneVars.sceneSize, 1, 1);
