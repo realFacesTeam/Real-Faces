@@ -53,13 +53,13 @@ var RealWebRTC =  function (clientID) {
   //     }
   //   });
   // };
-  
+
   //set volume for all peers to 0
 
   window.webRTCMain = this;
   setInterval(function(){
     window.webRTCMain.webrtc.setVolumeForAll(0);
-  },1000); 
+  },500);
 };
 
 var updateCubeWithVideo = function (divID, clientID) {

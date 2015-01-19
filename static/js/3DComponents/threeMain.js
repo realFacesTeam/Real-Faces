@@ -1,4 +1,4 @@
-var RealTHREE = function (xMinBoundary, xMaxBoundary, zMinBoundary, zMaxBoundary) {
+var RealTHREE = function (xMinBoundary, xMaxBoundary, zMinBoundary, zMaxBoundary, mirrorCompatible) {
   this.collidableMeshList = [];
   this.wallList = [];
   this.objects = [];
@@ -21,7 +21,7 @@ var RealTHREE = function (xMinBoundary, xMaxBoundary, zMinBoundary, zMaxBoundary
   this.scene = new THREE.Scene();
   this.scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
 
-  this.controls = new THREE.PointerLockControls( this.camera, this.sceneVars, this.positiveBoundaryX, this.negativeBoundaryX, this.positiveBoundaryZ, this.negativeBoundaryZ, this.wallList );
+  this.controls = new THREE.PointerLockControls( this.camera, this.sceneVars, this.positiveBoundaryX, this.negativeBoundaryX, this.positiveBoundaryZ, this.negativeBoundaryZ, this.wallList, mirrorCompatible );
   this.scene.add( this.controls.getObject() );
 
   this.raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );

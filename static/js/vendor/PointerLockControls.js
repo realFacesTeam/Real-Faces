@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, negativeBoundaryX, positiveBoundaryZ, negativeBoundaryZ, wallList) {
+THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, negativeBoundaryX, positiveBoundaryZ, negativeBoundaryZ, wallList, mirrorCompatible) {
 
   var scope = this;
 
@@ -15,6 +15,12 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, neg
   yawObject.position.y = sceneVars.playerStartHeight;
   //createPlayerScreen(yourID);
   yawObject.add( pitchObject );
+
+  if (mirrorCompatible){
+    var you = createYourPlayerScreen();
+    var walking = false;
+    yawObject.add(you);
+  }
 
 
   var moveForward = false;
@@ -182,6 +188,7 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, neg
 
   this.update = function () {
 
+
     var jumped = false;
 
 
@@ -222,6 +229,29 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, neg
     if (Math.abs(velocity.x) < 0.001  || Math.abs(velocity.x) > 300 || Math.abs(velocity.x * delta) > 50) velocity.x = 0;
     if (Math.abs(velocity.y) < 0.001  || Math.abs(velocity.y) > 500 || Math.abs(velocity.y * delta) > 250) velocity.y = 0;
     if (Math.abs(velocity.z) < 0.001  || Math.abs(velocity.z) > 300 || Math.abs(velocity.z * delta) > 50) velocity.z = 0;
+
+    if (mirrorCompatible){
+      if (Math.abs(velocity.x) > 1 || Math.abs(velocity.y) > 100 || Math.abs(velocity.z) > 1){
+
+        if (!walking){
+          console.log('start walking')
+          you.startWalking()
+          walking = true;
+        }
+
+      }else{
+
+        if(walking){
+          console.log('stop walking')
+          you.stopWalking();
+          walking = false;
+        }
+      }
+
+      you.update();
+
+    }
+
 
     if ( isOnObject === true ) {
 
