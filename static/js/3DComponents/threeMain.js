@@ -1,4 +1,4 @@
-var RealTHREE = function (xMinBoundary, xMaxBoundary, zMinBoundary, zMaxBoundary) {
+var RealTHREE = function (xMinBoundary, xMaxBoundary, zMinBoundary, zMaxBoundary, mirrorCompatible) {
   this.collidableMeshList = [];
   this.wallList = [];
   this.objects = [];
@@ -21,7 +21,7 @@ var RealTHREE = function (xMinBoundary, xMaxBoundary, zMinBoundary, zMaxBoundary
   this.scene = new THREE.Scene();
   this.scene.fog = new THREE.Fog( 0xffffff, 0, 1750 );
 
-  this.controls = new THREE.PointerLockControls( this.camera, this.sceneVars, this.positiveBoundaryX, this.negativeBoundaryX, this.positiveBoundaryZ, this.negativeBoundaryZ, this.wallList );
+  this.controls = new THREE.PointerLockControls( this.camera, this.sceneVars, this.positiveBoundaryX, this.negativeBoundaryX, this.positiveBoundaryZ, this.negativeBoundaryZ, this.wallList, mirrorCompatible );
   this.scene.add( this.controls.getObject() );
 
   this.raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
@@ -43,9 +43,9 @@ RealTHREE.prototype.createSceneOutdoors = function () {
 
   // Tiled floor
   // note: 4x4 checkboard pattern scaled so that each square is 25 by 25 pixels.
-  var floorTexture = new THREE.ImageUtils.loadTexture( 'images/checkerboard.jpg' );
+  var floorTexture = new THREE.ImageUtils.loadTexture( 'images/grass2.jpg' );
   floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-  floorTexture.repeat.set( 10, 10 );
+  floorTexture.repeat.set( 1, 1 );
   // DoubleSide: render texture on both sides of mesh
   var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
   var floorGeometry = new THREE.PlaneBufferGeometry(this.sceneVars.sceneSize, this.sceneVars.sceneSize, 1, 1);

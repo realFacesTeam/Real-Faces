@@ -6,7 +6,7 @@ var RealFaces = function(sceneName){
 
   //construct THREE.js renderer
   if(sceneName === 'ArtGallery'){
-    this.THREE = new RealTHREE(-150, 100, -100, 50);
+    this.THREE = new RealTHREE(-150, 100, -100, 50, true);
   }else{
     this.THREE = new RealTHREE();
   }

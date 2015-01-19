@@ -15,7 +15,7 @@ RealSocket.prototype.createPlayerScreen = function(ID, createTranslation){
   var material = new THREE.MeshFaceMaterial(materialArray);
 
   var playerScreen = new THREE.Mesh( geometry, material );
-  playerScreen.castShadow = true;
+  //playerScreen.castShadow = true;
 
   playerScreen.name = 'player-' + ID;
 

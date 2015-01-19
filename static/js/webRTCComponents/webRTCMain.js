@@ -42,6 +42,8 @@ var RealWebRTC =  function (clientID) {
     this.webcam = true;
     // you can name it anything
     this.joinRoom('realTalkClient');
+
+    playerEvents.emit('joined_room');
   });
 
   // //OVERWRITES VANILLA LIBRARY METHOD
@@ -53,13 +55,13 @@ var RealWebRTC =  function (clientID) {
   //     }
   //   });
   // };
-  
+
   //set volume for all peers to 0
 
   window.webRTCMain = this;
   setInterval(function(){
     window.webRTCMain.webrtc.setVolumeForAll(0);
-  },1000); 
+  },500);
 };
 
 var updateCubeWithVideo = function (divID, clientID) {
