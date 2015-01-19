@@ -42,6 +42,8 @@ var RealWebRTC =  function (clientID) {
     this.webcam = true;
     // you can name it anything
     this.joinRoom('realTalkClient');
+
+    playerEvents.emit('joined_room');
   });
 
   // //OVERWRITES VANILLA LIBRARY METHOD

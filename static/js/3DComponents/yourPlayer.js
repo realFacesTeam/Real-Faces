@@ -17,7 +17,7 @@ var createYourPlayerScreen = function(){
   var playerScreen = new THREE.Mesh( geometry, material );
   //playerScreen.castShadow = true;
 
-  //playerScreen.name = 'player-' + ID;
+  playerScreen.name = 'your-screen';
 
   body = new Avatar(THREE);
 
@@ -43,8 +43,32 @@ var createYourPlayerScreen = function(){
   };
 
 
+  playerScreen.addVideo = function(){
 
-  //playerEvents.addListener('new_player', this.socket.createPlayerScreen);
+    var video = document.getElementById('localVideo');
+
+    var videoTexture = new THREE.VideoTexture( video );
+    videoTexture.generateMipmaps = false;
+    videoTexture.minFilter = THREE.LinearFilter;
+    videoTexture.magFilter = THREE.LinearFilter;
+
+    var materialArray = [];
+    realFaces.THREE.scene = realFaces.THREE.scene || window.scene;
+    var plainMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color('grey') } );
+    materialArray.push(plainMaterial);
+    materialArray.push(plainMaterial);
+    materialArray.push(plainMaterial);
+    materialArray.push(plainMaterial);
+    materialArray.push(plainMaterial);
+    materialArray.push(new THREE.MeshBasicMaterial( { map: videoTexture }));
+    var MovingCubeMat = new THREE.MeshFaceMaterial(materialArray);
+
+    var cube = realFaces.THREE.scene.getObjectByName('your-screen');
+    cube.material = MovingCubeMat;
+    cube.material.needsUpdate = true;
+  };
+
+  playerEvents.addListener('joined_room', playerScreen.addVideo);
 
   return playerScreen;
 
