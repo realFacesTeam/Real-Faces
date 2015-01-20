@@ -1,7 +1,10 @@
 var volumeDistanceModifier = function(clientID){
-  var min = 10;
-  var max = 50;
-  var otherTranslation = realFaces.socket.socketio.lastRecordedPlayerTranslations[clientID];
+  var min = 15;
+  var max = 90;
+  var otherTranslation = realFaces.socket.lastRecordedPlayerTranslations[clientID];
+  if(!otherTranslation){
+    return 'does not exist'
+  }
 
   var ox = otherTranslation.position.x;
   var yourx = realFaces.socket.yourPlayerTranslation.position.x;
