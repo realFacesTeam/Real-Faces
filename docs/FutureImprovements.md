@@ -8,7 +8,7 @@ At the moment, the app uses peer to peer media streaming. This is pretty much fr
 
 ## 3D sound
 
-Add positonal and directional audio so that clients can hear what direciton another is. This is currently only possible in FireFox, due to peer Media Stream incompatibility with Web Audio API, so probably not worth the time.
+Add positonal and directional audio so that clients can hear what direciton another is. This is currently only possible in FireFox, due to peer media stream incompatibility with Web Audio API, so probably not worth the time.
 
 ## Cropping via facial detection
 
