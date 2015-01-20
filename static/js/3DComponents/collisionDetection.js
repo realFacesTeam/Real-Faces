@@ -2,9 +2,9 @@ RealTHREE.prototype.findOtherPlayerCollision = function(positionX, positionZ, bu
   var buffer = buffer || 1;
   var playerSpacing = 9 * buffer;
 
-  for (var ID in realFaces.socket.socketio.lastRecordedPlayerTranslations){
-    if (realFaces.socket.socketio.lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== realFaces.socket.socketio.yourID){
-      var otherPlayerPosition = realFaces.socket.socketio.lastRecordedPlayerTranslations[ID].position;
+  for (var ID in realFaces.socket.lastRecordedPlayerTranslations){
+    if (realFaces.socket.lastRecordedPlayerTranslations.hasOwnProperty(ID) && ID !== realFaces.socket.socketio.yourID){
+      var otherPlayerPosition = realFaces.socket.lastRecordedPlayerTranslations[ID].position;
 
       var distanceX = Math.abs(positionX - otherPlayerPosition.x);
       var distanceZ = Math.abs(positionZ - otherPlayerPosition.z);
