@@ -19,7 +19,7 @@ var createYourPlayerScreen = function(){
 
   playerScreen.name = 'your-screen';
 
-  body = new Avatar(THREE);
+  var body = new Avatar();
 
   body.mesh.position.y = - 12;
 

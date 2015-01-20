@@ -65,7 +65,7 @@ var RealWebRTC =  function (clientID) {
 
   this.speaking = false;
 
-  this.setVolumeForAll = function (harkVolume, dontChangeHarkVolume) {
+  this.webrtc.setVolumeForAll = function (harkVolume, dontChangeHarkVolume) {
       var volume;
 
       // Strange semantics due to SimpleWebRTC workaround
