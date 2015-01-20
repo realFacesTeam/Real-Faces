@@ -1,3 +1,4 @@
+var playerEvents = new EventEmitter();
 //construct main app object
 //can load its own webRTC dependency
 var RealFaces = function(sceneName){

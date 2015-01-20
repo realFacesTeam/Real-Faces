@@ -471,5 +471,4 @@
     }
 }.call(this));
 
-//var ee = new EventEmitter();
-var playerEvents = new EventEmitter();
+
