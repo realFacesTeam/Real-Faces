@@ -1,0 +1,34 @@
+extends layout
+
+block content
+    .container
+      .header
+        ul.nav.nav-pills.pull-right
+          li
+            a(href='./') Home
+          li
+            a(href='./About') About
+          li.active
+            a(href='./Problems') Problems
+          li
+            a(href='./Contact') Contact
+        h3.text-muted Real Faces
+      .jumbotron
+        h2 Problems
+        p.lead
+          | Real faces has been built with new and developing technologies so it wont run smoothly for everyone
+        //- p
+        //-   a.btn.btn-lg.btn-success(href='#', role='button') Sign up today
+      .row.marketing
+        .col-lg-12
+          p Real faces was built upon WebGL and WebRTC. WebGL will perform poorly on older computers with less powerful graphics cards and WebRTC quality will differ depending on your location and internet bandwidth.
+            | You will need a webcam to use Real Faces properly and is best run on Google Chrome or Firefox browsers.
+            | If you see a way to fix/improve Real Faces please let us know and we'll do out best to make it happen (or make a pull request yourself!)
+
+       .footer
+        p
+          | <br> <br> Built by
+          a(href='https://github.com/davemun') Dave Mun
+          |  and
+          a(href='https://github.com/roryc89') Rory Campbell
+
