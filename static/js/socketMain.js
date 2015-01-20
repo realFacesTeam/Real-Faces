@@ -21,7 +21,6 @@ var RealSocket = function (app) {
   this.socketio.on('preexisting_clients', function(clientTranslations, yourID, thisRef){
     //save your socketio ID
     context.yourID = yourID;
-    console.log('yourID', yourID)
     //draw pre-existing clients when you login
     for (var id in clientTranslations){
       if (clientTranslations.hasOwnProperty(id) && clientTranslations[id] && id !== yourID){

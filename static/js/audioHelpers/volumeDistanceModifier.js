@@ -5,7 +5,6 @@ var volumeDistanceModifier = function(clientID){
   if(!otherTranslation){
     return 'does not exist'
   }
-  console.log(clientID, realFaces.socket.lastRecordedPlayerTranslations)
 
   var ox = otherTranslation.position.x;
   var yourx = realFaces.socket.yourPlayerTranslation.position.x;
@@ -21,7 +20,6 @@ var volumeDistanceModifier = function(clientID){
   if (totalDistance > max)
     return 0;
 
-  //console.log(((max-min)-(totalDistance - min))/max)
   return ((max-min)-(totalDistance - min))/max;
 
 };

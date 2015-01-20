@@ -29,7 +29,6 @@ SimpleWebRTC.prototype.setVolumeForAll = function (harkVolume, dontChangeHarkVol
       peers.forEach(function (peer) {
           if (peer.socketID){
             var vdm = volumeDistanceModifier(peer.socketID);
-            console.log(vdm)
             //console.log('vdm', vdm, volume)
             if (vdm === 'does not exist'){
               delete peers[peer];
