@@ -29,7 +29,7 @@ RealSocket.prototype.createPlayerScreen = function(ID, createTranslation){
   realFaces.THREE.duckWalkers[ID] = body;
 
   playerScreen.add(body.mesh);
-  playerScreen.position.y += 10;
+  playerScreen.position.y += 12;
 
 
   realFaces.THREE.objects.push( playerScreen );
