@@ -18,6 +18,14 @@ Open source JavaScript facial detection packages are available, which could be u
 
 Add the ability to make private rooms that the user could invite people to by sharing a generated URL.
 
+## Create user Accounts
+
+Either create user accounts or use a google/facebook/twitter sign in.
+
+## Customisatble characters
+
+Have the characters be customisable. An option that automatched the color of top the person was wearing could also be implemented.
+
 ## Detection and notification of lacking requirements
 
 The app would detect if the users computer or internet were not suitable for the app and show them the appropriate message.
