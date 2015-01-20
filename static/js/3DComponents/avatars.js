@@ -4,9 +4,9 @@ function Avatar(three, opts) {
 
   opts = opts || {};
 
-  THREE = three // hack until three.js fixes multiple instantiation
+  //THREE = three // hack until three.js fixes multiple instantiation
   this.sizeRatio = opts.sizeRatio || 0.4
-  this.scale = opts.scale || new three.Vector3(1, 1, 1)
+  this.scale = opts.scale || new THREE.Vector3(1, 1, 1)
   this.fallbackImage = opts.fallbackImage || 'avatar.png'
   this.createCanvases()
   this.mesh = this.createPlayerObject()

@@ -320,11 +320,11 @@ RealTHREE.prototype.pointerLock = function () {
 
       if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
 
-        if(!realFaces.webrtc.webcam){
-          document.getElementById('webcamWarning').style.visibility = 'visible';
-        }else{
-          document.getElementById('webcamWarning').style.visibility = 'hidden';
-        }
+        // if(!realFaces.webrtc.webcam){
+        //   document.getElementById('webcamWarning').style.visibility = 'visible';
+        // }else{
+        //   document.getElementById('webcamWarning').style.visibility = 'hidden';
+        // }
 
         realFaces.THREE.controls.enabled = true;
 
@@ -332,11 +332,11 @@ RealTHREE.prototype.pointerLock = function () {
 
       } else {
 
-        if(!realFaces.webrtc.webcam){
-          document.getElementById('webcamWarning').style.visibility = 'visible';
-        }else{
-          document.getElementById('webcamWarning').style.visibility = 'hidden';
-        }
+        // if(!realFaces.webrtc.webcam){
+        //   document.getElementById('webcamWarning').style.visibility = 'visible';
+        // }else{
+        //   document.getElementById('webcamWarning').style.visibility = 'hidden';
+        // }
 
         realFaces.THREE.controls.enabled = false;
 
