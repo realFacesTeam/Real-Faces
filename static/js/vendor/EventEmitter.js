@@ -471,4 +471,5 @@
     }
 }.call(this));
 
+var playerEvents = new EventEmitter();
 
