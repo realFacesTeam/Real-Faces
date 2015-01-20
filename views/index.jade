@@ -1,10 +1,46 @@
 extends layout
 
 block content
-  div Welcome to the index page! Try visiting some of these different scenes!
-    div
-      a(href="./Outdoors") Outdoors
-    div
-      a(href="./ArtGallery") ArtGallery
-    div
-      a(href="./UnionSquare") UnionSquare
+    .container
+      .header
+        ul.nav.nav-pills.pull-right
+          li.active
+            a(href='./Index') Home
+          li
+            a(href='./About') About
+          li
+            a(href='./Problems') Problems
+          li
+            a(href='./Contact') Contact
+        h3.text-muted Real Faces
+      .jumbotron
+        h2 Welcome to Real Faces
+        p.lead
+          | Real Faces is 3D video conferencing app that aims to make internet communication as real as life. To start using it, select one of the scenes below...
+        //- p
+        //-   a.btn.btn-lg.btn-success(href='#', role='button') Sign up today
+      .row.marketing
+        .col-lg-6
+          h3 The Art Gallery
+          p
+            | Enter the art gallery, decorated with the technologies used to build Real Faces. This scene is the most complex and older computers may have difficulty running it.
+          a.btn.btn-lg.btn-success(href='./ArtGallery', role='button') Enter Scene
+          h3 Union Square
+          p
+            | Have a conversation in San Fransisco's Union Square.
+          a.btn.btn-lg.btn-success(href='./UnionSquare', role='button') Enter Scene
+        .col-lg-6
+          h3 Outdoors
+          p
+           | Chat with other users in a leafy park.
+          a.btn.btn-lg.btn-success(href='./Outdoors', role='button') Enter Scene
+          h3 More Scenes to come
+          p
+            | More scenes are being created. If you would like to contribute a scene, please make a pull request to our GitHub repo!
+      .footer
+        p
+          | <br> <br> Built by
+          a(href='https://github.com/davemun') Dave Mun
+          |  and
+          a(href='https://github.com/roryc89') Rory Campbell
+

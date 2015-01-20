@@ -69,6 +69,40 @@ server.get('/', function(req,res){
   });
 });
 
+server.get('/About', function(req,res){
+  res.render('pages/About.jade', {
+    locals : {
+              title : 'About'
+             ,description: 'About Real Faces'
+             ,author: 'Your Name'
+             ,analyticssiteid: 'XXXXXXX'
+            }
+  });
+});
+
+server.get('/Problems', function(req,res){
+  res.render('pages/Problems.jade', {
+    locals : {
+              title : 'Problems'
+             ,description: 'About Real Faces'
+             ,author: 'Your Name'
+             ,analyticssiteid: 'XXXXXXX'
+            }
+  });
+});
+
+server.get('/Contact', function(req,res){
+  res.render('pages/Contact.jade', {
+    locals : {
+              title : 'Contact'
+             ,description: 'About Real Faces'
+             ,author: 'Your Name'
+             ,analyticssiteid: 'XXXXXXX'
+            }
+  });
+});
+
+
 server.get('/Outdoors', function(req,res){
   res.render('pages/Outdoors.jade', {
     locals : {
