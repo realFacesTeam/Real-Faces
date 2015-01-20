@@ -1,7 +1,8 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  */
-
+// WARNING: This vendor file has been heavily modified
+// consider moving from vendor directory
 THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, negativeBoundaryX, positiveBoundaryZ, negativeBoundaryZ, wallList, mirrorCompatible) {
 
   var scope = this;
@@ -80,22 +81,22 @@ THREE.PointerLockControls = function ( camera, sceneVars, positiveBoundaryX, neg
 
       case 38: // up
       case 87: // w
-        moveForward = true // detectCollision("forward") ? false: true;
+        moveForward = true;
         break;
 
       case 37: // left
       case 65: // a
-        moveLeft = true //detectCollision("left") ? false: true;
+        moveLeft = true;
         break;
 
       case 40: // down
       case 83: // s
-        moveBackward = true //detectCollision("backward") ? false: true;
+        moveBackward = true;
         break;
 
       case 39: // right
       case 68: // d
-        moveRight = true //detectCollision("right") ? false: true;
+        moveRight = true;
         break;
 
       case 32: // space
