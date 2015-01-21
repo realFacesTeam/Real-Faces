@@ -9,7 +9,7 @@ var RealSocket = function (app) {
   this.yourPlayerTranslation = {
     position: {x:0, y:10, z:0},
     rotation: {x:0, y:0}
-  }
+  };
 
   this.translated = false;
 
