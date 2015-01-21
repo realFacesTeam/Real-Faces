@@ -41,7 +41,7 @@ var RealWebRTC =  function (clientID) {
     //variable that allows pointer lock
     this.webcam = true;
     // you can name it anything
-    this.joinRoom('realTalkClient');
+    this.joinRoom(realFaces.roomName);
 
     playerEvents.emit('joined_room');
   });

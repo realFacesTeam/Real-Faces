@@ -1,7 +1,26 @@
 //construct main app object
 //can load its own webRTC dependency
-var RealFaces = function(sceneName){
+var RealFaces = function(sceneName, isPrivate){
   //will load webRTC deps on event, set to be called when THREE.js scene is done rendering
+  this.roomName = sceneName;
+
+  var makePrivateRoomName = function(){
+
+    var roomName = "";
+    var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 8; i++ ){
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return roomName;
+  };
+
+  if(isPrivate){
+
+    this.roomName = makePrivateRoomName();
+
+  }
+
   playerEvents.addListener('start_webRTC', this.initWebRTC);
 
   //construct THREE.js renderer

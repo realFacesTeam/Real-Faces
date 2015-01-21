@@ -1,4 +1,5 @@
 var RealSocket = function (app) {
+  console.log(location, location.pathname, location.search);
   this.socketInterval = 100;
   this.yourPlayerTranslation;
   this.lastRecordedPlayerTranslations = {};
@@ -9,12 +10,14 @@ var RealSocket = function (app) {
   this.yourPlayerTranslation = {
     position: {x:0, y:10, z:0},
     rotation: {x:0, y:0}
-  }
+  };
 
   this.translated = false;
 
   //connect to server namespace
   this.socketio = io.connect('/translations');
+
+  this.socketio.emit('select_room', app.roomName);
 
   //set up event listeners from socket
   //OTHER PLAYER UPDATES FROM SERVER
