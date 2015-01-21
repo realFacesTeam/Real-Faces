@@ -16,6 +16,8 @@ var RealSocket = function (app) {
   //connect to server namespace
   this.socketio = io.connect('/translations');
 
+  this.socketio.emit('select_room', app.roomName);
+
   //set up event listeners from socket
   //OTHER PLAYER UPDATES FROM SERVER
   this.socketio.on('preexisting_clients', function(clientTranslations, yourID, thisRef){
