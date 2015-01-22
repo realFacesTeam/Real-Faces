@@ -1,41 +1,35 @@
-//setup Dependencies
-var connect = require('connect')
-    , express = require('express')
-    , io = require('socket.io')
-    , port = (process.env.PORT || 8081);
+var express = require("express"),
+   server = express(),
+   http = require("http").createServer(server),
+   bodyParser = require("body-parser"),
+   io = require("socket.io").listen(http),
+   _ = require("underscore"),
 
-//Setup Express
-var server = express.createServer();
-server.configure(function(){
-    server.set('views', __dirname + '/views');
-    server.set('view options', { layout: false });
-    server.use(connect.bodyParser());
-    server.use(express.cookieParser());
-    server.use(express.session({ secret: "shhhhhhhhh!"}));
-    server.use(connect.static(__dirname + '/static'));
-    server.use(server.router);
-});
+   port = (process.env.PORT || 8081);
 
-//setup the errors
-server.error(function(err, req, res, next){
-    if (err instanceof NotFound) {
-        res.render('404.jade', { locals: {
-                  title : '404 - Not Found'
-                 ,description: ''
-                 ,author: ''
-                 ,analyticssiteid: 'XXXXXXX'
-                },status: 404 });
-    } else {
-        res.render('500.jade', { locals: {
-                  title : 'The Server Encountered an Error'
-                 ,description: ''
-                 ,author: ''
-                 ,analyticssiteid: 'XXXXXXX'
-                 ,error: err
-                },status: 500 });
-    }
-});
-server.listen( port);
+
+
+/* Server config */
+
+//Server's IP address
+server.set("ipaddr", "0.0.0.0");
+
+//Server's port number
+server.set("port", port);
+
+//Specify the views folder
+server.set("views", __dirname + "/views");
+
+//View engine is Jade
+server.set("view engine", "jade");
+
+//Specify where the static content is
+server.use(express.static("static", __dirname + "/static"));
+
+//Tells server to support JSON requests
+server.use(bodyParser.json());
+
+//server.listen( port);
 
 ///////////////////////////////////////////
 //              Socket.io                //
@@ -44,7 +38,11 @@ server.listen( port);
 //// ADD ALL YOUR SOCKET EVENTS HERE  /////
 
 //Setup Socket.IO
-var io = io.listen(server);
+// var httpServer = require('http').createServer(server);
+// var io = require('socket.io')(httpServer);
+
+// httpServer.listen(port);
+
 
 //translations middleware file: create event listeners at /translations namespace
 require('./sockets/translations.js')(io);
@@ -134,6 +132,40 @@ server.get('/ArtGallery', function(req,res){
              ,analyticssiteid: 'XXXXXXX'
             }
   });
+
+  // server.get('/Outdoors/:id', function(req,res){
+  //   res.render('pages/Outdoors.jade', {
+  //     locals : {
+  //               title : 'Your Page Title'
+  //              ,description: 'Your Page Description'
+  //              ,author: 'Your Name'
+  //              ,analyticssiteid: 'XXXXXXX'
+  //             }
+  //   });
+  // });
+
+  // server.get('/UnionSquare*', function(req,res){
+  //   res.render('pages/UnionSquare.jade', {
+  //     locals : {
+  //               title : 'Your Page Title'
+  //              ,description: 'Your Page Description'
+  //              ,author: 'Your Name'
+  //              ,analyticssiteid: 'XXXXXXX'
+  //             }
+  //   });
+  // });
+
+  // server.get('/ArtGallery*', function(req,res){
+  //   res.render('pages/ArtGallery.jade', {
+  //     locals : {
+  //               title : 'Your Page Title'
+  //              ,description: 'Your Page Description'
+  //              ,author: 'Your Name'
+  //              ,analyticssiteid: 'XXXXXXX'
+  //             }
+  //   });
+  // });
+
 });
 
 
@@ -143,9 +175,9 @@ server.get('/500', function(req, res){
 });
 
 //The 404 Route (ALWAYS Keep this as the last route)
-server.get('/*', function(req, res){
-    throw new NotFound;
-});
+// server.get('/*', function(req, res){
+//     throw new NotFound();
+// });
 
 function NotFound(msg){
     this.name = 'NotFound';
@@ -153,4 +185,8 @@ function NotFound(msg){
     Error.captureStackTrace(this, arguments.callee);
 }
 
-console.log('Listening on http://0.0.0.0:' + port );
+http.listen(server.get("port"), server.get("ipaddr"), function() {
+  console.log("Server up and running. Go to http://" + server.get("ipaddr") + ":" + server.get("port"));
+});
+
+//console.log('Listening on http://0.0.0.0:' + port );

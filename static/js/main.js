@@ -4,22 +4,8 @@ var RealFaces = function(sceneName, isPrivate){
   //will load webRTC deps on event, set to be called when THREE.js scene is done rendering
   this.roomName = sceneName;
 
-  var makePrivateRoomName = function(){
 
-    var roomName = "";
-    var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-    for( var i=0; i < 8; i++ ){
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return roomName;
-  };
-
-  if(isPrivate){
-
-    this.roomName = makePrivateRoomName();
-
-  }
+  document.getElementById('roomURL').innerHTML = "Your roomURL:  realfaces.org" + location.pathname + " <br> Other people can join you at this URL"
 
   playerEvents.addListener('start_webRTC', this.initWebRTC);
 
