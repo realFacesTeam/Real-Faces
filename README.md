@@ -1,33 +1,28 @@
 [ ![Codeship Status for realTalkTeam/realTalk](https://codeship.com/projects/ac08c320-6c68-0132-76fc-3a463caf9dbd/status?branch=master)](https://codeship.com/projects/54042)
 
-# Project Name
+#Join the live deployment!
 
-realTalk
-
-# Team
-
-  - __Product Owner__: Rory Campbell
-  - __Scrum Master__: Dave Mun
-  - __Development Team Members__: Rory Campbell, Dave Mun
+You can view and use our project online at http://realfaces.org!
 
 ## Table of Contents
 
 1. [Usage](#usage)
-1. [Requirements](#requirements)
-1. [Development]
-    1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks]
+1. [Development](#development)
+    1. [Requirements](#requirements)
+    2. [Installing Dependencies](#installing-dependencies)
+    3. [Running the Server](#running-the-server)
 1. [Team](#team)
 1. [Roadmap](#roadmap)
 1. [Contributing](#contributing)
 
 
-# Usage
+## Usage
 
-- Join the deployment at http://realfaces.org, click "Allow" on the webcam access prompt, type in your desired username, and have fun! Use WASD to walk around, press ESC to pause the client. Further detailed controls in the header.
+- Click "Allow" on the webcam access prompt, type in your desired username, and have fun! Use WASD to walk around, press ESC to pause the client. Further detailed controls in the header.
 
+#Development
 
-# Requirements
+## Requirements
 
 - Node 0.10.x
 - Socket.io
@@ -35,7 +30,7 @@ realTalk
 - WebRTC
 
 
-# Installing Dependencies
+## Installing Dependencies
 
 From within the root directory:
 ```
@@ -43,10 +38,16 @@ npm install
 bower install 
 ```
 
-Start the server
+## Running the Server
 ```
 npm start
 ```
+
+# Team
+
+  - __Product Owner__: Rory Campbell
+  - __Scrum Master__: Dave Mun
+  - __Development Team Members__: Rory Campbell, Dave Mun
 
 # Roadmap
 
