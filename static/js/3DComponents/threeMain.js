@@ -27,8 +27,14 @@ var RealTHREE = function (xMinBoundary, xMaxBoundary, zMinBoundary, zMaxBoundary
   this.raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
   this.renderer = new THREE.WebGLRenderer();
+  this.renderer.domElement.id = 'realFacesCanvas';
+  this.renderer.domElement.style.zIndex = 1;
   this.renderer.setClearColor( 0xffffff );
   this.renderer.setSize( window.innerWidth, window.innerHeight );
+
+  // document.getElementById('blocker').style.zIndex = 0;
+
+  // document.getElementById('roomURL').style.zIndex = 5;
 
   document.body.appendChild( this.renderer.domElement );
 
