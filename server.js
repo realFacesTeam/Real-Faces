@@ -12,7 +12,7 @@ var express = require("express"),
 /* Server config */
 
 //Server's IP address
-server.set("ipaddr", "0.0.0.0");
+server.set("ipaddr", "127.0.0.1");
 
 //Server's port number
 server.set("port", port);
@@ -101,7 +101,32 @@ server.get('/Contact', function(req,res){
 });
 
 
+// server.get('/Outdoors', function(req,res){
+//   res.render('pages/Outdoors.jade', {
+//     locals : {
+//               title : 'Your Page Title'
+//              ,description: 'Your Page Description'
+//              ,author: 'Your Name'
+//              ,analyticssiteid: 'XXXXXXX'
+//             }
+//   });
+// });
+
 server.get('/Outdoors', function(req,res){
+  console.log('in normal')
+
+  res.render('pages/Outdoors.jade', {
+    locals : {
+              title : 'Your Page Title'
+             ,description: 'Your Page Description'
+             ,author: 'Your Name'
+             ,analyticssiteid: 'XXXXXXX'
+            }
+  });
+});
+
+server.get('/Outdoors*pr', function(req,res){
+  console.log('in private')
   res.render('pages/Outdoors.jade', {
     locals : {
               title : 'Your Page Title'
