@@ -10,7 +10,28 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
+#roomURL{
+  border: 2px solid;
+  border-color: white;
+  border-radius: 10px;
+  background: no-repeat scroll 0% 0% transparent;
+  background-color: #D3D3D3;
+  width: 40%;
+  overflow: auto;
+  height: 40px;
+  /*min-height: 10%;*/
+  position: float;
+  bottom: 5%;
+  opacity: 0.75;
+  float: left;
+}
+
+/*body > #realFacesCanvas{
+  z-index: -100 !important;
+}*/
+
 #blocker {
+  /*z-index: 0;*/
 
   position: absolute;
 
@@ -58,6 +79,7 @@ body {
 #localVideo, #remotesVideos > video {
   height: 50px;
   width: 50px;
+  visibility: hidden;
 }
 
 #webcamWarning {
