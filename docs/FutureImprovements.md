@@ -12,7 +12,7 @@ Add positonal and directional audio so that clients can hear what direciton anot
 
 ## Cropping via facial detection
 
-Open source JavaScript facial detection packages are available, which could be used to crop the parts of the video around the face. This video could then be rendered onto an otherwise invisible screen head and it would give the impression of a floating head above the body!
+Open source JavaScript facial detection packages are available (https://github.com/auduno/clmtrackr), which could be used to crop the parts of the video around the face. This video could then be rendered onto an otherwise invisible screen head and it would give the impression of a floating head above the body!
 
 ## Private rooms
 
