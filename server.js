@@ -12,7 +12,7 @@ var express = require("express"),
 /* Server config */
 
 //Server's IP address
-server.set("ipaddr", "127.0.0.1");
+server.set("ipaddr", "0.0.0.0");
 
 //Server's port number
 server.set("port", port);
