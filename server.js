@@ -125,7 +125,7 @@ server.get('/Outdoors', function(req,res){
   });
 });
 
-server.get('/Outdoors*pr', function(req,res){
+server.get('/Outdoors-*', function(req,res){
   console.log('in private')
   res.render('pages/Outdoors.jade', {
     locals : {
@@ -148,6 +148,17 @@ server.get('/UnionSquare', function(req,res){
   });
 });
 
+server.get('/UnionSquare-*', function(req,res){
+  res.render('pages/UnionSquare.jade', {
+    locals : {
+              title : 'Your Page Title'
+             ,description: 'Your Page Description'
+             ,author: 'Your Name'
+             ,analyticssiteid: 'XXXXXXX'
+            }
+  });
+});
+
 server.get('/ArtGallery', function(req,res){
   res.render('pages/ArtGallery.jade', {
     locals : {
@@ -157,40 +168,17 @@ server.get('/ArtGallery', function(req,res){
              ,analyticssiteid: 'XXXXXXX'
             }
   });
+});
 
-  // server.get('/Outdoors/:id', function(req,res){
-  //   res.render('pages/Outdoors.jade', {
-  //     locals : {
-  //               title : 'Your Page Title'
-  //              ,description: 'Your Page Description'
-  //              ,author: 'Your Name'
-  //              ,analyticssiteid: 'XXXXXXX'
-  //             }
-  //   });
-  // });
-
-  // server.get('/UnionSquare*', function(req,res){
-  //   res.render('pages/UnionSquare.jade', {
-  //     locals : {
-  //               title : 'Your Page Title'
-  //              ,description: 'Your Page Description'
-  //              ,author: 'Your Name'
-  //              ,analyticssiteid: 'XXXXXXX'
-  //             }
-  //   });
-  // });
-
-  // server.get('/ArtGallery*', function(req,res){
-  //   res.render('pages/ArtGallery.jade', {
-  //     locals : {
-  //               title : 'Your Page Title'
-  //              ,description: 'Your Page Description'
-  //              ,author: 'Your Name'
-  //              ,analyticssiteid: 'XXXXXXX'
-  //             }
-  //   });
-  // });
-
+server.get('/ArtGallery-*', function(req,res){
+  res.render('pages/ArtGallery.jade', {
+    locals : {
+              title : 'Your Page Title'
+             ,description: 'Your Page Description'
+             ,author: 'Your Name'
+             ,analyticssiteid: 'XXXXXXX'
+            }
+  });
 });
 
 

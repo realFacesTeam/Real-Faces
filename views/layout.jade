@@ -19,7 +19,6 @@ html.no-js(lang='en')
     //- link(rel='stylesheet', href='/css/style.css')
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
     //-script(src='js/libs/modernizr-2.0.6.min.js')
-    script(src='js/generateRandomString.js')
   body
     block header
 
@@ -27,6 +26,7 @@ html.no-js(lang='en')
 
     block footer
       footer
+        script(src='js/setPrivateURL.js')
         script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
         script
           window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\\/script>')
