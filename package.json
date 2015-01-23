@@ -9,7 +9,7 @@
   "dependencies": {
     "config.json": "0.0.3",
     "connect": "1.8.5",
-    "express": "2.5.2",
+    "express": "4.x",
     "jade": "0.20.0",
     "node-uuid": "1.2.0",
     "socket.io": "0.9.6"
