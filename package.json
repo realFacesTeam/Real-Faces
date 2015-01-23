@@ -7,6 +7,7 @@
   ],
   "version": "1.0.0",
   "dependencies": {
+    "body-parser": "^1.10.2",
     "config.json": "0.0.3",
     "connect": "^1.8.5",
     "express": "4.11.1",
