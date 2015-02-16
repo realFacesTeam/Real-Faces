@@ -112,18 +112,4 @@ var createWalls = function(context){
   createWall({length:100, x:-100, z:50, window:true, context:context});
   createWindowFrame({length:100, x:-100, z:50, context:context});
 
-  // createWall({length:150, x:25, z:50, window:true, context:context});
-  // createWindowFrame({length:150, x:25, z:50, context:context});
-  // createWall({length:100, x:-50, z:0, rotated:true, context:context});
-  // createWall({length:100, x:0, z:-50, context:context});
-  // createWall({length:150, x:100, z:-25, rotated:true, window:true, context:context});
-  // createWindowFrame({length:150, x:100, z:-25, rotated:true, context:context});
-  // createWall({length:200, x:0, z:-100, window:true, context:context});
-  // createWindowFrame({length:200, x:0, z:-100, context:context});
-  // createWall({length:100, x:-100, z:-50, rotated:true, context:context});
-  // createWall({length:50, x:-125, z:0, context:context});
-  // createWall({length:50, x:-150, z:-25, rotated:true, context:context});
-  // createWall({length:50, x:-150, z:25, rotated:true, context:context});
-  // createWall({length:100, x:-100, z:50, context:context});
-
 };
