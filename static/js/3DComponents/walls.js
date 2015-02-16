@@ -67,10 +67,7 @@ var createWindowFrame = function (options){
   var rotated = options.rotated || false;
   var castShadow = options.castShadow || false;
   var receiveShadow = options.receiveShadow || false;
-  //var texture = options.texture || new THREE.ImageUtils.loadTexture( 'images/Applestone.jpg' );
-  //var material = options.material || new THREE.MeshLambertMaterial( {map:texture, side:THREE.DoubleSide} );
 
-  //var start_time = (new Date()).getTime();
   var cube_geometry = new THREE.BoxGeometry( height + 3, height + 3, 3 );
   var cube_mesh = new THREE.Mesh( cube_geometry );
   cube_mesh.position.x = x;
@@ -104,11 +101,8 @@ var createWalls = function(context){
   createWindowFrame({length:150, x:100, z:-25, rotated:true, context:context});
   createWall({length:250, x:-25, z:-100, window:true, context:context});
   createWindowFrame({length:250, x:-25, z:-100, context:context});
-  //createWall({length:100, x:-100, z:-50, rotated:true});
-  //createWall({length:50, x:-125, z:-100});
   createWall({length:150, x:-150, z:-25, rotated:true, window:true, context:context});
   createWindowFrame({length:150, x:-150, z:-25, rotated:true, context:context});
-  // createWall({length:50, x:-150, z:25, rotated:true});
   createWall({length:100, x:-100, z:50, window:true, context:context});
   createWindowFrame({length:100, x:-100, z:50, context:context});
 
