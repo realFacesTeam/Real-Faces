@@ -1,5 +1,4 @@
 var RealSocket = function (app) {
-  console.log(location, location.pathname, location.search);
   this.socketInterval = 100;
   this.yourPlayerTranslation;
   this.lastRecordedPlayerTranslations = {};
