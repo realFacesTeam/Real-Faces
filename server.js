@@ -41,8 +41,6 @@ require('./sockets/signalmaster.js')(io);
 //              Routes                   //
 ///////////////////////////////////////////
 
-/////// ADD ALL YOUR ROUTES HERE  /////////
-
 server.get('/', function(req,res){
   res.render('index.jade', {
     locals : {
