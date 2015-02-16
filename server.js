@@ -4,10 +4,8 @@ var express = require("express"),
    bodyParser = require("body-parser"),
    io = require("socket.io").listen(http),
    // _ = require("underscore"),
-
    port = (process.env.PORT || 8081);
-
-
+   
 
 /* Server config */
 
@@ -29,20 +27,9 @@ server.use(express.static("static", __dirname + "/static"));
 //Tells server to support JSON requests
 server.use(bodyParser.json());
 
-//server.listen( port);
-
 ///////////////////////////////////////////
 //              Socket.io                //
 ///////////////////////////////////////////
-
-//// ADD ALL YOUR SOCKET EVENTS HERE  /////
-
-//Setup Socket.IO
-// var httpServer = require('http').createServer(server);
-// var io = require('socket.io')(httpServer);
-
-// httpServer.listen(port);
-
 
 //translations middleware file: create event listeners at /translations namespace
 require('./sockets/translations.js')(io);
@@ -100,17 +87,6 @@ server.get('/Contact', function(req,res){
   });
 });
 
-
-// server.get('/Outdoors', function(req,res){
-//   res.render('pages/Outdoors.jade', {
-//     locals : {
-//               title : 'Your Page Title'
-//              ,description: 'Your Page Description'
-//              ,author: 'Your Name'
-//              ,analyticssiteid: 'XXXXXXX'
-//             }
-//   });
-// });
 
 server.get('/Outdoors', function(req,res){
   console.log('in normal')
@@ -201,5 +177,3 @@ function NotFound(msg){
 http.listen(server.get("port"), server.get("ipaddr"), function() {
   console.log("Server up and running. Go to http://" + server.get("ipaddr") + ":" + server.get("port"));
 });
-
-//console.log('Listening on http://0.0.0.0:' + port );
