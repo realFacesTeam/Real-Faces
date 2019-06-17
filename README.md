@@ -20,7 +20,10 @@ You can view and use our project online at https://realtalkclient.herokuapp.com!
 
 - Click "Allow" on the webcam access prompt, type in your desired username, and have fun! Use WASD to walk around, press ESC to pause the client. Further detailed controls in the header.
 
-#Development
+## Development
+
+This project is rather sunsetted - we pay the server bills to keep it going as a fun meeting room and patch deprecations, but this is more for posterity then any semblance of productivity.
+Still, feel free to invite your friends and explore our little worlds!
 
 ## Requirements
 
