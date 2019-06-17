@@ -2,7 +2,7 @@
 
 #Join the live deployment!
 
-You can view and use our project online at http://realfaces.org!
+You can view and use our project online at https://realtalkclient.herokuapp.com!
 
 ## Table of Contents
 
