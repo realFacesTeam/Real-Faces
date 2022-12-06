@@ -10,7 +10,7 @@
     "body-parser": "^1.10.2",
     "config.json": "0.0.3",
     "connect": "^1.8.5",
-    "express": "4.11.1",
+    "express": "4.17.3",
     "jade": "^0.20.0",
     "node-uuid": "^1.2.0",
     "socket.io": "^0.9.6"
